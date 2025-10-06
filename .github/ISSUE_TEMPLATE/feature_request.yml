@@ -1,0 +1,99 @@
+name: 🚀 Feature Request
+description: Suggest a new feature for the ETI-LABS website
+title: "[FEATURE] "
+labels: ["enhancement"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest a new feature for the ETI-LABS website!
+        
+  - type: input
+    id: feature-summary
+    attributes:
+      label: Feature Summary
+      description: Brief description of the feature
+      placeholder: e.g., Add contact form to homepage
+    validations:
+      required: true
+      
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Detailed Description
+      description: Provide a detailed description of the feature
+      placeholder: Describe what the feature should do, how it should work, etc.
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature?
+      options:
+        - 🔴 Critical
+        - 🟠 High
+        - 🟡 Medium
+        - 🟢 Low
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Estimated Complexity
+      description: How complex do you think this feature is?
+      options:
+        - "1 - Very Simple"
+        - "3 - Simple"
+        - "5 - Medium"
+        - "7 - Complex"
+        - "10 - Very Complex"
+    validations:
+      required: false
+      
+  - type: dropdown
+    id: sprint
+    attributes:
+      label: Target Sprint
+      description: Which sprint should this be included in?
+      options:
+        - Sprint 1 - Setup
+        - Sprint 2 - Core
+        - Sprint 3 - Polish
+        - Backlog
+        - Future
+    validations:
+      required: false
+      
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: What needs to be done for this feature to be complete?
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+        - [ ] Criterion 3
+    validations:
+      required: true
+      
+  - type: input
+    id: target-date
+    attributes:
+      label: Target Completion Date
+      description: When should this feature be completed? (YYYY-MM-DD)
+      placeholder: "2025-01-15"
+    validations:
+      required: false
+      
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any additional information, mockups, links, or context
+      placeholder: Add any other context, screenshots, mockups, or links here.
+    validations:
+      required: false

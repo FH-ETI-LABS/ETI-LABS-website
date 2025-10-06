@@ -1,0 +1,98 @@
+name: 🐛 Bug Report
+description: Report a bug in the ETI-LABS website
+title: "[BUG] "
+labels: ["bug", "🔴 critical"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please provide as much detail as possible.
+        
+  - type: input
+    id: bug-summary
+    attributes:
+      label: Bug Summary
+      description: Brief description of the bug
+      placeholder: e.g., Contact form not submitting
+    validations:
+      required: true
+      
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: Detailed description of what happened
+      placeholder: Describe the bug in detail
+    validations:
+      required: true
+      
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+      
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What should have happened?
+      placeholder: Describe what you expected to happen
+    validations:
+      required: true
+      
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Describe what actually happened
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How severe is this bug?
+      options:
+        - 🔴 Critical - Site broken/unusable
+        - 🟠 High - Major feature broken
+        - 🟡 Medium - Minor issue
+        - 🟢 Low - Cosmetic issue
+    validations:
+      required: true
+      
+  - type: input
+    id: browser
+    attributes:
+      label: Browser & Version
+      description: Which browser and version are you using?
+      placeholder: e.g., Chrome 118, Safari 17, Firefox 119
+    validations:
+      required: false
+      
+  - type: input
+    id: device
+    attributes:
+      label: Device & OS
+      description: What device and operating system?
+      placeholder: e.g., MacBook Pro macOS 14, iPhone 15 iOS 17
+    validations:
+      required: false
+      
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Screenshots, error messages, or other context
+      placeholder: Add any screenshots, error messages, or additional context here.
+    validations:
+      required: false
