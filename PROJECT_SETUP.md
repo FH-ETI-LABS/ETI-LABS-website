@@ -16,9 +16,9 @@ This repository contains the official website for **ETI-LABS (Educational Techno
 
 | Milestone | Description | Due Date | Issues |
 |-----------|-------------|----------|--------|
-| **Initial Setup** | Foundation setup including framework, development environment, and basic project structure | Jan 12, 2025 | [Milestone 1](https://github.com/FH-ETI-LABS/ETI-LABS-website/milestone/1) |
-| **Core Features** | Homepage design, content creation, and main functionality implementation | Jan 26, 2025 | [Milestone 2](https://github.com/FH-ETI-LABS/ETI-LABS-website/milestone/2) |
-| **Testing & Deployment** | Quality assurance, testing implementation, and production deployment setup | Feb 2, 2025 | [Milestone 3](https://github.com/FH-ETI-LABS/ETI-LABS-website/milestone/3) |
+| **Initial Setup** | Foundation setup including framework, development environment, and basic project structure | xxxxx | [Milestone 1](https://github.com/FH-ETI-LABS/ETI-LABS-website/milestone/1) |
+| **Core Features** | Homepage design, content creation, and main functionality implementation | xxxxx | [Milestone 2](https://github.com/FH-ETI-LABS/ETI-LABS-website/milestone/2) |
+| **Testing & Deployment** | Quality assurance, testing implementation, and production deployment setup | xxxxx | [Milestone 3](https://github.com/FH-ETI-LABS/ETI-LABS-website/milestone/3) |
 
 ## 🎯 Current Issues
 
