@@ -35,10 +35,11 @@ This repository contains the official website for **ETI-LABS (Educational Techno
 
 ## 🏗️ Technology Stack
 
-- **Backend**: Python (Framework TBD - Flask, FastAPI, or Django)
-- **Frontend**: Modern responsive design (TBD)
-- **Deployment**: TBD (Heroku, Vercel, AWS, etc.)
-- **CI/CD**: GitHub Actions
+- **Frontend**: React 18+ with TypeScript (Create React App)
+- **Backend**: Supabase (PostgreSQL + Auth + Storage + Realtime)
+- **Styling**: CSS3 with mobile-first responsive design
+- **Deployment**: Local server hosting + Supabase (backend)
+- **CI/CD**: GitHub Actions for code management
 - **Version Control**: Git/GitHub
 
 ## 🔧 Development Workflow
@@ -81,7 +82,7 @@ This repository contains the official website for **ETI-LABS (Educational Techno
 
 - **Repository Owner**: FH-ETI-LABS
 - **Main Contributor**: jsecco ®
-- **Development**: Python-based full stack
+- **Development**: React TypeScript + Supabase full stack
 
 ## 📖 Documentation Structure
 
