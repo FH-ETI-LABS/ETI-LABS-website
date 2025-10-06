@@ -98,9 +98,9 @@ The official website for ETI-LABS (Educational Technology Innovation Labs), show
 
 | Phase | Milestone | Duration | Target Date |
 |-------|-----------|----------|-------------|
-| **Phase 1** | Initial Setup | Week 1 | Jan 12, 2025 |
-| **Phase 2** | Core Features | Weeks 2-3 | Jan 26, 2025 |
-| **Phase 3** | Testing & Deployment | Week 4 | Feb 2, 2025 |
+| **Phase 1** | Initial Setup |              |
+| **Phase 2** | Core Features |              |
+| **Phase 3** | Testing & Deployment |       |
 
 ### 📈 Current Progress
 
@@ -215,14 +215,14 @@ We welcome contributions from the community! Please read our [Contributing Guide
 
 - **Repository Owner**: [FH-ETI-LABS](https://github.com/FH-ETI-LABS)
 - **Lead Developer**: jsecco ®
-- **Project Type**: Educational Technology Website
+- **Project Type**: Website
 - **Development Stack**: Python-based full stack
 
 ## 📞 Contact & Support
 
 - **Issues**: [GitHub Issues](https://github.com/FH-ETI-LABS/ETI-LABS-website/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/FH-ETI-LABS/ETI-LABS-website/discussions)
-- **Email**: [Contact ETI-LABS](mailto:contact@eti-labs.org) *(placeholder)*
+- **Email**: [Contact ETI-LABS](mailto:fh.ai.lab01@gmail.com)
 
 ## 📄 License
 
