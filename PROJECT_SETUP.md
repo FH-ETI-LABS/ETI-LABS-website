@@ -23,15 +23,15 @@ This repository contains the official website for **ETI-LABS (Educational Techno
 ## 🎯 Current Issues
 
 ### High Priority (Initial Setup)
-- [#1 - Set up Python web framework](https://github.com/FH-ETI-LABS/ETI-LABS-website/issues/1) - *4-6 hours*
-- [#5 - Set up development environment](https://github.com/FH-ETI-LABS/ETI-LABS-website/issues/5) - *3-4 hours*
+- [#1 - Set up Python web framework](https://github.com/FH-ETI-LABS/ETI-LABS-website/issues/1) - **
+- [#5 - Set up development environment](https://github.com/FH-ETI-LABS/ETI-LABS-website/issues/5) - **
 
 ### Core Development 
 - [#2 - Design homepage layout](https://github.com/FH-ETI-LABS/ETI-LABS-website/issues/2) - *8-12 hours*
-- [#3 - Create documentation structure](https://github.com/FH-ETI-LABS/ETI-LABS-website/issues/3) - *4-6 hours*
+- [#3 - Create documentation structure](https://github.com/FH-ETI-LABS/ETI-LABS-website/issues/3) - **
 
 ### Deployment & QA
-- [#4 - Configure deployment pipeline](https://github.com/FH-ETI-LABS/ETI-LABS-website/issues/4) - *6-8 hours*
+- [#4 - Configure deployment pipeline](https://github.com/FH-ETI-LABS/ETI-LABS-website/issues/4) - **
 
 ## 🏗️ Technology Stack
 
