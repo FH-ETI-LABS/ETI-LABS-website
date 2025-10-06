@@ -113,9 +113,9 @@ The official website for ETI-LABS (Educational Technology Innovation Labs), show
 
 | Phase | Milestone | Duration | Target Date |
 |-------|-----------|----------|-------------|
-| **Phase 1** | Initial Setup | Week 1 | Jan 12, 2025 |
-| **Phase 2** | Core Features | Weeks 2-3 | Jan 26, 2025 |
-| **Phase 3** | Testing & Deployment | Week 4 | Feb 2, 2025 |
+| **Phase 1** | Initial Setup | TBD | TBD |
+| **Phase 2** | Core Features | TBD | TBD |
+| **Phase 3** | Testing & Deployment | TBD | TBD |
 
 ### 📈 Current Progress
 
