@@ -1,0 +1,29 @@
+# ETI-LABS Website Code Owners
+# These users will be requested for review when someone opens a pull request
+
+# Global ownership - FH-ETI-LABS gets notified for all changes
+* @FH-ETI-LABS
+
+# Python backend code
+*.py @FH-ETI-LABS
+requirements*.txt @FH-ETI-LABS
+
+# Frontend code
+*.html @FH-ETI-LABS
+*.css @FH-ETI-LABS  
+*.js @FH-ETI-LABS
+
+# Configuration and infrastructure
+.github/ @FH-ETI-LABS
+*.yml @FH-ETI-LABS
+*.yaml @FH-ETI-LABS
+Dockerfile* @FH-ETI-LABS
+
+# Documentation
+README.md @FH-ETI-LABS
+docs/ @FH-ETI-LABS
+*.md @FH-ETI-LABS
+
+# Project management files
+PROJECT_SETUP.md @FH-ETI-LABS
+.github/ISSUE_TEMPLATE/ @FH-ETI-LABS
