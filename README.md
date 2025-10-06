@@ -113,9 +113,9 @@ The official website for ETI-LABS (Educational Technology Innovation Labs), show
 
 | Phase | Milestone | Duration | Target Date |
 |-------|-----------|----------|-------------|
-| **Phase 1** | Initial Setup |              |
-| **Phase 2** | Core Features |              |
-| **Phase 3** | Testing & Deployment |       |
+| **Phase 1** | Initial Setup | Week 1 | Jan 12, 2025 |
+| **Phase 2** | Core Features | Weeks 2-3 | Jan 26, 2025 |
+| **Phase 3** | Testing & Deployment | Week 4 | Feb 2, 2025 |
 
 ### 📈 Current Progress
 
@@ -123,19 +123,21 @@ The official website for ETI-LABS (Educational Technology Innovation Labs), show
 - [x] Project repository created
 - [x] Project board configured with custom fields
 - [x] Development milestones established
-- [ ] Python framework selected and implemented
+- [x] Technology stack decided: React TypeScript + Supabase
+- [ ] React TypeScript project setup completed
+- [ ] Supabase backend integration configured
 - [ ] Development environment standardized
 
 **Sprint 2 - Core Development** (Upcoming)
 - [ ] Homepage design and mockups
-- [ ] Responsive frontend implementation
-- [ ] Content management system
-- [ ] Documentation structure
+- [ ] Responsive React component implementation
+- [ ] Supabase database schema designed
+- [ ] Documentation structure created
 
 **Sprint 3 - Polish & Deployment** (Planned)
-- [ ] Quality assurance testing
-- [ ] Performance optimization
-- [ ] Deployment pipeline setup
+- [ ] Component testing implemented
+- [ ] Performance optimization completed
+- [ ] Local server deployment configured
 - [ ] Production launch
 
 ## 🎨 Design System
