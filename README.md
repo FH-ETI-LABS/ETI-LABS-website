@@ -22,7 +22,7 @@ The official website for ETI-LABS (Educational Technology Innovation Labs), show
 
 ### **Frontend**
 - **Library**: React 18+ with TypeScript
-- **Build Tool**: Create React App or Webpack
+- **Build Tool**: Vite (React + TypeScript)
 - **Styling**: CSS3 with mobile-first responsive design
 - **State Management**: React Context API
 - **UI Components**: Custom components
@@ -49,8 +49,8 @@ The official website for ETI-LABS (Educational Technology Innovation Labs), show
 - **Version Control**: Git with GitHub
 - **Code Quality**: ESLint + Prettier (TypeScript/React)
 - **Testing**: Jest + React Testing Library (when needed)
-- **Development Server**: React dev server (npm start)
-- **Build Process**: Standard React build tools
+- **Development Server**: Vite Dev Server (npm run dev)
+- **Build Process**: Vite optimized build (esbuild + Rollup)
 
 ## 🚦 Quick Start
 
@@ -91,14 +91,14 @@ The official website for ETI-LABS (Educational Technology Innovation Labs), show
 4. **Run development server**
    ```bash
    # Using npm
-   npm start
+   npm run dev
    
    # Or using pnpm
    pnpm start
    ```
 
 5. **Visit the website**
-   Open [http://localhost:3000](http://localhost:3000) in your browser
+   Open [http://localhost:5173](http://localhost:5173) in your browser
 
 ## 📊 Project Management
 
