@@ -1,10 +1,11 @@
-import { useState } from "react";
-import LoginForm from "./Components/LoginForm/LoginForm";
+import HomePage from "./Pages/HomePage";
+import LabProjectsPage from "./Pages/LabProjectsPage";
+import StemClubsPage from "./Pages/StemClubsPage";
 
 function App() {
   return (
     <div>
-      <LoginForm />
+      <LabProjectsPage />
     </div>
   );
 }

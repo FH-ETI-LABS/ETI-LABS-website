@@ -3,10 +3,16 @@ import logo from "../../assets/images/ETILOGO.png";
 import { useState } from "react";
 
 //Login Form
-const LoginForm = () => {
-  //use state for if nextbutton is clicked and what is in the username field
+interface LoginFormProps {
+  loginStatus: boolean;
+  setLoginStatus: Function;
+}
+
+const LoginForm = ({ loginStatus, setLoginStatus }: LoginFormProps) => {
+  //use state for if nextbutton is clicked and what is in the username and password fields
   const [nextClicked, setNextClicked] = useState(false);
-  const [usernameText, usernameSetText] = useState("");
+  const [usernameText, setUsernameText] = useState("");
+  const [passwordText, setPasswordText] = useState("");
 
   return (
     <div className="login-container">
@@ -28,7 +34,7 @@ const LoginForm = () => {
             id="username"
             type="text"
             className="form-input"
-            onChange={(e) => usernameSetText(e.target.value)}
+            onChange={(e) => setUsernameText(e.target.value)}
           />
         </div>
 
@@ -39,7 +45,12 @@ const LoginForm = () => {
             <label htmlFor="Password" className="form-label">
               Password
             </label>
-            <input id="password" type="text" className="form-input" />
+            <input
+              id="password"
+              type="text"
+              className="form-input"
+              onChange={(e) => setPasswordText(e.target.value)}
+            />
           </div>
         )}
 
@@ -49,6 +60,9 @@ const LoginForm = () => {
           onClick={() => {
             if (usernameText == "Admin") {
               setNextClicked(true);
+            }
+            if (passwordText == "123") {
+              setLoginStatus(true);
             }
           }}
         >

@@ -1,0 +1,99 @@
+/* Overall page container */
+.lab-projects-page {
+  padding: 2rem;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Header and button styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.add-button {
+  background-color: #8b0000;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #a00000;
+}
+
+/* Projects grid container */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Project card styling */
+.project-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.project-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.project-lab,
+.project-lead,
+.est-time {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.progress-section {
+  margin: 1.5rem 0 0.5rem 0;
+}
+
+.progress-bar-container {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #8b0000; /* The requested dark red color */
+  transition: width 0.5s ease-in-out;
+}
+
+.completion-text {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin-left: 10px;
+}

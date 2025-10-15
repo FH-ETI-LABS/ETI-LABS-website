@@ -1,0 +1,99 @@
+/* Container for the overall layout */
+.stem-clubs-page {
+  padding: 2rem;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Styles for the "Add New Club" button from your previous component */
+.add-club-button {
+  background-color: #8b0000;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-club-button:hover {
+  background-color: #a00000;
+}
+
+/* Styles for the clubs grid container */
+.clubs-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* Individual card styling */
+.club-card {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.club-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.club-image {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  object-fit: contain;
+}
+
+.club-details {
+  width: 100%;
+}
+
+.club-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.club-president,
+.club-advisor,
+.club-meeting {
+  font-size: 1rem;
+  color: #555;
+  margin: 0.25rem 0;
+  line-height: 1.5;
+}
+
+/* Additional styling for the parent page container */
+.stem-clubs-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
