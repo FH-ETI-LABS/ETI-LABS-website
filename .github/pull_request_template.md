@@ -1,98 +1,36 @@
-# Pull Request: ETI-LABS Website
+# What did you build?
 
-## 📋 Overview
-<!-- Brief description of what this PR accomplishes -->
+Brief description of what this Pull Request (PR) does.
 
-### 🔗 Related Issues
-<!-- Link to related issues using keywords: Closes #123, Fixes #456, Resolves #789 -->
-- Closes #
-- Related to #
+**Example:** "Set up the React TypeScript project and built a basic login page component"
 
-## 📝 Changes Made
+## Closes Issue
+Closes #[issue_number]
 
-### ✨ New Features
-<!-- List new features added -->
-- [ ] Feature 1
-- [ ] Feature 2
+**Example:** Closes #1, Closes #5, Closes #7
 
-### 🐛 Bug Fixes  
-<!-- List bugs fixed -->
-- [ ] Bug fix 1
-- [ ] Bug fix 2
+## What changed?
+- Thing 1
+- Thing 2
 
-### 🔧 Technical Changes
-<!-- List technical improvements -->
-- [ ] Technical change 1
-- [ ] Technical change 2
+**Example:**
+- Added React TypeScript project with Vite
+- Created LoginForm component with styling
+- Set up project structure and dependencies
+- Added ETI-LABS logo and assets
 
-## 🧪 Testing
+## Did you test it?
+- [ ] Yes, it works
+- [ ] Ready for others to review
 
-### ✅ Testing Completed
-- [ ] Unit tests pass
-- [ ] Integration tests pass  
-- [ ] Manual testing completed
-- [ ] Cross-browser testing (if frontend changes)
-- [ ] Mobile responsiveness tested (if UI changes)
+**Example:**
+- [x] Yes, it works
+- [x] Ready for others to review
 
-### 🎯 Test Coverage
-<!-- Describe what was tested -->
-- Test scenario 1
-- Test scenario 2
+## Anything else?
+Any notes or questions for the team.
 
-## 📊 Project Board Updates
-
-### 🎯 Sprint & Priority
-- **Sprint**: Sprint 1 / Sprint 2 / Sprint 3
-- **Priority**: 🔴 Critical / 🟠 High / 🟡 Medium / 🟢 Low  
-- **Complexity**: [1-10 story points]
-
-### 📅 Timeline
-- **Target Ship Date**: YYYY-MM-DD
-- **Actual Completion**: YYYY-MM-DD
-
-## 📸 Screenshots/Demo
-<!-- Include screenshots, GIFs, or links to demos for UI changes -->
-
-## 🚀 Deployment Considerations
-- [ ] No deployment changes needed
-- [ ] Database migrations required
-- [ ] Environment variables need updating
-- [ ] Third-party service configuration needed
-
-## 📚 Documentation Updates
-- [ ] README.md updated
-- [ ] Code comments added/updated
-- [ ] API documentation updated
-- [ ] Architecture docs updated
-
-## ✅ Pre-submission Checklist
-
-### 🔍 Code Quality
-- [ ] Code follows project style guidelines
-- [ ] Self-review completed  
-- [ ] No debugging code left behind
-- [ ] Error handling implemented properly
-
-### 🎯 Project Standards
-- [ ] Commit messages follow convention
-- [ ] Branch name follows pattern: `feature/issue-123-description`
-- [ ] PR title is descriptive
-- [ ] Labels applied correctly
-
-### 👥 Review Ready
-- [ ] Ready for code review
-- [ ] All discussions resolved
-- [ ] CI/CD checks passing
-
-## 💬 Additional Notes
-<!-- Any additional context, concerns, or discussion points -->
-
-## 👥 Reviewers
-<!-- Tag specific reviewers if needed -->
-@FH-ETI-LABS
+**Example:** "This gets us the basic project setup done! Next someone can work on the design and make it look better."
 
 ---
-
-**Author**: jsecco ®  
-**PR Type**: Feature / Bug Fix / Documentation / Refactor  
-**Urgency**: Normal / High / Critical
+Ready for review! ✅
