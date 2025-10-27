@@ -1,0 +1,79 @@
+/**
+ * CameraCard.css
+ * ----------------
+ * Style for the simplified live camera card.
+ * - Foothill red accents (#8b0000)
+ * - Dark background and soft shadows
+ */
+
+.security-page {
+  min-height: 100vh;
+  background-color: #f7f7f7; /* light neutral background */
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 2rem;
+  font-family: "Inter", sans-serif;
+  color: #222;
+}
+
+/* Header styling */
+.security-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.security-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #8b0000; /* Foothill red */
+  border-bottom: 3px solid #8b0000;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+/* Two-column responsive layout for camera cards */
+.security-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(350px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Card container alignment and consistency */
+.security-grid > * {
+  width: 100%;
+  background: #ffffff; /* white surface for each camera */
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+/* Subtle hover effect for visual feedback */
+.security-grid > *:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .security-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .security-header h1 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Optional footer area (for future use like "Last Updated" text) */
+.security-footer {
+  margin-top: auto;
+  text-align: center;
+  padding-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}

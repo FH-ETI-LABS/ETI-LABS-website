@@ -1,0 +1,130 @@
+/**
+ * CameraCard.css
+ * ----------------
+ * Style for the simplified live camera card.
+ * - Foothill red accents (#8b0000)
+ * - Dark background and soft shadows
+ */
+
+.camera-card {
+  width: 100%;
+  background: #0f1720;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  color: #fff;
+  overflow: hidden;
+}
+
+.camera-frame {
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.camera-placeholder {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: linear-gradient(180deg, #222 0%, #1a1a1a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-graphic {
+  width: 95%;
+  height: 95%;
+  border-radius: 6px;
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.02) 0 4px,
+    rgba(255, 255, 255, 0.01) 4px 8px
+  );
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Live indicator */
+.camera-rec {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 6px 10px;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+}
+
+.rec-dot {
+  width: 10px;
+  height: 10px;
+  background: #8b0000;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(139, 0, 0, 0.85);
+}
+
+.camera-title {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Controls: only fullscreen */
+.camera-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.control-btn {
+  background: #8b0000;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(139, 0, 0, 0.18);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.control-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(139, 0, 0, 0.25);
+}
+
+.control-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 640px) {
+  .camera-frame {
+    min-height: 220px;
+  }
+  .camera-title {
+    font-size: 1rem;
+  }
+}
