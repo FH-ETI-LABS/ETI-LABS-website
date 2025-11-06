@@ -13,11 +13,24 @@ import "./LabStaffPage.css";
 
 /**
  * Interface defining the structure of a single staff member.
+ * Updated to match ETI Dashboard requirements
  */
 interface StaffMember {
-  name: string;
-  role: string;
-  group: string;
+  firstName: string;
+  lastName: string;
+  jobTitle: string; // official HR position
+  role: string; // what does this person do
+  labAssigned: string;
+  communities: {
+    fws: boolean; // Federal Work Study
+    mesa: boolean;
+    umoja: boolean;
+    puente: boolean;
+    veteran: boolean;
+  };
+  email: string;
+  telephone: string;
+  cwid: number;
 }
 
 /**
@@ -37,47 +50,78 @@ const StaffTable = () => {
   // sample staff data
   const staffData: StaffMember[] = [
     {
-      name: "Dr. Emma Wilson",
-      role: "Lab Director",
-      group: "Molecular Biology",
+      firstName: "Emma",
+      lastName: "Wilson",
+      jobTitle: "Laboratory Director",
+      role: "Oversees lab operations and research direction",
+      labAssigned: "Molecular Biology",
+      communities: {
+        fws: false,
+        mesa: true,
+        umoja: false,
+        puente: false,
+        veteran: false,
+      },
+      email: "ewilson@example.edu",
+      telephone: "555-0101",
+      cwid: 1001,
     },
     {
-      name: "Dr. John Smith",
-      role: "Research Scientist",
-      group: "Molecular Biology",
+      firstName: "John",
+      lastName: "Smith",
+      jobTitle: "Research Scientist",
+      role: "Conducts molecular biology experiments",
+      labAssigned: "Molecular Biology",
+      communities: {
+        fws: true,
+        mesa: false,
+        umoja: false,
+        puente: false,
+        veteran: false,
+      },
+      email: "jsmith@example.edu",
+      telephone: "555-0102",
+      cwid: 1002,
     },
     {
-      name: "Dr. Sophia Patel",
-      role: "Postdoctoral Researcher",
-      group: "Genetics",
-    },
-    { name: "Dr. Michael Lee", role: "Lab Technician", group: "Genetics" },
-    {
-      name: "Dr. Emily Brown",
-      role: "Research Scientist",
-      group: "Neurobiology",
-    },
-    {
-      name: "Dr. David Jones",
-      role: "Postdoctoral Researcher",
-      group: "Neurobiology",
-    },
-    {
-      name: "Dr. Laura Garcia",
-      role: "Research Scientist",
-      group: "Bioinformatics",
+      firstName: "Sophia",
+      lastName: "Patel",
+      jobTitle: "Postdoctoral Researcher",
+      role: "Genetics research and data analysis",
+      labAssigned: "Genetics",
+      communities: {
+        fws: false,
+        mesa: false,
+        umoja: true,
+        puente: false,
+        veteran: false,
+      },
+      email: "spatel@example.edu",
+      telephone: "555-0103",
+      cwid: 1003,
     },
   ];
 
-  //Staff sorting algorithm by type of group
+  //Staff sorting algorithm by lab assignment
   const groupedStaff = staffData.reduce<Record<string, StaffMember[]>>(
     (acc, member) => {
-      if (!acc[member.group]) acc[member.group] = [];
-      acc[member.group].push(member);
+      if (!acc[member.labAssigned]) acc[member.labAssigned] = [];
+      acc[member.labAssigned].push(member);
       return acc;
     },
     {}
   );
+
+  // Helper function to format communities
+  const formatCommunities = (communities: StaffMember['communities']): string => {
+    const active = [];
+    if (communities.fws) active.push('FWS');
+    if (communities.mesa) active.push('Mesa');
+    if (communities.umoja) active.push('Umoja');
+    if (communities.puente) active.push('Puente');
+    if (communities.veteran) active.push('Veteran');
+    return active.length > 0 ? active.join(', ') : 'None';
+  };
 
   return (
     <div className="staff-table-container">
@@ -87,8 +131,13 @@ const StaffTable = () => {
         <thead>
           <tr className="staff-table-header">
             <th>Name</th>
+            <th>Job Title</th>
             <th>Role</th>
-            <th>Group</th>
+            <th>Lab</th>
+            <th>Communities</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>CWID</th>
           </tr>
         </thead>
 
@@ -98,19 +147,24 @@ const StaffTable = () => {
             // Otherwise, render grouped staff entries
             Object.entries(groupedStaff).map(([group, members]) => (
               <React.Fragment key={group}>
-                {/* Group name row */}
+                {/* Lab assignment row */}
                 <tr>
-                  <td colSpan={3} className="group-row">
+                  <td colSpan={8} className="group-row">
                     {group}
                   </td>
                 </tr>
 
-                {/* Each staff member in this group */}
+                {/* Each staff member in this lab */}
                 {members.map((member) => (
-                  <tr key={member.name} className="staff-row">
-                    <td>{member.name}</td>
+                  <tr key={member.cwid} className="staff-row">
+                    <td>{member.firstName} {member.lastName}</td>
+                    <td>{member.jobTitle}</td>
                     <td>{member.role}</td>
-                    <td>{member.group}</td>
+                    <td>{member.labAssigned}</td>
+                    <td>{formatCommunities(member.communities)}</td>
+                    <td>{member.email}</td>
+                    <td>{member.telephone}</td>
+                    <td>{member.cwid}</td>
                   </tr>
                 ))}
               </React.Fragment>
