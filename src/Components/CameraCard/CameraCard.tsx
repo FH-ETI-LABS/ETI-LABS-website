@@ -5,7 +5,7 @@
  * Displays a continuous video feed (no play/pause) with only a fullscreen control.
  */
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 import "./CameraCard.css";
 
 type CameraCardProps = {

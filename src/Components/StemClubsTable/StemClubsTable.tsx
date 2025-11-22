@@ -14,7 +14,7 @@
  * - Meeting Time
  */
 
-import React from "react";
+
 import "./StemClubsTable.css"; // Import the CSS file
 
 // Define the Club interface for TypeScript

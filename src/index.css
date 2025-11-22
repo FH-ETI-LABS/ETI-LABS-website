@@ -1,0 +1,96 @@
+/**
+ * Global Styles
+ * -------------
+ * Base styles for the entire application.
+ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background-color: #F5F7FA;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Prevent text selection on interactive elements */
+button,
+.nav-item,
+.header-icon {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid #c82c2c;
+  outline-offset: 2px;
+}
+
+/* Prevent image overflow */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Page placeholder styles */
+.page-placeholder {
+  width: 100%;
+  padding: 40px 0;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.page-placeholder .page-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 48px;
+  color: black;
+  letter-spacing: -0.96px;
+  line-height: normal;
+  margin: 0 0 20px 0;
+}
+
+.page-placeholder p {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* Dark mode for placeholders */
+.layout-container.dark-mode .page-placeholder .page-title {
+  color: white;
+}
+
+.layout-container.dark-mode .page-placeholder p {
+  color: rgba(255, 255, 255, 0.8);
+}

@@ -8,7 +8,7 @@ interface LoginFormProps {
   setLoginStatus: Function;
 }
 
-const LoginForm = ({ loginStatus, setLoginStatus }: LoginFormProps) => {
+const LoginForm = ({ setLoginStatus }: LoginFormProps) => {
   //use state for if nextbutton is clicked and what is in the username and password fields
   const [nextClicked, setNextClicked] = useState(false);
   const [usernameText, setUsernameText] = useState("");

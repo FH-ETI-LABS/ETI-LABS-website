@@ -1,6 +1,21 @@
-import type { Project } from "../../Pages/LabProjectsPage.tsx";
 import ProgressBar from "./ProgressBar.tsx";
 import "../../Pages/LabProjects.css";
+
+export interface Project {
+  name: string;
+  briefDescription: string;
+  lab: string;
+  principalInvestigator: string;
+  advisor: string;
+  completion: number;
+  estTime: string;
+  events: {
+    rsls: boolean;
+    berkeleySymposium: boolean;
+    googleCaseComp: boolean;
+    foothillInnovationChallenge: boolean;
+  };
+}
 
 /**
  * @interface Props

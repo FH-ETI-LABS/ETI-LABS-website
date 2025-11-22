@@ -1,26 +1,59 @@
-import HomePage from "./Pages/HomePage";
-import LabProjectsPage from "./Pages/LabProjectsPage";
-import StemClubsPage from "./Pages/StemClubsPage";
-import StaffTable from "./Pages/LabStaffPage";
-import CameraPage from "./Pages/CameraPage.tsx";
-import LabMetricsPage from "./Pages/LabMetricsPage";
-import LabEquipmentPage from "./Pages/LabEquipmentPage";
-import LabSignupsPage from "./Pages/LabSignupsPage";
+/**
+ * App Component
+ * -------------
+ * Main application component with page routing.
+ */
+
+import { useState } from "react";
+import DashboardPage from "./Pages/DashboardPage";
+import StaffPage from "./Pages/StaffPage";
+import ClubsPage from "./Pages/ClubsPage";
+import { DarkModeProvider } from "./contexts/DarkModeContext";
+import { UserProvider } from "./contexts/UserContext";
+import "./Pages/DashboardPage.css";
 
 function App() {
+  const [currentPage, setCurrentPage] = useState<string>("dashboard");
+
+  const handleNavigation = (page: string) => {
+    setCurrentPage(page);
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case "dashboard":
+        return <DashboardPage onNavigate={handleNavigation} />;
+      case "staff":
+        return <StaffPage onNavigate={handleNavigation} />;
+      case "clubs":
+        return <ClubsPage onNavigate={handleNavigation} />;
+      case "laboratory":
+        return (
+          <div style={{ padding: "40px", textAlign: "center" }}>
+            <h1>Laboratory Page</h1>
+            <p>Coming soon...</p>
+            <button onClick={() => handleNavigation("dashboard")}>Back to Dashboard</button>
+          </div>
+        );
+      case "search":
+        return (
+          <div style={{ padding: "40px", textAlign: "center" }}>
+            <h1>Search Page</h1>
+            <p>Coming soon...</p>
+            <button onClick={() => handleNavigation("dashboard")}>Back to Dashboard</button>
+          </div>
+        );
+      default:
+        return <DashboardPage onNavigate={handleNavigation} />;
+    }
+  };
+
   return (
-    <div>
-      {/* Display the new Lab Metrics Dashboard */}
-      <LabMetricsPage />
-      
-      {/* Uncomment any of these to see other pages: */}
-      {/* <StaffTable /> */}
-      {/* <StemClubsPage /> */}
-      {/* <LabProjectsPage /> */}
-      {/* <LabEquipmentPage /> */}
-      {/* <LabSignupsPage /> */}
-      {/* <CameraPage /> */}
-    </div>
+    <DarkModeProvider>
+      <UserProvider>
+        {renderPage()}
+      </UserProvider>
+    </DarkModeProvider>
   );
 }
 

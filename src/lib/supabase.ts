@@ -39,6 +39,7 @@ export const TABLES = {
   LAB_PROJECTS: 'lab_projects',
   LAB_EQUIPMENT: 'lab_equipment',
   LAB_SIGNUPS: 'lab_signups',
+  ANNOUNCEMENTS: 'announcements',
 } as const;
 
 /**
@@ -120,6 +121,15 @@ export interface LabSignupRow {
   cwid: number;
   date: string;
   created_at?: string;
+}
+
+// Announcements table type
+export interface AnnouncementRow {
+  id: number;
+  content: string;
+  user_id?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export default supabase;

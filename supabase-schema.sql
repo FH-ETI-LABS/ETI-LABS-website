@@ -112,6 +112,20 @@ CREATE INDEX IF NOT EXISTS idx_lab_signups_cwid ON lab_signups(cwid);
 CREATE INDEX IF NOT EXISTS idx_lab_signups_lab ON lab_signups(lab);
 
 -- ============================================
+-- ANNOUNCEMENTS TABLE
+-- ============================================
+CREATE TABLE IF NOT EXISTS announcements (
+    id BIGSERIAL PRIMARY KEY,
+    content TEXT NOT NULL,
+    user_id UUID REFERENCES auth.users(id),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+-- Add index on created_at for efficient ordering
+CREATE INDEX IF NOT EXISTS idx_announcements_created_at ON announcements(created_at DESC);
+
+-- ============================================
 -- ROW LEVEL SECURITY (RLS)
 -- ============================================
 -- Enable RLS on all tables for security
@@ -121,6 +135,7 @@ ALTER TABLE stem_clubs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE lab_projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE lab_equipment ENABLE ROW LEVEL SECURITY;
 ALTER TABLE lab_signups ENABLE ROW LEVEL SECURITY;
+ALTER TABLE announcements ENABLE ROW LEVEL SECURITY;
 
 -- ============================================
 -- RLS POLICIES
@@ -175,6 +190,16 @@ CREATE POLICY "Allow read access to lab_signups" ON lab_signups
 CREATE POLICY "Allow insert access to lab_signups" ON lab_signups
     FOR INSERT WITH CHECK (true);
 
+-- Announcements table policies
+CREATE POLICY "Allow read access to announcements" ON announcements
+    FOR SELECT USING (true);
+
+CREATE POLICY "Allow insert access to announcements" ON announcements
+    FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+
+CREATE POLICY "Allow delete access to announcements" ON announcements
+    FOR DELETE USING (auth.role() = 'authenticated');
+
 -- ============================================
 -- TRIGGERS FOR UPDATED_AT
 -- ============================================
@@ -198,6 +223,9 @@ CREATE TRIGGER update_lab_projects_updated_at BEFORE UPDATE ON lab_projects
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_lab_equipment_updated_at BEFORE UPDATE ON lab_equipment
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_announcements_updated_at BEFORE UPDATE ON announcements
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- ============================================
