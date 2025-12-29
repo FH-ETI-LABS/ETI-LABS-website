@@ -1,111 +1,87 @@
-/* Overall page layout */
 .login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f5f5f5;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Card */
-.login-card {
-  background-color: #ffffff;
-  border-radius: 10px;
-  padding: 40px 32px;
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  height: 100%;
 }
 
-/* Header / Logo */
-.login-header {
-  margin-bottom: 24px;
+/* LEFT CARD */
+.login-card {
+  background: white;
+  border-radius: 18px;
+  padding: 40px;
+  min-height: 480px;      /* MATCH RIGHT */
+  height: 100%;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
+/* TITLE */
 .login-logo {
-  color: #8b0000; /* Dark red */
-  font-size: 2rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-  margin: 0;
-}
-
-/* Title */
-.login-title {
+  font-size: 1.6rem;
+  font-weight: 700;
   margin-bottom: 24px;
-  font-size: 1.25rem;
-  color: #333333;
+  color: #111;
 }
 
-/* Form */
+/* INPUTS */
 .form-group {
-  text-align: left;
-  margin-bottom: 16px;
-}
-
-.form-label {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #444444;
-  margin-bottom: 6px;
+  margin-bottom: 14px;
 }
 
 .form-input {
   width: 100%;
-  box-sizing: border-box;
-  padding: 12px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  transition: border 0.2s, box-shadow 0.2s;
+  padding: 14px 18px;
+  font-size: 0.95rem;
+  border-radius: 999px;
+  border: none;
+  background: #f0f0f0;
 }
 
-.form-input:focus {
-  border-color: #8b0000;
-  box-shadow: 0 0 4px rgba(139, 0, 0, 0.4);
-  outline: none;
+.form-input::placeholder {
+  color: #999;
 }
 
-/* Button */
+/* HELP LINK */
+.help-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #b00000;
+  text-decoration: none;
+}
+
+/* BUTTON */
 .login-button {
   width: 100%;
-  background-color: #8b0000;
-  color: #ffffff;
+  margin-top: 18px;
+  padding: 12px 0;
+  border-radius: 999px;
   border: none;
-  padding: 10px 0;
-  border-radius: 6px;
+  background: #8b0000;
+  color: white;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+  letter-spacing: 0.6px;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
 
 .login-button:hover {
-  background-color: #a00000;
+  background: #a00000;
 }
 
-/* Links */
+/* DIVIDER */
+.divider {
+  margin: 18px 0;
+  height: 1px;
+  background: #ddd;
+}
+
+/* FOOTER */
 .login-links {
-  margin-top: 20px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  color: #333;
 }
 
-.help-link,
-.signup-link {
-  color: #8b0000;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.help-link:hover,
-.signup-link:hover {
-  text-decoration: underline;
-}
-
-.signup-text {
-  margin-top: 10px;
-  color: #333333;
+.section-title {
+  font-weight: 700;
+  margin-bottom: 4px;
 }

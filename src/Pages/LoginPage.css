@@ -1,0 +1,96 @@
+/* Page fills viewport */
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  background: #f3f3f3;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Top-right icons */
+.login-icons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+
+/* MAIN CONTENT WRAPPER */
+.login-container-main {
+  width: 1400px;          /* matches reference width */
+  max-width: 94vw;
+}
+
+/* TITLE */
+.login-title {
+  text-align: center;
+  color: #8b0000;
+  font-size: 44px;        /* smaller than before */
+  font-weight: 700;
+  margin-bottom: 56px;
+  letter-spacing: 1px;
+}
+
+/* TWO COLUMNS */
+.login-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;              /* tighter like screenshot */
+  align-items: stretch;
+}
+
+/* LEFT */
+.login-left {
+  display: flex;
+}
+
+/* RIGHT PANEL */
+.login-right {
+  background: white;
+  padding: 40px;
+  border-radius: 18px;
+
+  min-height: 480px;      /* NOT huge */
+  height: 100%;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.login-right h2 {
+  margin-top: 0;
+  font-size: 22px;
+}
+
+.login-right h3 {
+  margin-top: 24px;
+  font-size: 18px;
+}
+
+.login-right p,
+.login-right li {
+  font-size: 0.95rem;
+  line-height: 1.45;      /* denser text */
+}
+
+.login-right ul {
+  padding-left: 18px;
+}
+
+.login-right a {
+  color: #b00000;
+  text-decoration: none;
+}

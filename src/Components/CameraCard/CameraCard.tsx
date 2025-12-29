@@ -69,10 +69,10 @@ const CameraCard = ({ id, title, src, poster }: CameraCardProps) => {
       <div className="camera-title">{title}</div>
 
       <div
-        className="camera-controls"
-        role="toolbar"
-        aria-label={`${title} controls`}
-      >
+  className="camera-controls"
+  role="toolbar"
+  aria-label={`${title} controls`}
+>
         <button className="control-btn" onClick={handleFullScreen}>
           ⤢ Fullscreen
         </button>

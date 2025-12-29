@@ -1,89 +1,85 @@
-import "./LoginForm.css";
-import logo from "../../assets/images/ETILOGO.png";
 import { useState } from "react";
+import "./LoginForm.css";
 
-//Login Form
-interface LoginFormProps {
-  loginStatus: boolean;
-  setLoginStatus: Function;
-}
+const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-const LoginForm = ({ setLoginStatus }: LoginFormProps) => {
-  //use state for if nextbutton is clicked and what is in the username and password fields
-  const [nextClicked, setNextClicked] = useState(false);
-  const [usernameText, setUsernameText] = useState("");
-  const [passwordText, setPasswordText] = useState("");
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Login clicked", { email, password });
+  };
 
-  return (
-    <div className="login-container">
-      <div className="login-card">
-        {/* Logo / Header */}
-        <div className="login-header">
-          <img src={logo} />
-        </div>
+return (
+  <div className="login-container">
+    <div className="login-card">
+      <h2 className="login-logo">Sign In</h2>
 
-        {/* Title */}
-        <h2 className="login-title">Sign in</h2>
-
-        {/* Username Field: tracks text entered */}
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username" className="form-label">
-            Username
-          </label>
           <input
-            id="username"
-            type="text"
             className="form-input"
-            onChange={(e) => setUsernameText(e.target.value)}
+            type="text"
+            placeholder="Username..."
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
-        {/*Password Field*/}
+        <div className="form-group">
+          <input
+            className="form-input"
+            type="password"
+            placeholder="Password..."
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
-        {nextClicked && (
-          <div className="form-group">
-            <label htmlFor="Password" className="form-label">
-              Password
-            </label>
-            <input
-              id="password"
-              type="text"
-              className="form-input"
-              onChange={(e) => setPasswordText(e.target.value)}
-            />
-          </div>
-        )}
-
-        {/* Next Button/show password field */}
-        <button
-          className="login-button"
-          onClick={() => {
-            if (usernameText == "Admin") {
-              setNextClicked(true);
-            }
-            if (passwordText == "123") {
-              setLoginStatus(true);
-            }
+        <a
+          href="#"
+          className="help-link"
+          onClick={(e) => {
+            e.preventDefault();
+            alert("Contact ETI at eti@fhda.edu");
           }}
         >
+          Need help signing in?
+        </a>
+
+        <button className="login-button" type="submit">
           NEXT
         </button>
+      </form>
 
-        {/* Links */}
-        <div className="login-links">
-          <a href="#" className="help-link">
-            Need help signing in?
-          </a>
-          <div className="signup-text">
-            New to ETI?{" "}
-            <a href="#" className="signup-link">
-              Create Account
-            </a>
-          </div>
-        </div>
+      <div className="divider" />
+
+      <div className="login-links">
+        <div className="section-title">New to ETI?</div>
+        <a
+          href="#"
+          className="help-link"
+          onClick={(e) => {
+            e.preventDefault();
+            alert("Create Account coming soon");
+          }}
+        >
+          Create Account
+        </a>
+      </div>
+
+      <div className="divider" />
+
+      <div className="login-links">
+        <div className="section-title">Contact Us</div>
+        <div>Email us at eti@fhda.edu</div>
+        <div>Call 650.949.7236</div>
+        <div>Visit the STEM Division Office 4118</div>
       </div>
     </div>
-  );
-};
+  </div>
+);
+}
+
 
 export default LoginForm;
