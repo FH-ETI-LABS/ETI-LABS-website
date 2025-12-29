@@ -6,8 +6,6 @@ type LoginFormProps = {
 };
 
 const LoginForm = ({ onNavigate }: LoginFormProps) => {
-    console.log("LoginForm rendered, onNavigate =", onNavigate);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -42,16 +40,14 @@ const LoginForm = ({ onNavigate }: LoginFormProps) => {
             />
           </div>
 
-          <a
-            href="#"
+          {/* Password reset */}
+          <button
+            type="button"
             className="help-link"
-            onClick={(e) => {
-              e.preventDefault();
-              alert("Contact ETI at eti@fhda.edu");
-            }}
+            onClick={() => onNavigate("password-reset")}
           >
             Need help signing in?
-          </a>
+          </button>
 
           <button className="login-button" type="submit">
             NEXT
@@ -62,18 +58,13 @@ const LoginForm = ({ onNavigate }: LoginFormProps) => {
 
         <div className="login-links">
           <div className="section-title">New to ETI?</div>
-          <a
-            href="#"
+          <button
+            type="button"
             className="help-link"
-            onClick={(e) => {
-  e.preventDefault();
-  console.log("Create Account clicked");
-  onNavigate("create-account");
-}}
-
+            onClick={() => onNavigate("create-account")}
           >
             Create Account
-          </a>
+          </button>
         </div>
 
         <div className="divider" />
