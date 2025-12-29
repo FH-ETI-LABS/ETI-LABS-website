@@ -11,12 +11,14 @@
 }
 
 /* Top-right icons */
+/* Icons in top-right of PAGE */
 .login-icons {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  position: fixed;          /* 🔥 FIX */
+  top: 24px;
+  right: 24px;
   display: flex;
   gap: 10px;
+  z-index: 9999;            /* 🔥 FIX */
 }
 
 .icon-btn {
@@ -27,6 +29,8 @@
   background: white;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   cursor: pointer;
+  pointer-events: auto;     /* 🔥 ENSURE clicks */
+
 }
 
 /* MAIN CONTENT WRAPPER */
@@ -93,4 +97,61 @@
 .login-right a {
   color: #b00000;
   text-decoration: none;
+}
+
+/* ========================= */
+/* DARK MODE STYLES */
+/* ========================= */
+
+.login-page.dark-mode {
+  background: #0b0b0b;
+}
+
+/* Title */
+.login-page.dark-mode .login-title {
+  color: #8b0000;
+}
+
+/* BOTH CARDS */
+.login-page.dark-mode .login-card,
+.login-page.dark-mode .login-right {
+  background: #141414;              /* dark but not black */
+  box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+}
+
+/* Card text */
+.login-page.dark-mode .login-card,
+.login-page.dark-mode .login-right,
+.login-page.dark-mode .login-right p,
+.login-page.dark-mode .login-right li,
+.login-page.dark-mode .login-right div {
+  color: #eaeaea;
+}
+
+/* Headings inside cards */
+.login-page.dark-mode h2,
+.login-page.dark-mode h3,
+.login-page.dark-mode .section-title {
+  color: #ffffff;
+}
+
+/* Inputs */
+.login-page.dark-mode .form-input {
+  background: #222;
+  color: #ffffff;
+}
+
+.login-page.dark-mode .form-input::placeholder {
+  color: #aaaaaa;
+}
+
+/* Dividers */
+.login-page.dark-mode .divider {
+  background: #333;
+}
+
+/* Links */
+.login-page.dark-mode .help-link,
+.login-page.dark-mode a {
+  color: #ff6b6b;
 }
