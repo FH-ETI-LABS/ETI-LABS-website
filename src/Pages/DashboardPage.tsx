@@ -106,6 +106,9 @@ interface DashboardPageProps {
 }
 
 const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
+  
+  const [labOpen, setLabOpen] = useState(false);
+
   const [announcementText, setAnnouncementText] = useState("");
   const [announcements, setAnnouncements] = useState<AnnouncementRow[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -356,11 +359,27 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
               <span className="nav-text">Clubs</span>
             </div>
 
-            <div className="nav-item expandable" onClick={() => handleNavigation("laboratory")}>
-              <CpuIcon />
+<div
+  className="nav-item expandable"
+  onClick={() => setLabOpen(prev => !prev)}
+>              <CpuIcon />
               <span className="nav-text">Laboratory</span>
               <ChevronIcon />
             </div>
+{labOpen && (
+  <div className="nav-submenu">
+    <div
+      className="nav-subitem"
+      onClick={() => handleNavigation("projects")}
+    >
+      Projects
+    </div>
+
+    <div className="nav-subitem disabled">Equipment</div>
+    <div className="nav-subitem disabled">Activity</div>
+    <div className="nav-subitem disabled">Metrics</div>
+  </div>
+)}
 
             <div className="nav-item" onClick={() => handleNavigation("search")}>
               <SearchIcon />

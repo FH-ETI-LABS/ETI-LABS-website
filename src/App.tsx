@@ -1,16 +1,27 @@
 import { useState } from "react";
+
 import LoginPage from "./Pages/LoginPage";
+import DashboardPage from "./Pages/DashboardPage";
+import StaffPage from "./Pages/StaffPage";
+import ClubsPage from "./Pages/ClubsPage";
+
+import ProjectsPage from "./Pages/ProjectsPage";
 import CreateAccountPage from "./Pages/CreateAccountPage";
 import PasswordResetPage from "./Pages/PasswordResetPage";
-import ProjectsPage from "./Pages/ProjectsPage";
-import DashboardPage from "./Pages/DashboardPage";
 
 function App() {
-  const [currentPage, setCurrentPage] = useState("projects");
+  const [currentPage, setCurrentPage] = useState("projects"); 
+  // 👆 start on dashboard for dev (change back later)
 
   switch (currentPage) {
     case "dashboard":
       return <DashboardPage onNavigate={setCurrentPage} />;
+
+    case "staff":
+      return <StaffPage onNavigate={setCurrentPage} />;
+
+    case "clubs":
+      return <ClubsPage onNavigate={setCurrentPage} />;
 
     case "projects":
       return <ProjectsPage onNavigate={setCurrentPage} />;
