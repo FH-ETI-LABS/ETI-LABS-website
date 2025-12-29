@@ -2,27 +2,23 @@ import { useState } from "react";
 import LoginForm from "../Components/LoginForm/LoginForm";
 import "./LoginPage.css";
 
-const LoginPage = () => {
+type LoginPageProps = {
+  onNavigate: (page: string) => void;
+};
+
+const LoginPage = ({ onNavigate }: LoginPageProps) => {
   const [darkMode, setDarkMode] = useState(false);
 
   return (
-   <div className={`login-page ${darkMode ? "dark-mode" : ""}`}>
-
-
-      
+    <div className={`login-page ${darkMode ? "dark-mode" : ""}`}>
       {/* Top-right icons */}
       <div className="login-icons">
         <button
-  className="icon-btn"
-  onClick={() => {
-    setDarkMode(prev => {
-      console.log("darkMode ->", !prev);
-      return !prev;
-    });
-  }}
->
-  🌙
-</button>
+          className="icon-btn"
+          onClick={() => setDarkMode((prev) => !prev)}
+        >
+          {darkMode ? "☀️" : "🌙"}
+        </button>
         <button className="icon-btn">?</button>
       </div>
 
@@ -32,7 +28,7 @@ const LoginPage = () => {
 
         <div className="login-content">
           <div className="login-left">
-            <LoginForm />
+            <LoginForm onNavigate={onNavigate} />
           </div>
 
           <div className="login-right">

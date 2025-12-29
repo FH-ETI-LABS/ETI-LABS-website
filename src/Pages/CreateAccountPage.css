@@ -1,0 +1,109 @@
+/* Page */
+.create-page {
+  width: 100vw;
+  height: 100vh;
+  background: #bdbdbd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Icons */
+.create-icons {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Container */
+.create-container {
+  width: 600px;
+  max-width: 90%;
+  text-align: center;
+}
+
+/* Title */
+.create-title {
+  color: #8b0000;
+  font-size: 36px;
+  margin-bottom: 32px;
+}
+
+/* Card */
+.create-card {
+  background: white;
+  border-radius: 18px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  text-align: left;
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 999px;
+  border: none;
+  background: #f0f0f0;
+}
+
+/* Divider */
+.divider {
+  margin: 24px 0;
+  height: 1px;
+  background: #ddd;
+}
+
+/* Help */
+.help-section {
+  font-size: 0.85rem;
+}
+
+.contact {
+  margin-top: 8px;
+}
+
+/* ================= */
+/* DARK MODE */
+/* ================= */
+
+.create-page.dark-mode {
+  background: #0b0b0b;
+}
+
+.create-page.dark-mode .create-title {
+  color: #8b0000;
+}
+
+.create-page.dark-mode .create-card {
+  background: #141414;
+  color: #eaeaea;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+}
+
+.create-page.dark-mode .form-input {
+  background: #222;
+  color: white;
+}
+
+.create-page.dark-mode .form-input::placeholder {
+  color: #aaa;
+}
+
+.create-page.dark-mode .divider {
+  background: #333;
+}
