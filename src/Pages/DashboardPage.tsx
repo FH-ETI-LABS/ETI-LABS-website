@@ -43,7 +43,12 @@ interface DashboardPageProps {
   onNavigate?: (page: string) => void;
 }
 
-type DashboardView = "dashboard" | "projects" | "equipment" | "activity";
+type DashboardView =
+  | "dashboard"
+  | "projects"
+  | "equipment"
+  | "activity"
+  | "metrics";
 
 /* ================= COMPONENT ================= */
 
@@ -169,8 +174,12 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
 >
   Activity
 </div>
-                <div className="nav-subitem disabled">Metrics</div>
-              </div>
+<div
+  className={`nav-subitem ${activeView === "metrics" ? "active" : ""}`}
+  onClick={() => setActiveView("metrics")}
+>
+  Metrics
+</div>              </div>
             )}
 
             <div className="nav-item">
@@ -384,6 +393,66 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
     </div>
   </>
 )}
+{activeView === "metrics" && (
+  <>
+    <h1 className="page-title">Metrics</h1>
+
+    <div className="quick-access-grid">
+      {/* NUMBERS */}
+      <div className="content-card">
+        <h2 className="section-title">Numbers</h2>
+        <p>Active Clubs: <strong>12345</strong></p>
+        <p>Open Laboratories: <strong>12345</strong></p>
+        <p>Equipment: <strong>12345</strong></p>
+        <p>Students Subscribed to Newsletter: <strong>12345</strong></p>
+      </div>
+
+      {/* PARTICULARS */}
+      <div className="content-card">
+        <h2 className="section-title">Particulars</h2>
+
+        <p><strong>12345</strong> Total Staff</p>
+        <p>20% in <strong>MESA</strong></p>
+
+        <hr style={{ margin: "16px 0" }} />
+
+        <p>Lab: <strong>12345</strong></p>
+        <p>Visits this Quarter: <strong>12345</strong></p>
+      </div>
+
+      {/* PROJECTS & INNOVATION */}
+      <div className="content-card">
+        <h2 className="section-title">Projects & Innovation</h2>
+
+        <p>Active Projects: <strong>12345</strong></p>
+        <p>Completed Projects: <strong>12345</strong></p>
+
+        <ul className="events-list">
+          <li>5 projects in Google Case Competition</li>
+          <li>2 projects in Foothill Innovation Challenge</li>
+          <li>7 projects in Berkeley Symposium</li>
+          <li>2 projects in RSLS</li>
+          <li>4 projects in None</li>
+        </ul>
+
+        <hr style={{ margin: "16px 0" }} />
+
+        <p>Awards / Honors: <strong>12345</strong></p>
+
+        <div className="content-card" style={{ marginTop: 12 }}>
+          <strong>Award / Honor Name</strong>
+          <p style={{ marginTop: 8 }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </p>
+          <p style={{ fontSize: 12, opacity: 0.7 }}>
+            Joe Shmoe, John Doe, Harry Potter · 2022
+          </p>
+        </div>
+      </div>
+    </div>
+  </>
+)}
+
 
         </main>
       </div>
