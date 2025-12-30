@@ -126,8 +126,12 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
         {/* SIDEBAR */}
         <aside className="sidebar">
           <div className="user-profile-section">
-  <div className="user-avatar">A</div>
-
+<div className="user-avatar-wrapper">
+  <div className="user-avatar">
+    A
+    <button className="avatar-edit-btn">Edit</button>
+  </div>
+</div>
   <div className="user-greeting">Hello, Admin!</div>
 
   <button
