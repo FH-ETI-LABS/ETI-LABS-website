@@ -123,9 +123,18 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
         {/* SIDEBAR */}
         <aside className="sidebar">
           <div className="user-profile-section">
-            <div className="user-avatar">A</div>
-            <div className="user-greeting">Hello, Admin!</div>
-          </div>
+  <div className="user-avatar">A</div>
+
+  <div className="user-greeting">Hello, Admin!</div>
+
+  <button
+    className="logout-button"
+    onClick={() => onNavigate?.("login")}
+  >
+    ⎋ Logout
+  </button>
+</div>
+
 
           <nav className="nav-menu">
             <div
