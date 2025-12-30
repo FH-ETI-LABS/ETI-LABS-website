@@ -45,11 +45,14 @@ interface DashboardPageProps {
 
 type DashboardView =
   | "dashboard"
+  | "staff"
+  | "clubs"
   | "projects"
   | "equipment"
   | "activity"
   | "metrics"
   | "search";
+
 
 
 /* ================= COMPONENT ================= */
@@ -144,13 +147,21 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
               <HomeIcon /> Dashboard
             </div>
 
-            <div className="nav-item" onClick={() => onNavigate?.("staff")}>
-              <UsersIcon /> Staff
-            </div>
+           <div
+  className={`nav-item ${activeView === "staff" ? "active" : ""}`}
+  onClick={() => setActiveView("staff")}
+>
+  <UsersIcon /> Staff
+</div>
 
-            <div className="nav-item" onClick={() => onNavigate?.("clubs")}>
-              <HexagonIcon /> Clubs
-            </div>
+
+            <div
+  className={`nav-item ${activeView === "clubs" ? "active" : ""}`}
+  onClick={() => setActiveView("clubs")}
+>
+  <HexagonIcon /> Clubs
+</div>
+
 
             <div
               className="nav-item expandable"
@@ -506,6 +517,49 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
     </div>
   </>
 )}
+{activeView === "clubs" && (
+  <>
+    <h1 className="page-title">Clubs</h1>
+
+    <div className="quick-access-grid">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className="content-card">
+          <strong>Club Name</strong>
+          <p>President: Joe Shmoe</p>
+          <p>Advisor: John Doe</p>
+
+          <ul className="events-list">
+            <li>www.discord.com</li>
+            <li>Friday 5–6 PM</li>
+            <li>Building 123</li>
+          </ul>
+        </div>
+      ))}
+    </div>
+  </>
+)}
+
+{activeView === "staff" && (
+  <>
+    <h1 className="page-title">Staff</h1>
+
+    <div className="content-card">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="announcement-item">
+          <div className="announcement-content">
+            <p className="announcement-text">
+              <strong>John Doe Smith</strong>
+            </p>
+            <p className="announcement-date">
+              Lab 1 · example@gmail.com · (123) 456-7890
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </>
+)}
+
 
         </main>
       </div>
