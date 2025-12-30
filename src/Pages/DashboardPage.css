@@ -21,14 +21,14 @@
 /* Dark Mode Variables */
 .dark-mode {
   --primary-dark: #FFFFFF;
-  --sidebar-bg: #0A0A0A;
-  --text-primary: #FFFFFF;
-  --text-secondary: #D0D0D0;
+  --sidebar-bg: #0B0B0C;
+  --text-primary: #F5F5F5;      /* main readable text */
+  --text-secondary: #B8BCC4;    /* softer but still readable */
   --border-color: #1F2228;
-  --card-bg: #121212;
+  --card-bg: #141414;
   --hover-bg: #1E1E1E;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.7);
 }
 
 /* Reset and Base Styles */
@@ -660,4 +660,82 @@ body {
 
 .announcement-item {
   animation: slideIn 0.3s ease;
+}
+
+/* ================= DARK MODE READABILITY FIX ================= */
+
+/* Stronger base background separation */
+.dark-mode .main-content {
+  background-color: #0A0A0A;
+}
+
+/* Ensure all cards pop from background */
+.dark-mode .content-card {
+  background-color: var(--card-bg);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04),
+    0 10px 24px rgba(0,0,0,0.9);
+}
+
+/* Headings MUST be bright */
+.dark-mode .page-title,
+.dark-mode .section-title,
+.dark-mode .content-card h2,
+.dark-mode .content-card h3,
+.dark-mode .content-card strong {
+  color: var(--text-primary);
+}
+
+/* Body text readable but softer */
+.dark-mode .content-card p,
+.dark-mode .announcement-text,
+.dark-mode .events-list li,
+.dark-mode .activity-table tbody td {
+  color: var(--text-secondary);
+}
+
+/* Table headers slightly brighter */
+.dark-mode .activity-table thead th {
+  color: #E0E0E0;
+}
+
+/* Sidebar text clarity */
+.dark-mode .nav-item {
+  color: #C9CDD3;
+}
+
+.dark-mode .nav-item:hover {
+  color: var(--text-primary);
+}
+
+/* Active sidebar item stays bold */
+.dark-mode .nav-item.active {
+  background-color: var(--primary-red);
+  color: #FFFFFF;
+}
+
+/* Announcement input clarity */
+.dark-mode .announcement-input {
+  color: var(--text-primary);
+}
+
+.dark-mode .announcement-input::placeholder {
+  color: #9AA0A6;
+}
+
+/* Quick access cards contrast */
+.dark-mode .quick-card {
+  background-color: #1A1A1A;
+}
+
+/* Camera placeholder visibility */
+.dark-mode .camera-placeholder {
+  background-color: #111;
+  border-color: #2A2A2A;
+}
+
+/* Subtle hover polish */
+.dark-mode .nav-item:hover,
+.dark-mode .icon-button:hover {
+  background-color: #1E1E1E;
 }

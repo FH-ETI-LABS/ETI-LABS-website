@@ -4,13 +4,11 @@ import LoginPage from "./Pages/LoginPage";
 import DashboardPage from "./Pages/DashboardPage";
 import StaffPage from "./Pages/StaffPage";
 import ClubsPage from "./Pages/ClubsPage";
-
-import ProjectsPage from "./Pages/ProjectsPage";
 import CreateAccountPage from "./Pages/CreateAccountPage";
 import PasswordResetPage from "./Pages/PasswordResetPage";
 
 function App() {
-  const [currentPage, setCurrentPage] = useState("projects"); 
+  const [currentPage, setCurrentPage] = useState("dashboard"); 
   // 👆 start on dashboard for dev (change back later)
 
   switch (currentPage) {
@@ -22,9 +20,6 @@ function App() {
 
     case "clubs":
       return <ClubsPage onNavigate={setCurrentPage} />;
-
-    case "projects":
-      return <ProjectsPage onNavigate={setCurrentPage} />;
 
     case "create-account":
       return <CreateAccountPage onNavigate={setCurrentPage} />;
