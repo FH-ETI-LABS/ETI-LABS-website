@@ -43,7 +43,7 @@ interface DashboardPageProps {
   onNavigate?: (page: string) => void;
 }
 
-type DashboardView = "dashboard" | "projects" | "equipment";
+type DashboardView = "dashboard" | "projects" | "equipment" | "activity";
 
 /* ================= COMPONENT ================= */
 
@@ -163,7 +163,12 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
                   Equipment
                 </div>
 
-                <div className="nav-subitem disabled">Activity</div>
+<div
+  className={`nav-subitem ${activeView === "activity" ? "active" : ""}`}
+  onClick={() => setActiveView("activity")}
+>
+  Activity
+</div>
                 <div className="nav-subitem disabled">Metrics</div>
               </div>
             )}
@@ -318,6 +323,68 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
               </div>
             </>
           )}
+          {activeView === "activity" && (
+  <>
+    <h1 className="page-title">Activity</h1>
+
+    {/* SEARCH + FILTER BAR */}
+    <div className="content-card">
+      <div
+        style={{
+          display: "flex",
+          gap: "12px",
+          alignItems: "center",
+          marginBottom: "16px",
+        }}
+      >
+        <input
+          placeholder="Search Name..."
+          style={{
+            flex: 1,
+            padding: "10px 14px",
+            borderRadius: "8px",
+            border: "1px solid var(--border-color)",
+            background: "var(--hover-bg)",
+            color: "var(--text-primary)",
+          }}
+        />
+
+        <button className="icon-button">Filter Date</button>
+        <button className="icon-button">Filter Lab</button>
+      </div>
+
+      {/* ACTIVITY TABLE */}
+      <div className="lab-table-container">
+        <table className="activity-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>CWID</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th>Date</th>
+              <th>Lab</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {Array.from({ length: 10 }).map((_, i) => (
+              <tr key={i}>
+                <td>Firstname Lastname</td>
+                <td>12345678</td>
+                <td>5:00 PM</td>
+                <td>6:00 PM</td>
+                <td>11/15/2025</td>
+                <td>Lab 12345</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </>
+)}
+
         </main>
       </div>
     </div>
