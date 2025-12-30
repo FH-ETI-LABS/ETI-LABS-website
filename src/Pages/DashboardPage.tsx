@@ -48,7 +48,9 @@ type DashboardView =
   | "projects"
   | "equipment"
   | "activity"
-  | "metrics";
+  | "metrics"
+  | "search";
+
 
 /* ================= COMPONENT ================= */
 
@@ -182,9 +184,13 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
 </div>              </div>
             )}
 
-            <div className="nav-item">
-              <SearchIcon /> Search
-            </div>
+            <div
+  className={`nav-item ${activeView === "search" ? "active" : ""}`}
+  onClick={() => setActiveView("search")}
+>
+  <SearchIcon /> Search
+</div>
+
           </nav>
         </aside>
 
@@ -453,6 +459,44 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
   </>
 )}
 
+{activeView === "search" && (
+  <>
+    <h1 className="page-title">Search</h1>
+
+    {/* SEARCH BAR */}
+    <div className="content-card">
+      <div
+        className="announcement-input-container"
+        style={{ marginBottom: 0 }}
+      >
+        <SearchIcon />
+        <input
+          className="announcement-input"
+          placeholder="Search..."
+        />
+      </div>
+    </div>
+
+    {/* SEARCH RESULTS */}
+    <div className="content-card">
+      <div className="announcements-list">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="announcement-item">
+            <div className="announcement-content" style={{ paddingLeft: 0 }}>
+              <p className="announcement-text">
+                <strong>Site Page</strong>
+              </p>
+              <p className="announcement-date">
+                Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong>
+                Vestibulum auctor tincidunt ligula consequat fermentum.
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </>
+)}
 
         </main>
       </div>
