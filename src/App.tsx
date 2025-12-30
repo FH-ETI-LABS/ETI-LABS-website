@@ -26,7 +26,6 @@ function App() {
 
     case "password-reset":
       return <PasswordResetPage onNavigate={setCurrentPage} />;
-
     default:
       return <LoginPage onNavigate={setCurrentPage} />;
   }

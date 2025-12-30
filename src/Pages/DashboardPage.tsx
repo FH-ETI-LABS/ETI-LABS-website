@@ -1,15 +1,16 @@
 /**
  * DashboardPage Component
  * -----------------------
- * Main dashboard shell with internal view switching
- * CSS-aligned structure (DO NOT SIMPLIFY)
+ * Global dashboard layout with internal view switching
+ * Header, sidebar, and dark mode persist across views
  */
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./DashboardPage.css";
 import { useDarkMode } from "../contexts/DarkModeContext";
 import { supabase, TABLES } from "../lib/supabase";
 import type { AnnouncementRow } from "../lib/supabase";
+
 import FoothillLogo from "../assets/images/Foothill_College_logo.svg.png";
 import ETILogo from "../assets/images/ETILOGO.png";
 
@@ -21,6 +22,9 @@ const HexagonIcon = () => <span>⬡</span>;
 const CpuIcon = () => <span>🧪</span>;
 const SearchIcon = () => <span>🔍</span>;
 const ChevronIcon = () => <span>▾</span>;
+const HelpIcon = () => <span>?</span>;
+const SendIcon = () => <span>➤</span>;
+const EditIcon = () => <span>✎</span>;
 
 const MoonIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -29,14 +33,9 @@ const MoonIcon = () => (
          A7 7 0 0021 12.79z"
       stroke="currentColor"
       strokeWidth="2"
-      fill="none"
     />
   </svg>
 );
-
-const HelpIcon = () => <span>?</span>;
-const SendIcon = () => <span>➤</span>;
-const EditIcon = () => <span>✎</span>;
 
 /* ================= TYPES ================= */
 
@@ -44,12 +43,12 @@ interface DashboardPageProps {
   onNavigate?: (page: string) => void;
 }
 
-type DashboardView = "dashboard" | "projects";
+type DashboardView = "dashboard" | "projects" | "equipment";
 
 /* ================= COMPONENT ================= */
 
 const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
-const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   const [activeView, setActiveView] = useState<DashboardView>("dashboard");
   const [labOpen, setLabOpen] = useState(false);
@@ -95,7 +94,7 @@ const { isDarkMode, toggleDarkMode } = useDarkMode();
   /* ================= RENDER ================= */
 
   return (
-<div className={`dashboard-container ${isDarkMode ? "dark-mode" : ""}`}>
+    <div className={`dashboard-container ${isDarkMode ? "dark-mode" : ""}`}>
       {/* HEADER */}
       <div className="header-bar">
         <div className="header-left">
@@ -154,7 +153,16 @@ const { isDarkMode, toggleDarkMode } = useDarkMode();
                 >
                   Projects
                 </div>
-                <div className="nav-subitem disabled">Equipment</div>
+
+                <div
+                  className={`nav-subitem ${
+                    activeView === "equipment" ? "active" : ""
+                  }`}
+                  onClick={() => setActiveView("equipment")}
+                >
+                  Equipment
+                </div>
+
                 <div className="nav-subitem disabled">Activity</div>
                 <div className="nav-subitem disabled">Metrics</div>
               </div>
@@ -291,6 +299,22 @@ const { isDarkMode, toggleDarkMode } = useDarkMode();
               <div className="content-card">
                 <strong>Project Name</strong>
                 <p>Lorem ipsum dolor sit amet.</p>
+              </div>
+            </>
+          )}
+
+          {activeView === "equipment" && (
+            <>
+              <h1 className="page-title">Equipment</h1>
+
+              <div className="content-card">
+                <strong>Camera A</strong>
+                <p>Status: Available</p>
+              </div>
+
+              <div className="content-card">
+                <strong>Sensor Kit</strong>
+                <p>Status: In Use</p>
               </div>
             </>
           )}
