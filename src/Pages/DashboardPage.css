@@ -1,36 +1,5 @@
 /* DashboardPage.css */
 
-/* Root Variables */
-:root {
-  --primary-red: #DC3545;
-  --primary-dark: #1A1D21;
-  --sidebar-bg: #F8F9FA;
-  --sidebar-dark-bg: #2B2E32;
-  --text-primary: #212529;
-  --text-secondary: #6C757D;
-  --text-light: #FFFFFF;
-  --border-color: #DEE2E6;
-  --card-bg: #FFFFFF;
-  --hover-bg: #F1F3F5;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --border-radius: 8px;
-  --transition: all 0.2s ease;
-}
-
-/* Dark Mode Variables */
-.dark-mode {
-  --primary-dark: #FFFFFF;
-  --sidebar-bg: #0A0A0A;
-  --text-primary: #FFFFFF;
-  --text-secondary: #D0D0D0;
-  --border-color: #1F2228;
-  --card-bg: #121212;
-  --hover-bg: #1E1E1E;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.6);
-}
-
 /* Reset and Base Styles */
 * {
   margin: 0;
