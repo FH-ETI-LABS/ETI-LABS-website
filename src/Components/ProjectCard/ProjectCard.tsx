@@ -1,5 +1,4 @@
 import ProgressBar from "./ProgressBar.tsx";
-import "../../Pages/LabProjects.css";
 
 export interface Project {
   name: string;
