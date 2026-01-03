@@ -2,14 +2,35 @@ import { useState } from "react";
 
 import LandingPage from "./Pages/landingpage";
 import LoginPage from "./Pages/LoginPage";
-import DashboardPage from "./Pages/DashboardPage";
 import CreateAccountPage from "./Pages/CreateAccountPage";
 import PasswordResetPage from "./Pages/PasswordResetPage";
+import DashboardPage from "./Pages/DashboardPage";
+
+/* =====================
+   PAGE TYPES
+===================== */
+
+type Page =
+  | "landing"
+  | "login"
+  | "create-account"
+  | "password-reset"
+  | "dashboard";
 
 function App() {
-  // ✅ Landing page is the true entry point
-  const [currentPage, setCurrentPage] = useState("landing");
+  // 🌍 App-level navigation state
+  const [currentPage, setCurrentPage] = useState<Page>("landing");
 
+  /* =====================
+     DASHBOARD (FULL SCREEN)
+     ===================== */
+  if (currentPage === "dashboard") {
+    return <DashboardPage onNavigate={setCurrentPage} />;
+  }
+
+  /* =====================
+     PUBLIC PAGES
+     ===================== */
   switch (currentPage) {
     case "landing":
       return <LandingPage onNavigate={setCurrentPage} />;
@@ -22,9 +43,6 @@ function App() {
 
     case "password-reset":
       return <PasswordResetPage onNavigate={setCurrentPage} />;
-
-    case "dashboard":
-      return <DashboardPage onNavigate={setCurrentPage} />;
 
     default:
       return <LandingPage onNavigate={setCurrentPage} />;

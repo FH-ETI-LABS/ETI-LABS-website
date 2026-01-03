@@ -1,4 +1,4 @@
-import "./LandingPage.css";
+import "./landingpage.css";
 import FoothillLogo from "../assets/images/Foothill_College_logo.svg.png";
 import ETILogo from "../assets/images/ETILOGO.png";
 

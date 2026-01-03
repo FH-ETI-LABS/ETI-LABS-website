@@ -14,7 +14,7 @@ const PasswordResetPage = ({ onNavigate }: PasswordResetPageProps) => {
         <button className="icon-btn" onClick={() => setDarkMode(!darkMode)}>
           {darkMode ? "☀️" : "🌙"}
         </button>
-        <button className="icon-btn" onClick={() => onNavigate("auth")}>
+        <button className="icon-btn" onClick={() => onNavigate("login")}>
           ←
         </button>
       </div>

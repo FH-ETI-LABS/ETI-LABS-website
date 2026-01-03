@@ -50,7 +50,7 @@ const CreateAccountPage = ({ onNavigate }: CreateAccountPageProps) => {
 
           <button
             className="login-button"
-            onClick={() => onNavigate("auth")}
+            onClick={() => onNavigate("login")}
           >
             Back to Login
           </button>
