@@ -1,4 +1,3 @@
-import "../../Pages/LabProjects.css";
 
 /**
  * @interface Props
