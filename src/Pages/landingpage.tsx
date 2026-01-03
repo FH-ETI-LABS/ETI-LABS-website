@@ -1,7 +1,9 @@
 import "./LandingPage.css";
+import FoothillLogo from "../assets/images/Foothill_College_logo.svg.png";
+import ETILogo from "../assets/images/ETILOGO.png";
 
 interface LandingPageProps {
-  onNavigate: (page: string) => void;
+  onNavigate: (page: "login" | "create-account") => void;
 }
 
 const LandingPage = ({ onNavigate }: LandingPageProps) => {
@@ -9,21 +11,13 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
     <div className="landing-container">
       {/* HEADER */}
       <header className="landing-header">
-        <div className="logo">
-          <strong>Foothill × ETI</strong>
-        </div>
-
-        <div className="header-actions">
-          <button
-            className="btn-outline"
-            onClick={() => onNavigate("login")}
-          >
-            Log In
+        <img src={FoothillLogo} alt="Foothill College" />
+        <img src={ETILogo} alt="ETI Labs" />
+        <div className="landing-actions">
+          <button className="secondary" onClick={() => onNavigate("login")}>
+            Sign In
           </button>
-          <button
-            className="btn-primary"
-            onClick={() => onNavigate("create-account")}
-          >
+          <button className="primary" onClick={() => onNavigate("create-account")}>
             Create Account
           </button>
         </div>
@@ -31,49 +25,44 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
 
       {/* HERO */}
       <section className="hero">
-        <h1>ETI Lab Management System</h1>
+        <h1>Emerging Technologies Institute</h1>
         <p>
-          Manage staff, laboratories, equipment, activity logs, and metrics
-          — all in one centralized platform.
+          A hands-on innovation hub at Foothill College where students explore,
+          build, and lead in cutting-edge technologies.
         </p>
+      </section>
 
-        <div className="hero-actions">
-          <button
-            className="btn-primary"
-            onClick={() => onNavigate("create-account")}
-          >
-            Get Started
-          </button>
-          <button
-            className="btn-outline"
-            onClick={() => onNavigate("login")}
-          >
-            Log In
-          </button>
+      {/* LABS */}
+      <section className="section">
+        <h2>Labs & Focus Areas</h2>
+        <div className="grid">
+          <div className="card">Artificial Intelligence</div>
+          <div className="card">Cybersecurity</div>
+          <div className="card">Extended Reality (XR)</div>
+          <div className="card">Energy Technologies</div>
+          <div className="card">Life Sciences</div>
+          <div className="card">Quantum & Space Systems</div>
         </div>
       </section>
 
-      {/* FEATURES */}
-      <section className="features">
-        <div className="feature-card">
-          <h3>Staff Management</h3>
-          <p>View and manage lab staff and assignments.</p>
-        </div>
+      {/* IMPACT */}
+      <section className="section dark">
+        <h2>What Students Do at ETI</h2>
+        <ul>
+          <li>Build real projects used by the college</li>
+          <li>Compete in Google, Berkeley & Foothill competitions</li>
+          <li>Collaborate across disciplines</li>
+          <li>Gain lab, research, and leadership experience</li>
+        </ul>
+      </section>
 
-        <div className="feature-card">
-          <h3>Equipment Tracking</h3>
-          <p>Track availability and usage of lab equipment.</p>
-        </div>
-
-        <div className="feature-card">
-          <h3>Activity Logs</h3>
-          <p>Monitor lab usage and user activity.</p>
-        </div>
-
-        <div className="feature-card">
-          <h3>Metrics & Reports</h3>
-          <p>Get insights with real-time lab metrics.</p>
-        </div>
+      {/* CTA */}
+      <section className="cta">
+        <h2>Access ETI Labs</h2>
+        <p>Log in to manage projects, equipment, and lab activity.</p>
+        <button className="primary" onClick={() => onNavigate("login")}>
+          Continue to Login
+        </button>
       </section>
     </div>
   );

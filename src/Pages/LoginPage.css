@@ -1,157 +1,93 @@
-/* Page fills viewport */
-.login-page {
-  width: 100vw;
-  height: 100vh;
-  background: #f3f3f3;
-  position: relative;
+.landing-container {
+  font-family: system-ui, sans-serif;
+  background: #f8f9fa;
+  color: #212529;
+}
 
+.landing-header {
   display: flex;
-  justify-content: center;
   align-items: center;
-}
-
-/* Top-right icons */
-/* Icons in top-right of PAGE */
-.login-icons {
-  position: fixed;          /* 🔥 FIX */
-  top: 24px;
-  right: 24px;
-  display: flex;
-  gap: 10px;
-  z-index: 9999;            /* 🔥 FIX */
-}
-
-.icon-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
+  justify-content: space-between;
+  padding: 16px 32px;
   background: white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  cursor: pointer;
-  pointer-events: auto;     /* 🔥 ENSURE clicks */
-
+  border-bottom: 1px solid #dee2e6;
 }
 
-/* MAIN CONTENT WRAPPER */
-.login-container-main {
-  width: 1400px;          /* matches reference width */
-  max-width: 94vw;
+.landing-header img {
+  height: 40px;
 }
 
-/* TITLE */
-.login-title {
+.landing-actions button {
+  margin-left: 12px;
+}
+
+.hero {
+  padding: 80px 32px;
   text-align: center;
-  color: #8b0000;
-  font-size: 44px;        /* smaller than before */
-  font-weight: 700;
-  margin-bottom: 56px;
-  letter-spacing: 1px;
 }
 
-/* TWO COLUMNS */
-.login-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;              /* tighter like screenshot */
-  align-items: stretch;
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 16px;
 }
 
-/* LEFT */
-.login-left {
-  display: flex;
-}
-
-/* RIGHT PANEL */
-.login-right {
-  background: white;
-  padding: 40px;
-  border-radius: 18px;
-
-  min-height: 480px;      /* NOT huge */
-  height: 100%;
-
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-}
-
-.login-right h2 {
-  margin-top: 0;
-  font-size: 22px;
-}
-
-.login-right h3 {
-  margin-top: 24px;
+.hero p {
   font-size: 18px;
+  max-width: 700px;
+  margin: 0 auto;
+  color: #6c757d;
 }
 
-.login-right p,
-.login-right li {
-  font-size: 0.95rem;
-  line-height: 1.45;      /* denser text */
+.section {
+  padding: 64px 32px;
 }
 
-.login-right ul {
-  padding-left: 18px;
+.section.dark {
+  background: #111;
+  color: white;
 }
 
-.login-right a {
-  color: #b00000;
-  text-decoration: none;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 24px;
 }
 
-/* ========================= */
-/* DARK MODE STYLES */
-/* ========================= */
-
-.login-page.dark-mode {
-  background: #0b0b0b;
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
 }
 
-/* Title */
-.login-page.dark-mode .login-title {
-  color: #8b0000;
+.section.dark .card {
+  background: #1a1a1a;
 }
 
-/* BOTH CARDS */
-.login-page.dark-mode .login-card,
-.login-page.dark-mode .login-right {
-  background: #141414;              /* dark but not black */
-  box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+.cta {
+  padding: 80px 32px;
+  text-align: center;
+  background: #dc3545;
+  color: white;
 }
 
-/* Card text */
-.login-page.dark-mode .login-card,
-.login-page.dark-mode .login-right,
-.login-page.dark-mode .login-right p,
-.login-page.dark-mode .login-right li,
-.login-page.dark-mode .login-right div {
-  color: #eaeaea;
+.primary {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-/* Headings inside cards */
-.login-page.dark-mode h2,
-.login-page.dark-mode h3,
-.login-page.dark-mode .section-title {
-  color: #ffffff;
-}
-
-/* Inputs */
-.login-page.dark-mode .form-input {
-  background: #222;
-  color: #ffffff;
-}
-
-.login-page.dark-mode .form-input::placeholder {
-  color: #aaaaaa;
-}
-
-/* Dividers */
-.login-page.dark-mode .divider {
-  background: #333;
-}
-
-/* Links */
-.login-page.dark-mode .help-link,
-.login-page.dark-mode a {
-  color: #ff6b6b;
+.secondary {
+  background: transparent;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
 }
