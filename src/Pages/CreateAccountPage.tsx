@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { supabase } from "../lib/supabase";
 import "./CreateAccountPage.css";
 
 type CreateAccountPageProps = {
@@ -6,66 +7,95 @@ type CreateAccountPageProps = {
 };
 
 const CreateAccountPage = ({ onNavigate }: CreateAccountPageProps) => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+const [darkMode, setDarkMode] = useState(false);
+
+  const handleCreateAccount = async () => {
+    setLoading(true);
+    setError(null);
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      setError(error.message);
+    } else {
+      // Supabase may require email confirmation
+      alert("Check your email to confirm your account.");
+      onNavigate("login");
+    }
+  };
 
   return (
-    <div className={`create-page ${darkMode ? "dark-mode" : ""}`}>
-      {/* Top-right icons */}
-      <div className="create-icons">
-        <button
-          className="icon-btn"
-          onClick={() => setDarkMode(!darkMode)}
-        >
-          {darkMode ? "☀️" : "🌙"}
-        </button>
-        <button className="icon-btn">?</button>
-      </div>
+<div className={`create-page ${darkMode ? "dark-mode" : ""}`}>
+     <div className="create-icons">
+  <button
+    className="icon-btn"
+    onClick={() => setDarkMode((prev) => !prev)}
+  >
+    {darkMode ? "☀️" : "🌙"}
+  </button>
 
+  <button
+    className="icon-btn"
+    onClick={() => onNavigate("login")}
+  >
+    ?
+  </button>
+</div>
+
+     
       <div className="create-container">
-        <h1 className="create-title">Emerging Technologies Institute</h1>
+        <h1 className="create-title">Create Account</h1>
 
         <div className="create-card">
-          <h2>Reset Password</h2>
-
           <div className="form-group">
-            <label>Account Email:</label>
-            <input className="form-input" placeholder="Email..." />
-          </div>
-
-          <div className="form-group">
-            <label>Reset Code:</label>
-            <input className="form-input" placeholder="12345..." />
-          </div>
-
-          <div className="form-group">
-            <label>New Password:</label>
+            <label>Email</label>
             <input
               className="form-input"
-              type="password"
-              placeholder="Password..."
+              type="email"
+              placeholder="you@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
-          <div className="divider" />
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              className="form-input"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
           <button
             className="login-button"
-            onClick={() => onNavigate("login")}
+            onClick={handleCreateAccount}
+            disabled={loading}
           >
-            Back to Login
+            {loading ? "Creating..." : "Create Account"}
           </button>
 
           <div className="divider" />
 
-          <div className="help-section">
-            <em>Still having trouble?</em>
-            <div className="contact">
-              <strong>Contact Us</strong>
-              <div>Email us at eti@fhda.edu</div>
-              <div>Call 650.949.7236</div>
-              <div>Visit the STEM Division Office 4118</div>
-            </div>
-          </div>
+          <button
+            className="help-link"
+            onClick={() => onNavigate("login")}
+          >
+            Back to Login
+          </button>
         </div>
       </div>
     </div>
