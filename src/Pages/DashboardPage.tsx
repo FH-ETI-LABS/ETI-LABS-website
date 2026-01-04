@@ -10,6 +10,7 @@ import "./DashboardPage.css";
 import { useDarkMode } from "../contexts/DarkModeContext";
 import { supabase, TABLES } from "../lib/supabase";
 import type { AnnouncementRow } from "../lib/supabase";
+//import { supabase } from "../lib/supabase";
 
 import FoothillLogo from "../assets/images/Foothill_College_logo.svg.png";
 import ETILogo from "../assets/images/ETILOGO.png";
@@ -65,12 +66,36 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
 
   const [announcementText, setAnnouncementText] = useState("");
   const [announcements, setAnnouncements] = useState<AnnouncementRow[]>([]);
+const [userName, setUserName] = useState<string>(""); 
 
   /* ================= DATA ================= */
 
   useEffect(() => {
-    fetchAnnouncements();
-  }, []);
+  fetchAnnouncements();
+
+  const fetchUser = async () => {
+    const { data: authData } = await supabase.auth.getUser();
+    const user = authData?.user;
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from("staff")
+      .select("first_name")
+      .eq("user_id", user.id)
+      .single();
+
+    if (error) {
+      console.log("Staff lookup error:", error.message);
+      return;
+    }
+
+    if (data?.first_name) setUserName(data.first_name);
+  };
+
+  fetchUser();
+}, []);
+
+
 
   const fetchAnnouncements = async () => {
     const { data } = await supabase
@@ -129,17 +154,22 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
 <div className="user-avatar-wrapper">
   <div className="user-avatar">
     A
-    <button className="avatar-edit-btn">Edit</button>
   </div>
 </div>
-  <div className="user-greeting">Hello, Admin!</div>
+
+  <div className="user-greeting">
+  Hello{userName ? `, ${userName}` : ""}!
+</div>
 
   <button
-    className="logout-button"
-    onClick={() => onNavigate?.("login")}
-  >
-    ⎋ Logout
-  </button>
+  className="logout-button"
+  onClick={async () => {
+    await supabase.auth.signOut();
+    onNavigate?.("login");
+  }}
+>
+  ⎋ Logout
+</button>
 </div>
 
 
