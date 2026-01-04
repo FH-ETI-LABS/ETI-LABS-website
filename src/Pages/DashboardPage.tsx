@@ -1,8 +1,7 @@
 /**
  * DashboardPage Component
  * -----------------------
- * Global dashboard layout with internal view switching
- * Header, sidebar, and dark mode persist across views
+ * Role-aware global dashboard (SAFE + RLS-friendly)
  */
 
 import { useEffect, useState } from "react";
@@ -10,7 +9,6 @@ import "./DashboardPage.css";
 import { useDarkMode } from "../contexts/DarkModeContext";
 import { supabase, TABLES } from "../lib/supabase";
 import type { AnnouncementRow } from "../lib/supabase";
-//import { supabase } from "../lib/supabase";
 
 import FoothillLogo from "../assets/images/Foothill_College_logo.svg.png";
 import ETILogo from "../assets/images/ETILOGO.png";
@@ -25,7 +23,6 @@ const SearchIcon = () => <span>🔍</span>;
 const ChevronIcon = () => <span>▾</span>;
 const HelpIcon = () => <span>?</span>;
 const SendIcon = () => <span>➤</span>;
-const EditIcon = () => <span>✎</span>;
 
 const MoonIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -54,7 +51,44 @@ type DashboardView =
   | "metrics"
   | "search";
 
+/* ================= STAFF LIST ================= */
 
+const StaffList = () => {
+  const [staff, setStaff] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      const { data } = await supabase
+        .from("staff")
+        .select("id, first_name, last_name, email, role, lab_assigned")
+        .order("last_name");
+
+      if (data) setStaff(data);
+      setLoading(false);
+    };
+
+    load();
+  }, []);
+
+  if (loading) return <p>Loading staff…</p>;
+  if (staff.length === 0) return <p>No staff records found.</p>;
+
+  return (
+    <div style={{ display: "grid", gap: 12 }}>
+      {staff.map((s) => (
+        <div key={s.id} className="content-card">
+          <strong>
+            {s.first_name} {s.last_name}
+          </strong>
+          <div style={{ fontSize: 13, opacity: 0.8 }}>{s.email}</div>
+          <div>Role: <strong>{s.role}</strong></div>
+          {s.lab_assigned && <div>Lab: {s.lab_assigned}</div>}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 /* ================= COMPONENT ================= */
 
@@ -64,67 +98,87 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
   const [activeView, setActiveView] = useState<DashboardView>("dashboard");
   const [labOpen, setLabOpen] = useState(false);
 
+  const [staffProfile, setStaffProfile] = useState<any>(null);
+  const [loadingProfile, setLoadingProfile] = useState(true);
+  const [profileError, setProfileError] = useState<string | null>(null);
+
   const [announcementText, setAnnouncementText] = useState("");
   const [announcements, setAnnouncements] = useState<AnnouncementRow[]>([]);
-const [userName, setUserName] = useState<string>(""); 
 
-  /* ================= DATA ================= */
+  /* ================= LOAD PROFILE ================= */
 
   useEffect(() => {
-  fetchAnnouncements();
+    const loadProfile = async () => {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth?.user) return;
 
-  const fetchUser = async () => {
-    const { data: authData } = await supabase.auth.getUser();
-    const user = authData?.user;
-    if (!user) return;
+      const { data, error } = await supabase
+        .from("staff")
+        .select("*")
+        .eq("user_id", auth.user.id)
+        .maybeSingle();
 
-    const { data, error } = await supabase
-      .from("staff")
-      .select("first_name")
-      .eq("user_id", user.id)
-      .single();
+      if (error || !data) {
+        setProfileError("Staff profile not found. Contact admin.");
+      } else {
+        setStaffProfile(data);
+      }
 
-    if (error) {
-      console.log("Staff lookup error:", error.message);
-      return;
-    }
+      setLoadingProfile(false);
+    };
 
-    if (data?.first_name) setUserName(data.first_name);
-  };
+    const loadAnnouncements = async () => {
+      const { data } = await supabase
+        .from(TABLES.ANNOUNCEMENTS)
+        .select("*")
+        .order("created_at", { ascending: false });
 
-  fetchUser();
-}, []);
+      if (data) setAnnouncements(data);
+    };
 
+    loadProfile();
+    loadAnnouncements();
+  }, []);
 
+  /* ================= ANNOUNCEMENTS ================= */
 
-  const fetchAnnouncements = async () => {
+  const createAnnouncement = async () => {
+    if (!announcementText.trim()) return;
+    if (staffProfile.role !== "admin") return;
+
+    await supabase.from(TABLES.ANNOUNCEMENTS).insert({
+      content: announcementText.trim(),
+      user_id: staffProfile.user_id,
+    });
+
+    setAnnouncementText("");
+
     const { data } = await supabase
       .from(TABLES.ANNOUNCEMENTS)
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (data) setAnnouncements(data as AnnouncementRow[]);
+    if (data) setAnnouncements(data);
   };
 
-  const createAnnouncement = () => {
-    if (!announcementText.trim()) return;
+  /* ================= STATES ================= */
 
-    setAnnouncements([
-      {
-        id: Date.now(),
-        content: announcementText.trim(),
-        created_at: new Date().toISOString(),
-        user_id: undefined,
-      },
-      ...announcements,
-    ]);
+  if (loadingProfile) return <div style={{ padding: 40 }}>Loading…</div>;
 
-    setAnnouncementText("");
-  };
+  if (profileError) {
+    return (
+      <div style={{ padding: 40 }}>
+        <h2 style={{ color: "red" }}>Error</h2>
+        <p>{profileError}</p>
+        <button onClick={() => supabase.auth.signOut()}>
+          Logout
+        </button>
+      </div>
+    );
+  }
 
-  const deleteAnnouncement = (id: number) => {
-    setAnnouncements(announcements.filter(a => a.id !== id));
-  };
+  const isAdmin = staffProfile.role === "admin";
+  const initial = staffProfile.first_name?.[0]?.toUpperCase() ?? "?";
 
   /* ================= RENDER ================= */
 
@@ -151,450 +205,116 @@ const [userName, setUserName] = useState<string>("");
         {/* SIDEBAR */}
         <aside className="sidebar">
           <div className="user-profile-section">
-<div className="user-avatar-wrapper">
-  <div className="user-avatar">
-    A
-  </div>
-</div>
-
-  <div className="user-greeting">
-  Hello{userName ? `, ${userName}` : ""}!
-</div>
-
-  <button
-  className="logout-button"
-  onClick={async () => {
-    await supabase.auth.signOut();
-    onNavigate?.("login");
-  }}
->
-  ⎋ Logout
-</button>
-</div>
-
+            <div className="user-avatar">{initial}</div>
+            <div className="user-greeting">Hello, {staffProfile.first_name}!</div>
+           {isAdmin && <div className="admin-badge">🔥 Admin</div>}
+            <button
+              className="logout-button"
+              onClick={() => supabase.auth.signOut()}
+            >
+              Logout
+            </button>
+          </div>
 
           <nav className="nav-menu">
             <div
               className={`nav-item ${activeView === "dashboard" ? "active" : ""}`}
               onClick={() => setActiveView("dashboard")}
             >
-              <HomeIcon /> Dashboard
+              <HomeIcon /> <span className="nav-text">Dashboard</span>
             </div>
 
-           <div
-  className={`nav-item ${activeView === "staff" ? "active" : ""}`}
-  onClick={() => setActiveView("staff")}
->
-  <UsersIcon /> Staff
-</div>
-
-
-            <div
-  className={`nav-item ${activeView === "clubs" ? "active" : ""}`}
-  onClick={() => setActiveView("clubs")}
->
-  <HexagonIcon /> Clubs
-</div>
-
+            {isAdmin && (
+              <div
+                className={`nav-item ${activeView === "staff" ? "active" : ""}`}
+                onClick={() => setActiveView("staff")}
+              >
+                <UsersIcon /> <span className="nav-text">Staff</span>
+              </div>
+            )}
 
             <div
-              className="nav-item expandable"
+              className={`nav-item ${activeView === "clubs" ? "active" : ""}`}
+              onClick={() => setActiveView("clubs")}
+            >
+              <HexagonIcon /> <span className="nav-text">Clubs</span>
+            </div>
+
+            <div
+              className={`nav-item expandable ${labOpen ? "expanded" : ""}`}
               onClick={() => setLabOpen(!labOpen)}
             >
-              <CpuIcon /> Laboratory <ChevronIcon />
+              <CpuIcon /> <span className="nav-text">Laboratory</span>
+              <ChevronIcon />
             </div>
 
             {labOpen && (
               <div className="nav-submenu">
-                <div
-                  className={`nav-subitem ${
-                    activeView === "projects" ? "active" : ""
-                  }`}
-                  onClick={() => setActiveView("projects")}
-                >
-                  Projects
-                </div>
-
-                <div
-                  className={`nav-subitem ${
-                    activeView === "equipment" ? "active" : ""
-                  }`}
-                  onClick={() => setActiveView("equipment")}
-                >
-                  Equipment
-                </div>
-
-<div
-  className={`nav-subitem ${activeView === "activity" ? "active" : ""}`}
-  onClick={() => setActiveView("activity")}
->
-  Activity
-</div>
-<div
-  className={`nav-subitem ${activeView === "metrics" ? "active" : ""}`}
-  onClick={() => setActiveView("metrics")}
->
-  Metrics
-</div>              </div>
+                <div onClick={() => setActiveView("projects")}>Projects</div>
+                <div onClick={() => setActiveView("equipment")}>Equipment</div>
+                <div onClick={() => setActiveView("activity")}>Activity</div>
+                {isAdmin && (
+                  <div onClick={() => setActiveView("metrics")}>Metrics</div>
+                )}
+              </div>
             )}
 
             <div
-  className={`nav-item ${activeView === "search" ? "active" : ""}`}
-  onClick={() => setActiveView("search")}
->
-  <SearchIcon /> Search
-</div>
-
+              className={`nav-item ${activeView === "search" ? "active" : ""}`}
+              onClick={() => setActiveView("search")}
+            >
+              <SearchIcon /> <span className="nav-text">Search</span>
+            </div>
           </nav>
         </aside>
 
-        {/* MAIN CONTENT */}
+        {/* MAIN */}
         <main className="main-content">
           {activeView === "dashboard" && (
             <>
               <h1 className="page-title">Your Dashboard</h1>
 
-              {/* ANNOUNCEMENTS */}
               <div className="content-card">
-                <div className="card-header">
-                  <h2 className="section-title">Announcements</h2>
-                </div>
+                <h2>Announcements</h2>
 
-                <div className="announcement-input-container">
-                  <div className="announcement-avatar">A</div>
-                  <div className="you-badge">You</div>
-
-                  <input
-                    className="announcement-input"
-                    value={announcementText}
-                    onChange={e => setAnnouncementText(e.target.value)}
-                    placeholder="New announcement"
-                  />
-
-                  <button
-                    className="send-button"
-                    onClick={createAnnouncement}
-                    disabled={!announcementText.trim()}
-                  >
-                    <SendIcon />
-                  </button>
-                </div>
-
-                <div className="announcements-list">
-                  {announcements.map(a => (
-                    <div key={a.id} className="announcement-item">
-                      <div className="announcement-avatar">A</div>
-                      <div className="you-badge">You</div>
-
-                      <div className="announcement-content">
-                        <p className="announcement-text">{a.content}</p>
-                        <p className="announcement-date">
-                          {new Date(a.created_at!).toLocaleString()}
-                        </p>
-                      </div>
-
-                      <button
-                        className="announcement-delete"
-                        onClick={() => deleteAnnouncement(a.id)}
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* QUICK ACCESS */}
-              <div className="content-card">
-                <div className="card-header">
-                  <h2 className="section-title">Quick Access</h2>
-                  <button className="edit-button">
-                    <EditIcon />
-                  </button>
-                </div>
-
-                <div className="quick-access-grid">
-                  <div className="quick-card">
-                    <h3>Events</h3>
-                    <ul className="events-list">
-                      <li>Research & Service Leadership Symposium</li>
-                      <li>Berkeley Symposium</li>
-                      <li>Foothill × Google Case Competition</li>
-                    </ul>
+                {isAdmin && (
+                  <div className="announcement-input-container">
+                    <input
+                      className="announcement-input"
+                      value={announcementText}
+                      onChange={(e) => setAnnouncementText(e.target.value)}
+                      placeholder="New announcement"
+                    />
+                    <button className="send-button" onClick={createAnnouncement}>
+                      <SendIcon />
+                    </button>
                   </div>
+                )}
 
-                  <div className="quick-card">
-                    <h3>Cameras</h3>
-                    <div className="cameras-content">
-                      <button className="camera-nav">‹</button>
-                      <div className="camera-placeholder" />
-                      <button className="camera-nav">›</button>
-                    </div>
-                  </div>
+                {announcements.length === 0 && (
+                  <p style={{ opacity: 0.6 }}>No announcements yet</p>
+                )}
 
-                  <div className="quick-card">
-                    <h3>Lab Activity</h3>
-                    <table className="activity-table">
-                      <thead>
-                        <tr>
-                          <th>User</th>
-                          <th>Action</th>
-                          <th>Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Admin</td>
-                          <td>Created Project</td>
-                          <td>2 mins ago</td>
-                        </tr>
-                        <tr>
-                          <td>Admin</td>
-                          <td>Updated Equipment</td>
-                          <td>10 mins ago</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                {announcements.map((a) => (
+                  <div key={a.id} className="announcement-item">
+                    <p>{a.content}</p>
+                    <small>
+                      {a.created_at
+                        ? new Date(a.created_at).toLocaleString()
+                        : ""}
+                    </small>
                   </div>
-                </div>
+                ))}
               </div>
             </>
           )}
 
-          {activeView === "projects" && (
+          {activeView === "staff" && (
             <>
-              <h1 className="page-title">Projects</h1>
-
-              <div className="content-card">
-                <strong>Project Name</strong>
-                <p>Lorem ipsum dolor sit amet.</p>
-              </div>
-
-              <div className="content-card">
-                <strong>Project Name</strong>
-                <p>Lorem ipsum dolor sit amet.</p>
-              </div>
+              <h1 className="page-title">Staff Directory</h1>
+              <StaffList />
             </>
           )}
-
-          {activeView === "equipment" && (
-            <>
-              <h1 className="page-title">Equipment</h1>
-
-              <div className="content-card">
-                <strong>Camera A</strong>
-                <p>Status: Available</p>
-              </div>
-
-              <div className="content-card">
-                <strong>Sensor Kit</strong>
-                <p>Status: In Use</p>
-              </div>
-            </>
-          )}
-          {activeView === "activity" && (
-  <>
-    <h1 className="page-title">Activity</h1>
-
-    {/* SEARCH + FILTER BAR */}
-    <div className="content-card">
-      <div
-        style={{
-          display: "flex",
-          gap: "12px",
-          alignItems: "center",
-          marginBottom: "16px",
-        }}
-      >
-        <input
-          placeholder="Search Name..."
-          style={{
-            flex: 1,
-            padding: "10px 14px",
-            borderRadius: "8px",
-            border: "1px solid var(--border-color)",
-            background: "var(--hover-bg)",
-            color: "var(--text-primary)",
-          }}
-        />
-
-        <button className="icon-button">Filter Date</button>
-        <button className="icon-button">Filter Lab</button>
-      </div>
-
-      {/* ACTIVITY TABLE */}
-      <div className="lab-table-container">
-        <table className="activity-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>CWID</th>
-              <th>Time In</th>
-              <th>Time Out</th>
-              <th>Date</th>
-              <th>Lab</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {Array.from({ length: 10 }).map((_, i) => (
-              <tr key={i}>
-                <td>Firstname Lastname</td>
-                <td>12345678</td>
-                <td>5:00 PM</td>
-                <td>6:00 PM</td>
-                <td>11/15/2025</td>
-                <td>Lab 12345</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </>
-)}
-{activeView === "metrics" && (
-  <>
-    <h1 className="page-title">Metrics</h1>
-
-    <div className="quick-access-grid">
-      {/* NUMBERS */}
-      <div className="content-card">
-        <h2 className="section-title">Numbers</h2>
-        <p>Active Clubs: <strong>12345</strong></p>
-        <p>Open Laboratories: <strong>12345</strong></p>
-        <p>Equipment: <strong>12345</strong></p>
-        <p>Students Subscribed to Newsletter: <strong>12345</strong></p>
-      </div>
-
-      {/* PARTICULARS */}
-      <div className="content-card">
-        <h2 className="section-title">Particulars</h2>
-
-        <p><strong>12345</strong> Total Staff</p>
-        <p>20% in <strong>MESA</strong></p>
-
-        <hr style={{ margin: "16px 0" }} />
-
-        <p>Lab: <strong>12345</strong></p>
-        <p>Visits this Quarter: <strong>12345</strong></p>
-      </div>
-
-      {/* PROJECTS & INNOVATION */}
-      <div className="content-card">
-        <h2 className="section-title">Projects & Innovation</h2>
-
-        <p>Active Projects: <strong>12345</strong></p>
-        <p>Completed Projects: <strong>12345</strong></p>
-
-        <ul className="events-list">
-          <li>5 projects in Google Case Competition</li>
-          <li>2 projects in Foothill Innovation Challenge</li>
-          <li>7 projects in Berkeley Symposium</li>
-          <li>2 projects in RSLS</li>
-          <li>4 projects in None</li>
-        </ul>
-
-        <hr style={{ margin: "16px 0" }} />
-
-        <p>Awards / Honors: <strong>12345</strong></p>
-
-        <div className="content-card" style={{ marginTop: 12 }}>
-          <strong>Award / Honor Name</strong>
-          <p style={{ marginTop: 8 }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>
-          <p style={{ fontSize: 12, opacity: 0.7 }}>
-            Joe Shmoe, John Doe, Harry Potter · 2022
-          </p>
-        </div>
-      </div>
-    </div>
-  </>
-)}
-
-{activeView === "search" && (
-  <>
-    <h1 className="page-title">Search</h1>
-
-    {/* SEARCH BAR */}
-    <div className="content-card">
-      <div
-        className="announcement-input-container"
-        style={{ marginBottom: 0 }}
-      >
-        <SearchIcon />
-        <input
-          className="announcement-input"
-          placeholder="Search..."
-        />
-      </div>
-    </div>
-
-    {/* SEARCH RESULTS */}
-    <div className="content-card">
-      <div className="announcements-list">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="announcement-item">
-            <div className="announcement-content" style={{ paddingLeft: 0 }}>
-              <p className="announcement-text">
-                <strong>Site Page</strong>
-              </p>
-              <p className="announcement-date">
-                Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong>
-                Vestibulum auctor tincidunt ligula consequat fermentum.
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </>
-)}
-{activeView === "clubs" && (
-  <>
-    <h1 className="page-title">Clubs</h1>
-
-    <div className="quick-access-grid">
-      {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="content-card">
-          <strong>Club Name</strong>
-          <p>President: Joe Shmoe</p>
-          <p>Advisor: John Doe</p>
-
-          <ul className="events-list">
-            <li>www.discord.com</li>
-            <li>Friday 5–6 PM</li>
-            <li>Building 123</li>
-          </ul>
-        </div>
-      ))}
-    </div>
-  </>
-)}
-
-{activeView === "staff" && (
-  <>
-    <h1 className="page-title">Staff</h1>
-
-    <div className="content-card">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="announcement-item">
-          <div className="announcement-content">
-            <p className="announcement-text">
-              <strong>John Doe Smith</strong>
-            </p>
-            <p className="announcement-date">
-              Lab 1 · example@gmail.com · (123) 456-7890
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
-  </>
-)}
-
-
         </main>
       </div>
     </div>

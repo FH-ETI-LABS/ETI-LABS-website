@@ -20,28 +20,28 @@ function App() {
   const [page, setPage] = useState<Page>("landing");
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [isRecovery, setIsRecovery] = useState(false);
 
   useEffect(() => {
     const init = async () => {
-      const hash = window.location.hash;
+      const hash = window.location.hash || "";
 
-      // ✅ Detect password recovery FIRST
+      // ✅ If this is a Supabase recovery link, show reset screen
       if (hash.includes("type=recovery")) {
-        setIsRecovery(true);
         setPage("reset-password");
         setLoading(false);
         return;
       }
 
+      // ✅ Otherwise, normalize URL so refresh never keeps old hash junk
+      if (window.location.hash) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+
       const { data } = await supabase.auth.getSession();
       setSession(data.session);
 
-      if (data.session) {
-        setPage("dashboard");
-      } else {
-        setPage("login");
-      }
+      if (data.session) setPage("dashboard");
+      else setPage("login");
 
       setLoading(false);
     };
@@ -50,35 +50,33 @@ function App() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+    } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
 
-      // 🚫 DO NOT redirect during recovery
-      if (isRecovery) return;
+      // ✅ If we are currently on reset-password page, DO NOT auto-redirect
+      if (page === "reset-password") return;
 
-      if (session) {
-        setPage("dashboard");
-      } else {
-        setPage("login");
-      }
+      if (newSession) setPage("dashboard");
+      else setPage("login");
     });
 
     return () => subscription.unsubscribe();
-  }, [isRecovery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   if (loading) return null;
 
-  // 🔑 Recovery page ALWAYS wins
-  if (isRecovery && page === "reset-password") {
+  // ✅ Recovery page has priority
+  if (page === "reset-password") {
     return <ResetPasswordConfirmPage onNavigate={setPage} />;
   }
 
-  // 🔒 Logged in (normal)
+  // ✅ Logged in → dashboard
   if (session) {
     return <DashboardPage onNavigate={setPage} />;
   }
 
-  // 🔓 Public pages
+  // ✅ Public pages
   switch (page) {
     case "login":
       return <LoginPage onNavigate={setPage} />;
@@ -89,6 +87,7 @@ function App() {
     case "password-reset":
       return <PasswordResetPage onNavigate={setPage} />;
 
+    case "landing":
     default:
       return <LandingPage onNavigate={setPage} />;
   }

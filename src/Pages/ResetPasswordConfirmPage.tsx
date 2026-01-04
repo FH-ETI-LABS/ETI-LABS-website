@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 
 type Props = {
@@ -10,14 +10,21 @@ const ResetPasswordConfirmPage = ({ onNavigate }: Props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // ✅ Only allow this page if the URL is actually a recovery link
+  useEffect(() => {
+    const hash = window.location.hash || "";
+    if (!hash.includes("type=recovery")) {
+      onNavigate("login");
+      return;
+    }
+  }, [onNavigate]);
+
   const handleReset = async () => {
     setLoading(true);
     setError(null);
 
-    // ✅ Step 5: actually set the new password
-    const { error } = await supabase.auth.updateUser({
-      password,
-    });
+    // ✅ Set the new password (requires recovery session)
+    const { error } = await supabase.auth.updateUser({ password });
 
     if (error) {
       setError(error.message);
@@ -25,10 +32,13 @@ const ResetPasswordConfirmPage = ({ onNavigate }: Props) => {
       return;
     }
 
-    // 🔐 IMPORTANT: sign out after reset
-    await supabase.auth.signOut();
+    // ✅ Clear recovery hash from URL so refresh never re-triggers recovery
+    window.history.replaceState(null, "", window.location.pathname);
 
-    // ✅ Go back to login
+    // ✅ Force logout after reset, then send to login
+    await supabase.auth.signOut();
+    setLoading(false);
+
     onNavigate("login");
   };
 
