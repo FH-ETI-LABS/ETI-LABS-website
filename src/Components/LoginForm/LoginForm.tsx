@@ -9,84 +9,82 @@ type LoginFormProps = {
 const LoginForm = ({ onNavigate }: LoginFormProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-const [errorMsg, setErrorMsg] = useState("");
-const [loading, setLoading] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Login clicked", { email, password });
-  };
+  const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-  setErrorMsg("");
-  setLoading(true);
+    setErrorMsg("");
+    setLoading(true);
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-  setLoading(false);
+    setLoading(false);
 
-  if (error) {
-    setErrorMsg(error.message);
-    return;
-  }
+    if (error) {
+      setErrorMsg(error.message);
+      return;
+    }
 
-  // ✅ SUCCESS → go to dashboard
-  onNavigate("dashboard");
-};
-
+    onNavigate("dashboard");
+  };
 
   return (
     <div className="login-container">
       <div className="login-card">
         <h2 className="login-logo">Sign In</h2>
 
-        <form onSubmit={handleSubmit}>
+        {/* ✅ FORM ONLY CONTAINS LOGIN */}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLogin();
+          }}
+        >
           <div className="form-group">
             <input
-  className="form-input"
-  placeholder="Email..."
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-/>
+              className="form-input"
+              placeholder="Email..."
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
 
           <div className="form-group">
             <input
-            className="form-input"
-            type="password"
-            placeholder="Password..."
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+              className="form-input"
+              type="password"
+              placeholder="Password..."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
 
-          {/* Password reset */}
           <button
-            type="button"
-            className="help-link"
-            onClick={() => onNavigate("password-reset")}
+            type="submit"
+            className="login-button"
+            disabled={loading}
           >
-            Need help signing in?
+            {loading ? "Signing in..." : "NEXT"}
           </button>
-
-          <button
-  className="login-button"
-  onClick={handleLogin}
-  disabled={loading}
->
-  {loading ? "Signing in..." : "NEXT"}
-</button>
         </form>
+
+        {/* ✅ EVERYTHING BELOW IS OUTSIDE THE FORM */}
+
+        <button
+          className="help-link"
+          onClick={() => onNavigate("password-reset")}
+        >
+          Need help signing in?
+        </button>
 
         <div className="divider" />
 
         <div className="login-links">
           <div className="section-title">New to ETI?</div>
           <button
-            type="button"
             className="help-link"
             onClick={() => onNavigate("create-account")}
           >
@@ -102,6 +100,10 @@ const [loading, setLoading] = useState(false);
           <div>Call 650.949.7236</div>
           <div>Visit the STEM Division Office 4118</div>
         </div>
+
+        {errorMsg && (
+          <p style={{ color: "red", marginTop: 10 }}>{errorMsg}</p>
+        )}
       </div>
     </div>
   );

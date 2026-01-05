@@ -22,47 +22,48 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const init = async () => {
-      const hash = window.location.hash || "";
+  const init = async () => {
+    const hash = window.location.hash || "";
 
-      // ✅ If this is a Supabase recovery link, show reset screen
-      if (hash.includes("type=recovery")) {
-        setPage("reset-password");
-        setLoading(false);
-        return;
-      }
-
-      // ✅ Otherwise, normalize URL so refresh never keeps old hash junk
-      if (window.location.hash) {
-        window.history.replaceState(null, "", window.location.pathname);
-      }
-
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session);
-
-      if (data.session) setPage("dashboard");
-      else setPage("login");
-
+    if (hash.includes("type=recovery")) {
+      setPage("reset-password");
       setLoading(false);
-    };
+      return;
+    }
 
-    init();
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
+    const { data } = await supabase.auth.getSession();
+    setSession(data.session);
 
-      // ✅ If we are currently on reset-password page, DO NOT auto-redirect
-      if (page === "reset-password") return;
+    if (data.session) setPage("dashboard");
+    else setPage("login");
 
-      if (newSession) setPage("dashboard");
-      else setPage("login");
-    });
+    setLoading(false);
+  };
 
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  init();
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((event, newSession) => {
+    setSession(newSession);
+
+    // ✅ ONLY redirect on actual auth events
+    if (event === "SIGNED_IN") {
+      setPage("dashboard");
+    }
+
+    if (event === "SIGNED_OUT") {
+      setPage("login");
+    }
+  });
+
+  return () => subscription.unsubscribe();
+}, []);
+
 
   if (loading) return null;
 

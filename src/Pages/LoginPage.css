@@ -155,3 +155,7 @@
 .login-page.dark-mode a {
   color: #ff6b6b;
 }
+.login-left,
+.login-left * {
+  pointer-events: auto !important;
+}
