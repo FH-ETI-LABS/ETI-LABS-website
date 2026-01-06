@@ -21,16 +21,18 @@ function App() {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+ useEffect(() => {
   const init = async () => {
     const hash = window.location.hash || "";
 
+    // ✅ Password recovery takes priority
     if (hash.includes("type=recovery")) {
       setPage("reset-password");
       setLoading(false);
       return;
     }
 
+    // Clean URL hash
     if (window.location.hash) {
       window.history.replaceState(null, "", window.location.pathname);
     }
@@ -38,8 +40,11 @@ function App() {
     const { data } = await supabase.auth.getSession();
     setSession(data.session);
 
-    if (data.session) setPage("dashboard");
-    else setPage("login");
+    // ✅ ONLY redirect if logged in
+    if (data.session) {
+      setPage("dashboard");
+    }
+    // ❌ DO NOT force login here
 
     setLoading(false);
   };
@@ -51,18 +56,18 @@ function App() {
   } = supabase.auth.onAuthStateChange((event, newSession) => {
     setSession(newSession);
 
-    // ✅ ONLY redirect on actual auth events
     if (event === "SIGNED_IN") {
       setPage("dashboard");
     }
 
     if (event === "SIGNED_OUT") {
-      setPage("login");
+      setPage("landing"); // ✅ return to landing on logout
     }
   });
 
   return () => subscription.unsubscribe();
 }, []);
+
 
 
   if (loading) return null;
