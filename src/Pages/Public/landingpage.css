@@ -92,3 +92,34 @@
   border-radius: 6px;
   cursor: pointer;
 }
+
+/* Modal styles for login popup */
+.login-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.login-modal-content {
+  width: min(920px, 95%);
+  max-height: 90vh;
+  overflow: auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  padding: 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .landing-container { background: #0b1020; color: #e6eef8; }
+  .landing-header { background: #071022; border-color: #122233; }
+  .card { background: #071022; color: #e6eef8; }
+  .cta { background: #c5303f; }
+  .primary { background: #c5303f; }
+  .secondary { border-color: #c5303f; color: #c5303f; }
+  .login-modal-content { background: #071022; color: #e6eef8; }
+}

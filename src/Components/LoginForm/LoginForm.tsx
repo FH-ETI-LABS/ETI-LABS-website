@@ -12,23 +12,71 @@ const LoginForm = ({ onNavigate }: LoginFormProps) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Prevent duplicate navigation
+  const navigatedRef = { current: false } as { current: boolean };
+
+  // Helper that returns a promise resolving when a session is available or
+  // when SIGNED_IN is emitted. Used to avoid navigation-before-session race.
+  const waitForSignIn = (timeout = 5000) => {
+    return new Promise<void>((resolve) => {
+      let settled = false;
+      const timer = setTimeout(() => {
+        if (!settled) {
+          settled = true;
+          resolve();
+        }
+      }, timeout);
+
+      const { data } = supabase.auth.onAuthStateChange((event, session) => {
+        console.debug("LoginForm:onAuthStateChange", { event, hasSession: !!session });
+        if (settled) return;
+        if (event === "SIGNED_IN" || session?.user) {
+          settled = true;
+          clearTimeout(timer);
+          try {
+            data.subscription.unsubscribe();
+          } catch {}
+          resolve();
+        }
+      });
+    });
+  };
+
   const handleLogin = async () => {
+    console.debug("LoginForm: handleLogin start", { email });
     setErrorMsg("");
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
     setLoading(false);
+
+    console.debug("LoginForm: signInWithPassword result", { dataPresent: !!data, error });
 
     if (error) {
       setErrorMsg(error.message);
       return;
     }
 
-    onNavigate("dashboard");
+    // If sign-in returned a session we can navigate immediately. Otherwise
+    // wait briefly for the auth state change listener in App to pick up the
+    // new session before routing to the dashboard to avoid being redirected
+    // back to /login by the private route guard.
+    if (data?.session) {
+      // session is already present, navigate immediately
+      if (!navigatedRef.current) {
+        navigatedRef.current = true;
+        onNavigate("dashboard");
+      }
+      return;
+    }
+
+    // Otherwise wait for an auth state change (SIGNED_IN) or timeout, then navigate.
+    await waitForSignIn(4000);
+    if (!navigatedRef.current) {
+      navigatedRef.current = true;
+      onNavigate("dashboard");
+    }
   };
 
   return (

@@ -5,6 +5,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./DashboardPage.css";
 import { useDarkMode } from "../contexts/DarkModeContext";
 import { supabase, TABLES } from "../lib/supabase";
@@ -37,9 +38,8 @@ const MoonIcon = () => (
 
 /* ================= TYPES ================= */
 
-interface DashboardPageProps {
-  onNavigate?: (page: string) => void;
-}
+// DashboardPage does not accept external navigation props when used via router
+// (navigation is handled in-app). Removing unused prop to satisfy strict lint rules.
 
 type DashboardView =
   | "dashboard"
@@ -92,8 +92,20 @@ const StaffList = () => {
 
 /* ================= COMPONENT ================= */
 
-const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
+const DashboardPage = () => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    // Navigate to landing first to avoid route-guard racing to /login when
+    // onAuthStateChange clears the session. Then attempt signOut.
+    navigate("/", { replace: true });
+    try {
+      await supabase.auth.signOut();
+    } catch (err) {
+      console.debug("DashboardPage: signOut failed", err);
+    }
+  };
 
   const [activeView, setActiveView] = useState<DashboardView>("dashboard");
   const [labOpen, setLabOpen] = useState(false);
@@ -104,27 +116,41 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
 
   const [announcementText, setAnnouncementText] = useState("");
   const [announcements, setAnnouncements] = useState<AnnouncementRow[]>([]);
+  const [authUser, setAuthUser] = useState<any>(null);
+  const [rawSession, setRawSession] = useState<any>(null);
 
   /* ================= LOAD PROFILE ================= */
 
   useEffect(() => {
     const loadProfile = async () => {
       const { data: auth } = await supabase.auth.getUser();
-      if (!auth?.user) return;
-
-      const { data, error } = await supabase
-        .from("staff")
-        .select("*")
-        .eq("user_id", auth.user.id)
-        .maybeSingle();
-
-      if (error || !data) {
-        setProfileError("Staff profile not found. Contact admin.");
-      } else {
-        setStaffProfile(data);
+      if (!auth?.user) {
+        // No authenticated user available — stop the loading state and show an error.
+        console.debug("DashboardPage: no auth user returned from supabase.getUser", { auth });
+        setProfileError("Not authenticated. Please sign in.");
+        setLoadingProfile(false);
+        return;
       }
 
-      setLoadingProfile(false);
+      try {
+        const { data, error } = await supabase
+          .from("staff")
+          .select("*")
+          .eq("user_id", auth.user.id)
+          .maybeSingle();
+
+        if (error || !data) {
+          console.debug("DashboardPage: staff fetch did not return data", { error });
+          setProfileError("Staff profile not found. Contact admin.");
+        } else {
+          console.debug("DashboardPage: staff profile loaded", { id: data.id });
+          setStaffProfile(data);
+        }
+      } catch (err) {
+        setProfileError("Failed to load profile. Please try again.");
+      } finally {
+        setLoadingProfile(false);
+      }
     };
 
     const loadAnnouncements = async () => {
@@ -138,6 +164,19 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
 
     loadProfile();
     loadAnnouncements();
+    (async () => {
+      try {
+        const { data } = await supabase.auth.getUser();
+        setAuthUser(data?.user ?? null);
+        try {
+          // also fetch the raw session for debugging visibility
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          const s = await supabase.auth.getSession();
+          setRawSession(s?.data ?? null);
+        } catch {}
+      } catch {}
+    })();
   }, []);
 
   /* ================= ANNOUNCEMENTS ================= */
@@ -165,17 +204,21 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
 
   if (loadingProfile) return <div style={{ padding: 40 }}>Loading…</div>;
 
-  if (profileError) {
-    return (
-      <div style={{ padding: 40 }}>
-        <h2 style={{ color: "red" }}>Error</h2>
-        <p>{profileError}</p>
-        <button onClick={() => supabase.auth.signOut()}>
-          Logout
-        </button>
+  // Don't return early on profile errors; show an inline banner so the
+  // rest of the dashboard still renders. This avoids a completely blank
+  // page when a staff profile is missing but the user is authenticated.
+  const profileErrorBanner =
+    profileError ? (
+      <div style={{ padding: 12, background: "#fff3f3", border: "1px solid #ffd0d0", marginBottom: 12 }}>
+        <strong style={{ color: "#c53030" }}>Notice:</strong> {profileError}
+        <div style={{ marginTop: 8 }}>
+          <button onClick={() => window.location.reload()}>Retry</button>
+          <button style={{ marginLeft: 8 }} onClick={() => handleLogout()}>
+            Logout
+          </button>
+        </div>
       </div>
-    );
-  }
+    ) : null;
 
   const isAdmin = staffProfile.role === "admin";
   const initial = staffProfile.first_name?.[0]?.toUpperCase() ?? "?";
@@ -210,7 +253,7 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
            {isAdmin && <div className="admin-badge">🔥 Admin</div>}
             <button
               className="logout-button"
-              onClick={() => supabase.auth.signOut()}
+              onClick={() => handleLogout()}
             >
               Logout
             </button>
@@ -270,12 +313,29 @@ const DashboardPage = ({ onNavigate }: DashboardPageProps) => {
 
         {/* MAIN */}
         <main className="main-content">
+          {profileErrorBanner}
           {activeView === "dashboard" && (
             <>
               <h1 className="page-title">Your Dashboard</h1>
 
+              {/* If staff profile is missing, show a small fallback summary using auth user */}
+              {!staffProfile && authUser && (
+                <div className="content-card" style={{ marginBottom: 12 }}>
+                  <strong>Signed in as:</strong> {authUser.email ?? authUser.id}
+                  <div style={{ opacity: 0.8 }}>Limited dashboard view — profile data not found.</div>
+                </div>
+              )}
+
               <div className="content-card">
                 <h2>Announcements</h2>
+
+                {/* Debug panel: show raw session / profile info so we can see why dashboard appears blank */}
+                <details style={{ marginBottom: 12 }}>
+                  <summary style={{ cursor: "pointer" }}>Debug: session & profile</summary>
+                  <pre style={{ maxHeight: 240, overflow: "auto", background: "#f6f8fa", padding: 8 }}>
+                    {JSON.stringify({ session: rawSession, authUser, staffProfile }, null, 2)}
+                  </pre>
+                </details>
 
                 {isAdmin && (
                   <div className="announcement-input-container">

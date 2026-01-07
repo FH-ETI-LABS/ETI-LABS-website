@@ -1,102 +1,85 @@
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "./lib/supabase";
 
-import LandingPage from "./Pages/landingpage";
+import LandingPage from "./Pages/Public/landingpage";
+import LabPreviewPage from "./Pages/Public/LabPreviewPage.tsx";
+
 import LoginPage from "./Pages/LoginPage";
 import CreateAccountPage from "./Pages/CreateAccountPage";
 import PasswordResetPage from "./Pages/PasswordResetPage";
 import ResetPasswordConfirmPage from "./Pages/ResetPasswordConfirmPage";
 import DashboardPage from "./Pages/DashboardPage";
 
-type Page =
-  | "landing"
-  | "login"
-  | "create-account"
-  | "password-reset"
-  | "reset-password"
-  | "dashboard";
-
-function App() {
-  const [page, setPage] = useState<Page>("landing");
+export default function App() {
+  const navigate = useNavigate();
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
- useEffect(() => {
-  const init = async () => {
-    const hash = window.location.hash || "";
-
-    // ✅ Password recovery takes priority
-    if (hash.includes("type=recovery")) {
-      setPage("reset-password");
+  useEffect(() => {
+    const init = async () => {
+      console.debug("App: init - checking existing session");
+      const { data } = await supabase.auth.getSession();
+      console.debug("App: getSession", { sessionPresent: !!data?.session });
+      setSession(data.session);
       setLoading(false);
-      return;
-    }
+    };
+    init();
 
-    // Clean URL hash
-    if (window.location.hash) {
-      window.history.replaceState(null, "", window.location.pathname);
-    }
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      console.debug("App:onAuthStateChange", { event: _event, hasSession: !!newSession });
+      setSession(newSession);
+    });
 
-    const { data } = await supabase.auth.getSession();
-    setSession(data.session);
-
-    // ✅ ONLY redirect if logged in
-    if (data.session) {
-      setPage("dashboard");
-    }
-    // ❌ DO NOT force login here
-
-    setLoading(false);
-  };
-
-  init();
-
-  const {
-    data: { subscription },
-  } = supabase.auth.onAuthStateChange((event, newSession) => {
-    setSession(newSession);
-
-    if (event === "SIGNED_IN") {
-      setPage("dashboard");
-    }
-
-    if (event === "SIGNED_OUT") {
-      setPage("landing"); // ✅ return to landing on logout
-    }
-  });
-
-  return () => subscription.unsubscribe();
-}, []);
-
-
+    return () => subscription.unsubscribe();
+  }, []);
 
   if (loading) return null;
 
-  // ✅ Recovery page has priority
-  if (page === "reset-password") {
-    return <ResetPasswordConfirmPage onNavigate={setPage} />;
-  }
+  return (
+    <Routes>
+      {/* PUBLIC */}
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/labs/:labId" element={<LabPreviewPage />} />
 
-  // ✅ Logged in → dashboard
-  if (session) {
-    return <DashboardPage onNavigate={setPage} />;
-  }
+      {/* AUTH PAGES */}
+      <Route
+        path="/login"
+        element={
+          <LoginPage
+            onNavigate={(page) => {
+              if (page === "create-account") navigate("/create-account");
+              else if (page === "password-reset") navigate("/password-reset");
+              else if (page === "dashboard") navigate("/dashboard");
+              else if (page === "landing") navigate("/");
+              else navigate("/login");
+            }}
+          />
+        }
+      />
+      <Route
+        path="/create-account"
+        element={<CreateAccountPage onNavigate={(page) => navigate(page === "login" ? "/login" : "/") } />}
+      />
+      <Route
+        path="/password-reset"
+        element={<PasswordResetPage onNavigate={(page) => navigate(page === "login" ? "/login" : "/") } />}
+      />
+      <Route
+        path="/reset-password"
+        element={<ResetPasswordConfirmPage onNavigate={(page) => navigate(page === "login" ? "/login" : "/") } />}
+      />
 
-  // ✅ Public pages
-  switch (page) {
-    case "login":
-      return <LoginPage onNavigate={setPage} />;
+      {/* PRIVATE */}
+      <Route
+        path="/dashboard"
+        element={session ? <DashboardPage /> : <Navigate to="/login" replace />}
+      />
 
-    case "create-account":
-      return <CreateAccountPage onNavigate={setPage} />;
-
-    case "password-reset":
-      return <PasswordResetPage onNavigate={setPage} />;
-
-    case "landing":
-    default:
-      return <LandingPage onNavigate={setPage} />;
-  }
+      {/* fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
 }
-
-export default App;
