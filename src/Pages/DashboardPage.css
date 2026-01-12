@@ -653,9 +653,15 @@
 
 .club-links {
   display: grid;
-  gap: 4px;
+  gap: 6px;
   font-size: 11px;
   color: var(--text-secondary);
+}
+
+.club-link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 @media (max-width: 900px) {

@@ -12,6 +12,11 @@ import { supabase, TABLES } from "../lib/supabase";
 import type { AnnouncementRow } from "../lib/supabase";
 import SearchPage from "./SearchPage";
 import DashboardSections from "./DashboardSections";
+import StaffList from "./StaffList";
+import ClubsPage from "./ClubsPage";
+import ProjectsPage from "./ProjectsPage";
+import EquipmentPage from "./EquipmentPage";
+import ActivityPage from "./ActivityPage";
 
 import FoothillLogo from "../assets/images/Foothill_College_logo.svg.png";
 import ETILogo from "../assets/images/ETILOGO.png";
@@ -52,45 +57,6 @@ type DashboardView =
   | "activity"
   | "metrics"
   | "search";
-
-/* ================= STAFF LIST ================= */
-
-const StaffList = () => {
-  const [staff, setStaff] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const load = async () => {
-      const { data } = await supabase
-        .from("staff")
-        .select("id, first_name, last_name, email, role, lab_assigned")
-        .order("last_name");
-
-      if (data) setStaff(data);
-      setLoading(false);
-    };
-
-    load();
-  }, []);
-
-  if (loading) return <p>Loading staff…</p>;
-  if (staff.length === 0) return <p>No staff records found.</p>;
-
-  return (
-    <div style={{ display: "grid", gap: 12 }}>
-      {staff.map((s) => (
-        <div key={s.id} className="content-card">
-          <strong>
-            {s.first_name} {s.last_name}
-          </strong>
-          <div style={{ fontSize: 13, opacity: 0.8 }}>{s.email}</div>
-          <div>Role: <strong>{s.role}</strong></div>
-          {s.lab_assigned && <div>Lab: {s.lab_assigned}</div>}
-        </div>
-      ))}
-    </div>
-  );
-};
 
 /* ================= COMPONENT ================= */
 
@@ -490,178 +456,28 @@ const DashboardPage = () => {
           {activeView === "activity" && (
             <>
               <h1 className="page-title">Activity</h1>
-              <div className="activity-panel">
-                <div className="activity-toolbar">
-                  <div className="activity-search">
-                    <SearchIcon />
-                    <input placeholder="Search Name..." />
-                  </div>
-                  <div className="activity-filters">
-                    <button type="button">Filter Date</button>
-                    <button type="button">Filter Lab</button>
-                  </div>
-                </div>
-
-                <div className="activity-table">
-                  <div className="activity-row activity-header">
-                    <div>Name</div>
-                    <div>CWID</div>
-                    <div>Time In</div>
-                    <div>Time Out</div>
-                    <div>Date</div>
-                    <div>Lab</div>
-                  </div>
-                  {Array.from({ length: 8 }).map((_, idx) => (
-                    <div key={`activity-${idx}`} className="activity-row">
-                      <div>Firstname Lastname</div>
-                      <div>12345678</div>
-                      <div>5:00 PM</div>
-                      <div>6:00 PM</div>
-                      <div>11/15/2025</div>
-                      <div>Lab 12345</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <ActivityPage />
             </>
           )}
 
           {activeView === "equipment" && (
             <>
               <h1 className="page-title">Equipment</h1>
-              <div className="equipment-panel">
-                <div className="equipment-search">
-                  <SearchIcon />
-                  <input placeholder="Search..." />
-                </div>
-
-                <div className="equipment-grid">
-                  {Array.from({ length: 9 }).map((_, idx) => (
-                    <div key={`equipment-${idx}`} className="equipment-card">
-                      <strong>Resource Name</strong>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
-                        ligula consequat fermentum.
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <EquipmentPage />
             </>
           )}
 
           {activeView === "projects" && (
             <>
               <h1 className="page-title">Projects</h1>
-              <div className="projects-layout">
-                <section className="projects-main">
-                  <div className="projects-search">
-                    <SearchIcon />
-                    <input placeholder="Search..." />
-                  </div>
-
-                  {Array.from({ length: 2 }).map((_, idx) => (
-                    <div key={`project-${idx}`} className="project-card">
-                      <div className="project-card-header">
-                        <h2>Project Name</h2>
-                        <button type="button" className="project-expand">⋮</button>
-                      </div>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
-                        ligula consequat fermentum. Sed cursus dapibus aliquet.
-                      </p>
-                      <div className="project-meta">
-                        <div>
-                          <div className="project-meta-title">Project Lead</div>
-                          <div>Advisor: John Doe Smith</div>
-                          <div>Email: student@foothill.edu</div>
-                          <div>(123)-456-7890</div>
-                        </div>
-                        <div>
-                          <div className="project-meta-title">Event Participation</div>
-                          <div>Research &amp; Service Leadership Symposium</div>
-                          <div>Foothill Innovation Challenge</div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </section>
-
-                <aside className="projects-events">
-                  <h2>Events</h2>
-                  <div className="event-card">
-                    <h3>Research &amp; Service Leadership Symposium</h3>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
-                      ligula consequat fermentum.
-                    </p>
-                    <div className="event-meta">
-                      <span>events.foothill.edu</span>
-                      <span>September 21, 2025</span>
-                      <span>Place 123</span>
-                    </div>
-                  </div>
-                  <div className="event-card">
-                    <h3>Berkeley Symposium</h3>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
-                      ligula consequat fermentum.
-                    </p>
-                    <div className="event-meta">
-                      <span>events.foothill.edu</span>
-                      <span>September 21, 2025</span>
-                      <span>Place 123</span>
-                    </div>
-                  </div>
-                  <div className="event-card">
-                    <h3>Foothill x Google Case Competition</h3>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
-                      ligula consequat fermentum.
-                    </p>
-                    <div className="event-meta">
-                      <span>events.foothill.edu</span>
-                      <span>September 21, 2025</span>
-                      <span>Place 123</span>
-                    </div>
-                  </div>
-                </aside>
-              </div>
+              <ProjectsPage />
             </>
           )}
 
           {activeView === "clubs" && (
             <>
               <h1 className="page-title">Clubs</h1>
-              <div className="clubs-panel">
-                <div className="clubs-search">
-                  <SearchIcon />
-                  <input placeholder="Search..." />
-                </div>
-
-                <div className="clubs-grid">
-                  {Array.from({ length: 4 }).map((_, idx) => (
-                    <div key={`club-${idx}`} className="club-card">
-                      <div className="club-card-header">
-                        <strong>Club Name</strong>
-                      </div>
-                      <div className="club-meta">
-                        <span>President: Joe Shmoe</span>
-                        <span>Advisor: John Doe Smith</span>
-                      </div>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
-                        ligula consequat fermentum. Sed cursus dapibus aliquet.
-                      </p>
-                      <div className="club-links">
-                        <span>www.discord.com</span>
-                        <span>Friday 5:00PM - 6:00PM</span>
-                        <span>Building 123</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <ClubsPage />
             </>
           )}
         </main>
