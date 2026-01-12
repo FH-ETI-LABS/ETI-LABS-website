@@ -493,6 +493,45 @@ const DashboardPage = () => {
               </div>
             </>
           )}
+
+          {activeView === "activity" && (
+            <>
+              <h1 className="page-title">Activity</h1>
+              <div className="activity-panel">
+                <div className="activity-toolbar">
+                  <div className="activity-search">
+                    <SearchIcon />
+                    <input placeholder="Search Name..." />
+                  </div>
+                  <div className="activity-filters">
+                    <button type="button">Filter Date</button>
+                    <button type="button">Filter Lab</button>
+                  </div>
+                </div>
+
+                <div className="activity-table">
+                  <div className="activity-row activity-header">
+                    <div>Name</div>
+                    <div>CWID</div>
+                    <div>Time In</div>
+                    <div>Time Out</div>
+                    <div>Date</div>
+                    <div>Lab</div>
+                  </div>
+                  {Array.from({ length: 8 }).map((_, idx) => (
+                    <div key={`activity-${idx}`} className="activity-row">
+                      <div>Firstname Lastname</div>
+                      <div>12345678</div>
+                      <div>5:00 PM</div>
+                      <div>6:00 PM</div>
+                      <div>11/15/2025</div>
+                      <div>Lab 12345</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </main>
       </div>
     </div>

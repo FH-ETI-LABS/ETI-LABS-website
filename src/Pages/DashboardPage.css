@@ -258,6 +258,80 @@
 }
 
 /* ===========================
+   ACTIVITY VIEW
+   =========================== */
+.activity-panel {
+  background-color: var(--bg-card);
+  border-radius: 18px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.activity-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.activity-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--hover-bg);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: var(--text-secondary);
+  min-width: 220px;
+}
+
+.activity-search input {
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+}
+
+.activity-filters {
+  display: flex;
+  gap: 8px;
+}
+
+.activity-filters button {
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.activity-table {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.activity-row {
+  display: grid;
+  grid-template-columns: 1.6fr 0.9fr 0.9fr 0.9fr 0.9fr 0.9fr;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+}
+
+.activity-header {
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+/* ===========================
    METRICS VIEW
    =========================== */
 .metrics-layout {
