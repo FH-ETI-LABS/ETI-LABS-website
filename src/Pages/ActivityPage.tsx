@@ -82,9 +82,9 @@ const ActivityPage = () => {
       </div>
 
       {showFilters && (
-        <div style={{ display: "flex", gap: 12, marginBottom: 12, flexWrap: "wrap" }}>
+        <div className="activity-filter-panel">
           <label>
-            <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Date</div>
+            <span>Date</span>
             <input
               type="date"
               value={selectedDate}
@@ -92,7 +92,7 @@ const ActivityPage = () => {
             />
           </label>
           <label>
-            <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Lab</div>
+            <span>Lab</span>
             <select
               value={selectedLab}
               onChange={(event) => setSelectedLab(event.target.value)}

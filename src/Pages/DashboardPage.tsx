@@ -17,6 +17,7 @@ import ClubsPage from "./ClubsPage";
 import ProjectsPage from "./ProjectsPage";
 import EquipmentPage from "./EquipmentPage";
 import ActivityPage from "./ActivityPage";
+import MetricsPage from "./MetricsPage";
 
 import FoothillLogo from "../assets/images/Foothill_College_logo.svg.png";
 import ETILogo from "../assets/images/ETILOGO.png";
@@ -349,107 +350,7 @@ const DashboardPage = () => {
           {activeView === "metrics" && (
             <>
               <h1 className="page-title">Metrics</h1>
-              <div className="metrics-layout">
-                <section className="metrics-left">
-                  <div className="metrics-card">
-                    <h2>Numbers</h2>
-                    <ul className="metrics-list">
-                      <li>
-                        <span>Active Clubs</span>
-                        <strong>12345</strong>
-                      </li>
-                      <li>
-                        <span>Open Laboratories</span>
-                        <strong>12345</strong>
-                      </li>
-                      <li>
-                        <span>Equipment</span>
-                        <strong>12345</strong>
-                      </li>
-                      <li>
-                        <span>Students Subscribed to Newsletter</span>
-                        <strong>12345</strong>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="metrics-card">
-                    <h2>Particulars</h2>
-                    <div className="metrics-particulars">
-                      <div className="metrics-donut">
-                        <div className="donut-ring" />
-                        <div>
-                          <div className="metrics-label">Total Staff</div>
-                          <div className="metrics-value">12345</div>
-                          <div className="metrics-chip">20% in MESA</div>
-                        </div>
-                      </div>
-                      <div className="metrics-trend">
-                        <div className="trend-chart">
-                          <div className="trend-bar tall" />
-                          <div className="trend-bar" />
-                          <div className="trend-bar tallest" />
-                        </div>
-                        <div>
-                          <div className="metrics-label">Lab Visits this Quarter</div>
-                          <div className="metrics-value">12345</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-
-                <section className="metrics-right">
-                  <div className="metrics-card metrics-right-card">
-                    <div className="metrics-card-header">
-                      <h2>Projects &amp; Innovation</h2>
-                      <div className="mini-bars">
-                        <span />
-                        <span />
-                        <span />
-                      </div>
-                    </div>
-                    <div className="metrics-summary">
-                      <div>
-                        <div className="metrics-label">Active Projects</div>
-                        <strong>12345</strong>
-                      </div>
-                      <div>
-                        <div className="metrics-label">Completed Projects</div>
-                        <strong>12345</strong>
-                      </div>
-                    </div>
-                    <div className="metrics-tags">
-                      <span>5 projects in Google Case Competition</span>
-                      <span>2 projects in Foothill Innovation Challenge</span>
-                      <span>7 projects in Berkeley Symposium</span>
-                      <span>2 projects in RSLS</span>
-                      <span>4 projects in None</span>
-                    </div>
-
-                    <div className="metrics-divider" />
-
-                    <div className="metrics-awards">
-                      <div className="metrics-awards-header">
-                        <h3>Awards/Honors</h3>
-                        <strong>12345</strong>
-                      </div>
-                      <div className="award-card">
-                        <div className="award-eyebrow">Recent Highlights</div>
-                        <div className="award-title">Award/Honor Name</div>
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
-                          ligula consequat fermentum.
-                        </p>
-                        <div className="award-footer">
-                          <span>Joe, John Doe, Harry Potter</span>
-                          <span>2022</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </div>
+              <MetricsPage />
             </>
           )}
 

@@ -371,6 +371,38 @@
   font-size: 12px;
 }
 
+.activity-filter-panel {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.activity-filter-panel label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.activity-filter-panel input,
+.activity-filter-panel select {
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.activity-filter-panel button {
+  border: 1px solid var(--border-color);
+  background: var(--hover-bg);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+}
 .activity-table {
   display: grid;
   gap: 6px;
