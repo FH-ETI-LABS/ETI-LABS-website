@@ -2,7 +2,7 @@
 .login-page {
   width: 100vw;
   height: 100vh;
-  background: #f3f3f3;
+  background: #eeeeee;
   position: relative;
 
   display: flex;
@@ -17,17 +17,21 @@
   top: 24px;
   right: 24px;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   z-index: 9999;            /* 🔥 FIX */
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }
 
 .icon-btn {
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: none;
-  background: white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  background: transparent;
+  box-shadow: none;
   cursor: pointer;
   pointer-events: auto;     /* 🔥 ENSURE clicks */
 
@@ -35,25 +39,25 @@
 
 /* MAIN CONTENT WRAPPER */
 .login-container-main {
-  width: 1400px;          /* matches reference width */
-  max-width: 94vw;
+  width: 1280px;          /* matches reference width */
+  max-width: 92vw;
 }
 
 /* TITLE */
 .login-title {
   text-align: center;
   color: #8b0000;
-  font-size: 44px;        /* smaller than before */
+  font-size: 38px;
   font-weight: 700;
-  margin-bottom: 56px;
-  letter-spacing: 1px;
+  margin-bottom: 40px;
+  letter-spacing: 0.6px;
 }
 
 /* TWO COLUMNS */
 .login-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;              /* tighter like screenshot */
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 32px;
   align-items: stretch;
 }
 
@@ -65,29 +69,29 @@
 /* RIGHT PANEL */
 .login-right {
   background: white;
-  padding: 40px;
-  border-radius: 18px;
+  padding: 28px 32px;
+  border-radius: 22px;
 
-  min-height: 480px;      /* NOT huge */
+  min-height: 460px;      /* NOT huge */
   height: 100%;
 
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
 }
 
 .login-right h2 {
   margin-top: 0;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .login-right h3 {
-  margin-top: 24px;
-  font-size: 18px;
+  margin-top: 18px;
+  font-size: 16px;
 }
 
 .login-right p,
 .login-right li {
-  font-size: 0.95rem;
-  line-height: 1.45;      /* denser text */
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .login-right ul {

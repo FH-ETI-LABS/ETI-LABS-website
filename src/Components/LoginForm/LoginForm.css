@@ -8,10 +8,10 @@
 /* LEFT CARD */
 .login-card {
   background: white;
-  border-radius: 18px;
-  padding: 40px;
-  min-height: 480px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  border-radius: 22px;
+  padding: 28px 32px;
+  min-height: 460px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
 
   /* 🔥 critical */
   pointer-events: auto;
@@ -24,21 +24,21 @@
 
 /* TITLE */
 .login-logo {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
   color: #111;
 }
 
 /* INPUTS */
 .form-group {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .form-input {
   width: 100%;
-  padding: 14px 18px;
-  font-size: 0.95rem;
+  padding: 12px 16px;
+  font-size: 0.9rem;
   border-radius: 999px;
   border: none;
   background: #f0f0f0;
@@ -60,9 +60,9 @@
 .help-link {
   display: inline-flex;
   align-items: center;
-  margin-top: 8px;
+  margin-top: 6px;
 
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #b00000;
 
   background: transparent;
@@ -85,15 +85,15 @@
 /* BUTTON */
 .login-button {
   width: 100%;
-  margin-top: 18px;
-  padding: 12px 0;
+  margin-top: 16px;
+  padding: 11px 0;
   border-radius: 999px;
   border: none;
   background: #8b0000;
   color: white;
   font-weight: 600;
-  font-size: 0.9rem;
-  letter-spacing: 0.6px;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
   cursor: pointer;
 }
 
@@ -108,14 +108,14 @@
 
 /* DIVIDER */
 .divider {
-  margin: 18px 0;
+  margin: 16px 0;
   height: 1px;
   background: #ddd;
 }
 
 /* FOOTER */
 .login-links {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #333;
 }
 
