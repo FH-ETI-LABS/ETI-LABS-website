@@ -5,10 +5,18 @@ import { sampleProject, sampleCameras, sampleClubs } from "../data/sampleData";
 
 import "./DashboardSections.css";
 
-export default function DashboardSections() {
+type DashboardSectionsProps = {
+  showTitle?: boolean;
+  className?: string;
+};
+
+export default function DashboardSections({
+  showTitle = true,
+  className = "",
+}: DashboardSectionsProps) {
   return (
-    <div className="dashboard-sections">
-      <h2 className="section-title">Quick Access</h2>
+    <div className={`dashboard-sections ${className}`.trim()}>
+      {showTitle && <h2 className="section-title">Quick Access</h2>}
 
       <div className="dashboard-grid">
         {/* Provide minimal placeholder props so components compile under strict typings */}

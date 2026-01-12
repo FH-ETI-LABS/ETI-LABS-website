@@ -10,6 +10,8 @@ import "./DashboardPage.css";
 import { useDarkMode } from "../contexts/DarkModeContext";
 import { supabase, TABLES } from "../lib/supabase";
 import type { AnnouncementRow } from "../lib/supabase";
+import SearchPage from "./SearchPage";
+import DashboardSections from "./DashboardSections";
 
 import FoothillLogo from "../assets/images/Foothill_College_logo.svg.png";
 import ETILogo from "../assets/images/ETILOGO.png";
@@ -239,68 +241,70 @@ const DashboardPage = () => {
       <div className="dashboard-layout">
         {/* SIDEBAR */}
         <aside className="sidebar">
-          <div className="user-profile-section">
-            <div className="user-avatar">{initial}</div>
-            <div className="user-greeting">Hello, {staffProfile.first_name}!</div>
-           {isAdmin && <div className="admin-badge">🔥 Admin</div>}
-            <button
-              className="logout-button"
-              onClick={() => handleLogout()}
-            >
-              Logout
-            </button>
-          </div>
-
-          <nav className="nav-menu">
-            <div
-              className={`nav-item ${activeView === "dashboard" ? "active" : ""}`}
-              onClick={() => setActiveView("dashboard")}
-            >
-              <HomeIcon /> <span className="nav-text">Dashboard</span>
-            </div>
-
-            {isAdmin && (
-              <div
-                className={`nav-item ${activeView === "staff" ? "active" : ""}`}
-                onClick={() => setActiveView("staff")}
+          <div className="sidebar-card">
+            <div className="user-profile-section">
+              <div className="user-avatar">{initial}</div>
+              <div className="user-greeting">Hello, {staffProfile.first_name}!</div>
+              {isAdmin && <div className="admin-badge">🔥 Admin</div>}
+              <button
+                className="logout-button"
+                onClick={() => handleLogout()}
               >
-                <UsersIcon /> <span className="nav-text">Staff</span>
+                Logout
+              </button>
+            </div>
+
+            <nav className="nav-menu">
+              <div
+                className={`nav-item ${activeView === "dashboard" ? "active" : ""}`}
+                onClick={() => setActiveView("dashboard")}
+              >
+                <HomeIcon /> <span className="nav-text">Dashboard</span>
               </div>
-            )}
 
-            <div
-              className={`nav-item ${activeView === "clubs" ? "active" : ""}`}
-              onClick={() => setActiveView("clubs")}
-            >
-              <HexagonIcon /> <span className="nav-text">Clubs</span>
-            </div>
+              {isAdmin && (
+                <div
+                  className={`nav-item ${activeView === "staff" ? "active" : ""}`}
+                  onClick={() => setActiveView("staff")}
+                >
+                  <UsersIcon /> <span className="nav-text">Staff</span>
+                </div>
+              )}
 
-            <div
-              className={`nav-item expandable ${labOpen ? "expanded" : ""}`}
-              onClick={() => setLabOpen(!labOpen)}
-            >
-              <CpuIcon /> <span className="nav-text">Laboratory</span>
-              <ChevronIcon />
-            </div>
-
-            {labOpen && (
-              <div className="nav-submenu">
-                <div onClick={() => setActiveView("projects")}>Projects</div>
-                <div onClick={() => setActiveView("equipment")}>Equipment</div>
-                <div onClick={() => setActiveView("activity")}>Activity</div>
-                {isAdmin && (
-                  <div onClick={() => setActiveView("metrics")}>Metrics</div>
-                )}
+              <div
+                className={`nav-item ${activeView === "clubs" ? "active" : ""}`}
+                onClick={() => setActiveView("clubs")}
+              >
+                <HexagonIcon /> <span className="nav-text">Clubs</span>
               </div>
-            )}
 
-            <div
-              className={`nav-item ${activeView === "search" ? "active" : ""}`}
-              onClick={() => setActiveView("search")}
-            >
-              <SearchIcon /> <span className="nav-text">Search</span>
-            </div>
-          </nav>
+              <div
+                className={`nav-item expandable ${labOpen ? "expanded" : ""}`}
+                onClick={() => setLabOpen(!labOpen)}
+              >
+                <CpuIcon /> <span className="nav-text">Laboratory</span>
+                <ChevronIcon />
+              </div>
+
+              {labOpen && (
+                <div className="nav-submenu">
+                  <div onClick={() => setActiveView("projects")}>Projects</div>
+                  <div onClick={() => setActiveView("equipment")}>Equipment</div>
+                  <div onClick={() => setActiveView("activity")}>Activity</div>
+                  {isAdmin && (
+                    <div onClick={() => setActiveView("metrics")}>Metrics</div>
+                  )}
+                </div>
+              )}
+
+              <div
+                className={`nav-item ${activeView === "search" ? "active" : ""}`}
+                onClick={() => setActiveView("search")}
+              >
+                <SearchIcon /> <span className="nav-text">Search</span>
+              </div>
+            </nav>
+          </div>
         </aside>
 
         {/* MAIN */}
@@ -308,7 +312,7 @@ const DashboardPage = () => {
           {profileErrorBanner}
           {activeView === "dashboard" && (
             <>
-              <h1 className="page-title">Your Dashboard</h1>
+              <h1 className="page-title dashboard-title">Your Dashboard</h1>
 
               {/* If staff profile is missing, show a small fallback summary using auth user */}
               {!staffProfile && authUser && (
@@ -318,8 +322,8 @@ const DashboardPage = () => {
                 </div>
               )}
 
-              <div className="content-card">
-                <h2>Announcements</h2>
+              <div className="content-card dashboard-card">
+                <h2 className="dashboard-card-title">Announcements</h2>
 
                 {/* Debug panel: show raw session / profile info so we can see why dashboard appears blank */}
                 {/* Debug panel removed: session/profile debug information hidden in production view */}
@@ -353,6 +357,13 @@ const DashboardPage = () => {
                   </div>
                 ))}
               </div>
+
+              <div className="content-card dashboard-card">
+                <div className="quick-access-header">
+                  <h2 className="dashboard-card-title">Quick Access</h2>
+                </div>
+                <DashboardSections showTitle={false} className="dashboard-quick-access" />
+              </div>
             </>
           )}
 
@@ -365,25 +376,7 @@ const DashboardPage = () => {
 
           {activeView === "search" && (
             <>
-              <h1 className="page-title">Search</h1>
-              <div className="search-panel">
-                <div className="search-input-row">
-                  <SearchIcon />
-                  <input className="search-input" placeholder="Search..." />
-                </div>
-
-                <div className="search-results">
-                  {["Site Page", "Site Page", "Site Page", "Site Page", "Site Page"].map((title, idx) => (
-                    <div key={`${title}-${idx}`} className="search-result-card">
-                      <strong>{title}</strong>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
-                        ligula consequat fermentum.
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <SearchPage />
             </>
           )}
 
