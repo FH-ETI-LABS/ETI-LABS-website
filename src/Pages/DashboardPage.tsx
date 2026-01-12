@@ -322,7 +322,7 @@ const DashboardPage = () => {
                 <h2>Announcements</h2>
 
                 {/* Debug panel: show raw session / profile info so we can see why dashboard appears blank */}
-                  {/* Debug panel removed: session/profile debug information hidden in production view */}
+                {/* Debug panel removed: session/profile debug information hidden in production view */}
 
                 {isAdmin && (
                   <div className="announcement-input-container">
@@ -360,6 +360,30 @@ const DashboardPage = () => {
             <>
               <h1 className="page-title">Staff Directory</h1>
               <StaffList />
+            </>
+          )}
+
+          {activeView === "search" && (
+            <>
+              <h1 className="page-title">Search</h1>
+              <div className="search-panel">
+                <div className="search-input-row">
+                  <SearchIcon />
+                  <input className="search-input" placeholder="Search..." />
+                </div>
+
+                <div className="search-results">
+                  {["Site Page", "Site Page", "Site Page", "Site Page", "Site Page"].map((title, idx) => (
+                    <div key={`${title}-${idx}`} className="search-result-card">
+                      <strong>{title}</strong>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
+                        ligula consequat fermentum.
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </>
           )}
         </main>
