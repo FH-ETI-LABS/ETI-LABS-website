@@ -117,7 +117,6 @@ const DashboardPage = () => {
   const [announcementText, setAnnouncementText] = useState("");
   const [announcements, setAnnouncements] = useState<AnnouncementRow[]>([]);
   const [authUser, setAuthUser] = useState<any>(null);
-  const [rawSession, setRawSession] = useState<any>(null);
 
   /* ================= LOAD PROFILE ================= */
 
@@ -165,17 +164,10 @@ const DashboardPage = () => {
     loadProfile();
     loadAnnouncements();
     (async () => {
-      try {
-        const { data } = await supabase.auth.getUser();
-        setAuthUser(data?.user ?? null);
         try {
-          // also fetch the raw session for debugging visibility
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          const s = await supabase.auth.getSession();
-          setRawSession(s?.data ?? null);
+          const { data } = await supabase.auth.getUser();
+          setAuthUser(data?.user ?? null);
         } catch {}
-      } catch {}
     })();
   }, []);
 
@@ -330,12 +322,7 @@ const DashboardPage = () => {
                 <h2>Announcements</h2>
 
                 {/* Debug panel: show raw session / profile info so we can see why dashboard appears blank */}
-                <details style={{ marginBottom: 12 }}>
-                  <summary style={{ cursor: "pointer" }}>Debug: session & profile</summary>
-                  <pre style={{ maxHeight: 240, overflow: "auto", background: "#f6f8fa", padding: 8 }}>
-                    {JSON.stringify({ session: rawSession, authUser, staffProfile }, null, 2)}
-                  </pre>
-                </details>
+                  {/* Debug panel removed: session/profile debug information hidden in production view */}
 
                 {isAdmin && (
                   <div className="announcement-input-container">

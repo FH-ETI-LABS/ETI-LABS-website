@@ -118,7 +118,6 @@ const LoginForm = ({ onNavigate }: LoginFormProps) => {
             {loading ? "Signing in..." : "NEXT"}
           </button>
         </form>
-
         {/* ✅ EVERYTHING BELOW IS OUTSIDE THE FORM */}
 
         <button
