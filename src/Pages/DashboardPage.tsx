@@ -532,6 +532,145 @@ const DashboardPage = () => {
               </div>
             </>
           )}
+
+          {activeView === "equipment" && (
+            <>
+              <h1 className="page-title">Equipment</h1>
+              <div className="equipment-panel">
+                <div className="equipment-search">
+                  <SearchIcon />
+                  <input placeholder="Search..." />
+                </div>
+
+                <div className="equipment-grid">
+                  {Array.from({ length: 9 }).map((_, idx) => (
+                    <div key={`equipment-${idx}`} className="equipment-card">
+                      <strong>Resource Name</strong>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
+                        ligula consequat fermentum.
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
+          {activeView === "projects" && (
+            <>
+              <h1 className="page-title">Projects</h1>
+              <div className="projects-layout">
+                <section className="projects-main">
+                  <div className="projects-search">
+                    <SearchIcon />
+                    <input placeholder="Search..." />
+                  </div>
+
+                  {Array.from({ length: 2 }).map((_, idx) => (
+                    <div key={`project-${idx}`} className="project-card">
+                      <div className="project-card-header">
+                        <h2>Project Name</h2>
+                        <button type="button" className="project-expand">⋮</button>
+                      </div>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
+                        ligula consequat fermentum. Sed cursus dapibus aliquet.
+                      </p>
+                      <div className="project-meta">
+                        <div>
+                          <div className="project-meta-title">Project Lead</div>
+                          <div>Advisor: John Doe Smith</div>
+                          <div>Email: student@foothill.edu</div>
+                          <div>(123)-456-7890</div>
+                        </div>
+                        <div>
+                          <div className="project-meta-title">Event Participation</div>
+                          <div>Research &amp; Service Leadership Symposium</div>
+                          <div>Foothill Innovation Challenge</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </section>
+
+                <aside className="projects-events">
+                  <h2>Events</h2>
+                  <div className="event-card">
+                    <h3>Research &amp; Service Leadership Symposium</h3>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
+                      ligula consequat fermentum.
+                    </p>
+                    <div className="event-meta">
+                      <span>events.foothill.edu</span>
+                      <span>September 21, 2025</span>
+                      <span>Place 123</span>
+                    </div>
+                  </div>
+                  <div className="event-card">
+                    <h3>Berkeley Symposium</h3>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
+                      ligula consequat fermentum.
+                    </p>
+                    <div className="event-meta">
+                      <span>events.foothill.edu</span>
+                      <span>September 21, 2025</span>
+                      <span>Place 123</span>
+                    </div>
+                  </div>
+                  <div className="event-card">
+                    <h3>Foothill x Google Case Competition</h3>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
+                      ligula consequat fermentum.
+                    </p>
+                    <div className="event-meta">
+                      <span>events.foothill.edu</span>
+                      <span>September 21, 2025</span>
+                      <span>Place 123</span>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </>
+          )}
+
+          {activeView === "clubs" && (
+            <>
+              <h1 className="page-title">Clubs</h1>
+              <div className="clubs-panel">
+                <div className="clubs-search">
+                  <SearchIcon />
+                  <input placeholder="Search..." />
+                </div>
+
+                <div className="clubs-grid">
+                  {Array.from({ length: 4 }).map((_, idx) => (
+                    <div key={`club-${idx}`} className="club-card">
+                      <div className="club-card-header">
+                        <strong>Club Name</strong>
+                      </div>
+                      <div className="club-meta">
+                        <span>President: Joe Shmoe</span>
+                        <span>Advisor: John Doe Smith</span>
+                      </div>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor tincidunt
+                        ligula consequat fermentum. Sed cursus dapibus aliquet.
+                      </p>
+                      <div className="club-links">
+                        <span>www.discord.com</span>
+                        <span>Friday 5:00PM - 6:00PM</span>
+                        <span>Building 123</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </main>
       </div>
     </div>
