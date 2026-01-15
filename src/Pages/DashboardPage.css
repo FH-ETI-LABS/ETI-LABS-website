@@ -631,6 +631,96 @@
   border: 1px solid var(--border-color);
 }
 
+.clubs-form {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+  margin-bottom: 16px;
+}
+
+.clubs-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.clubs-form-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.clubs-form-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.clubs-form-grid label {
+  display: grid;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.clubs-form-grid input,
+.clubs-form-grid textarea {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 12px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  resize: vertical;
+}
+
+.clubs-form-description {
+  grid-column: span 3;
+}
+
+.clubs-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.clubs-form-actions button,
+.clubs-form-secondary {
+  border-radius: 999px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-color);
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.clubs-form-actions button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.clubs-form-secondary {
+  background: transparent;
+}
+
+.clubs-form-error {
+  color: #b91c1c;
+  font-size: 12px;
+}
+
+.clubs-auth-hint {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.08);
+  color: var(--text-secondary);
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
 .clubs-search {
   display: flex;
   align-items: center;
@@ -666,7 +756,32 @@
 }
 
 .club-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 8px;
+}
+
+.club-card-actions {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.club-card-actions button {
+  border-radius: 999px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.club-card-danger {
+  color: #b91c1c;
+  border-color: rgba(185, 28, 28, 0.5);
+  background: rgba(185, 28, 28, 0.08);
 }
 
 .club-meta {
@@ -699,6 +814,14 @@
 @media (max-width: 900px) {
   .clubs-grid {
     grid-template-columns: 1fr;
+  }
+
+  .clubs-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .clubs-form-description {
+    grid-column: span 1;
   }
 }
 

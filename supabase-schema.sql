@@ -10,6 +10,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- ============================================
 CREATE TABLE IF NOT EXISTS staff (
     id BIGSERIAL PRIMARY KEY,
+    user_id UUID UNIQUE REFERENCES auth.users(id),
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     job_title VARCHAR(200) NOT NULL,
@@ -31,6 +32,7 @@ CREATE TABLE IF NOT EXISTS staff (
 CREATE INDEX IF NOT EXISTS idx_staff_email ON staff(email);
 CREATE INDEX IF NOT EXISTS idx_staff_cwid ON staff(cwid);
 CREATE INDEX IF NOT EXISTS idx_staff_lab ON staff(lab_assigned);
+CREATE INDEX IF NOT EXISTS idx_staff_user_id ON staff(user_id);
 
 -- ============================================
 -- STEM CLUBS TABLE
@@ -144,14 +146,34 @@ ALTER TABLE announcements ENABLE ROW LEVEL SECURITY;
 -- Adjust these based on your security requirements
 
 -- Staff table policies
+DROP POLICY IF EXISTS "Allow read access to staff" ON staff;
+DROP POLICY IF EXISTS "Allow insert access to staff" ON staff;
+DROP POLICY IF EXISTS "Allow update access to staff" ON staff;
+
 CREATE POLICY "Allow read access to staff" ON staff
-    FOR SELECT USING (true);
+    FOR SELECT USING (auth.role() = 'authenticated');
 
-CREATE POLICY "Allow insert access to staff" ON staff
-    FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Allow admin insert access to staff" ON staff
+    FOR INSERT WITH CHECK (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
 
-CREATE POLICY "Allow update access to staff" ON staff
-    FOR UPDATE USING (auth.role() = 'authenticated');
+CREATE POLICY "Allow admin update access to staff" ON staff
+    FOR UPDATE USING (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
 
 -- STEM Clubs table policies
 CREATE POLICY "Allow read access to stem_clubs" ON stem_clubs

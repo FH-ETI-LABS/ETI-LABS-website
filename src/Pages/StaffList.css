@@ -3,6 +3,101 @@
   gap: 12px;
 }
 
+.staff-form {
+  display: grid;
+  gap: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 16px;
+  color: var(--text-primary);
+}
+
+.staff-form-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.staff-form-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.staff-form-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.staff-form-grid label {
+  display: grid;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.staff-form-grid input {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 12px;
+  background: var(--bg-sidebar);
+  color: var(--text-primary);
+}
+
+.staff-form-communities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.staff-form-communities span {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.staff-form-communities label {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.staff-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.staff-form-actions button,
+.staff-form-secondary {
+  border-radius: 999px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-color);
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.staff-form-actions button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.staff-form-secondary {
+  background: transparent;
+}
+
+.staff-form-error {
+  color: #b91c1c;
+  font-size: 12px;
+}
+
 .staff-search {
   display: flex;
   align-items: center;
@@ -30,7 +125,7 @@
 
 .staff-card {
   display: grid;
-  grid-template-columns: auto 1.4fr 0.6fr 0.8fr;
+  grid-template-columns: auto 1.4fr 0.6fr 0.8fr auto;
   gap: 16px;
   align-items: center;
   background: var(--bg-card);
@@ -89,8 +184,47 @@
   font-size: 11px;
 }
 
+.staff-actions {
+  display: grid;
+  gap: 6px;
+  justify-items: end;
+}
+
+.staff-action {
+  border-radius: 999px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.staff-action-danger {
+  color: #b91c1c;
+  border-color: rgba(185, 28, 28, 0.5);
+  background: rgba(185, 28, 28, 0.08);
+}
+
 @media (max-width: 900px) {
   .staff-card {
     grid-template-columns: auto 1fr;
+    row-gap: 12px;
+  }
+
+  .staff-actions {
+    justify-items: start;
+  }
+}
+
+@media (max-width: 1000px) {
+  .staff-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .staff-form-grid {
+    grid-template-columns: 1fr;
   }
 }
