@@ -144,7 +144,11 @@ const DashboardPage = () => {
 
   const createAnnouncement = async () => {
     if (!announcementText.trim()) return;
-    if (staffProfile.role !== "admin") return;
+    if (!staffProfile || staffProfile.role !== "admin") return;
+    if (!staffProfile.user_id) {
+      setProfileError("Staff profile is missing a linked user id.");
+      return;
+    }
 
     await supabase.from(TABLES.ANNOUNCEMENTS).insert({
       content: announcementText.trim(),
@@ -181,8 +185,8 @@ const DashboardPage = () => {
       </div>
     ) : null;
 
-  const isAdmin = staffProfile.role === "admin";
-  const initial = staffProfile.first_name?.[0]?.toUpperCase() ?? "?";
+  const isAdmin = staffProfile?.role === "admin";
+  const initial = staffProfile?.first_name?.[0]?.toUpperCase() ?? "?";
 
   /* ================= RENDER ================= */
 
@@ -211,7 +215,9 @@ const DashboardPage = () => {
           <div className="sidebar-card">
             <div className="user-profile-section">
               <div className="user-avatar">{initial}</div>
-              <div className="user-greeting">Hello, {staffProfile.first_name}!</div>
+              <div className="user-greeting">
+                Hello, {staffProfile?.first_name ?? "there"}!
+              </div>
               {isAdmin && <div className="admin-badge">🔥 Admin</div>}
               <button
                 className="logout-button"

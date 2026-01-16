@@ -189,7 +189,7 @@ const ClubsPage = () => {
       return;
     }
 
-    await reloadClubs();
+    setClubs((prev) => prev.filter((item) => item.id !== club.id));
   };
 
   if (loading) return <p>Loading clubs…</p>;

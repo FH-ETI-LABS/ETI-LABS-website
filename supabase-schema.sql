@@ -149,6 +149,7 @@ ALTER TABLE announcements ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Allow read access to staff" ON staff;
 DROP POLICY IF EXISTS "Allow insert access to staff" ON staff;
 DROP POLICY IF EXISTS "Allow update access to staff" ON staff;
+DROP POLICY IF EXISTS "Allow delete access to staff" ON staff;
 
 CREATE POLICY "Allow read access to staff" ON staff
     FOR SELECT USING (auth.role() = 'authenticated');
@@ -175,6 +176,17 @@ CREATE POLICY "Allow admin update access to staff" ON staff
         )
     );
 
+CREATE POLICY "Allow admin delete access to staff" ON staff
+    FOR DELETE USING (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
+
 -- STEM Clubs table policies
 CREATE POLICY "Allow read access to stem_clubs" ON stem_clubs
     FOR SELECT USING (true);
@@ -184,6 +196,20 @@ CREATE POLICY "Allow insert access to stem_clubs" ON stem_clubs
 
 CREATE POLICY "Allow update access to stem_clubs" ON stem_clubs
     FOR UPDATE USING (auth.role() = 'authenticated');
+
+DROP POLICY IF EXISTS "Allow delete access to stem_clubs" ON stem_clubs;
+DROP POLICY IF EXISTS "Allow admin delete access to stem_clubs" ON stem_clubs;
+
+CREATE POLICY "Allow admin delete access to stem_clubs" ON stem_clubs
+    FOR DELETE USING (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
 
 -- Lab Projects table policies
 CREATE POLICY "Allow read access to lab_projects" ON lab_projects
