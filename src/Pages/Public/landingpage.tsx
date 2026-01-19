@@ -4,12 +4,12 @@ import FoothillLogo from "../../assets/images/Foothill_College_logo.svg.png";
 import ETILogo from "../../assets/images/ETILOGO.png";
 
 const LABS = [
-  { id: "ai", title: "Artificial Intelligence", tag: "ML, LLMs & Robotics", color: "#8B5CF6" },
-  { id: "quantum", title: "Quantum Computing", tag: "Qubits & Algorithms", color: "#06B6D4" },
-  { id: "space", title: "Space Sciences", tag: "AstroTech & Systems", color: "#F97316" },
-  { id: "xr", title: "XR/VR Systems", tag: "Immersive Learning", color: "#EF4444" },
-  { id: "energy", title: "Energy Technologies", tag: "Sustainable Systems", color: "#10B981" },
-  { id: "lifesciences", title: "Life Sciences", tag: "Bio & Health Tech", color: "#F59E0B" },
+  { id: "ai", title: "Artificial Intelligence", tag: "ML, LLMs & Robotics", color: "#0EA5A4" },
+  { id: "quantum", title: "Quantum Computing", tag: "Qubits & Algorithms", color: "#F97316" },
+  { id: "space", title: "Space Sciences", tag: "AstroTech & Systems", color: "#1D4ED8" },
+  { id: "xr", title: "XR/VR Systems", tag: "Immersive Learning", color: "#DC2626" },
+  { id: "energy", title: "Energy Technologies", tag: "Sustainable Systems", color: "#059669" },
+  { id: "lifesciences", title: "Life Sciences", tag: "Bio & Health Tech", color: "#CA8A04" },
 ];
 
 type LandingPageProps = {
@@ -67,7 +67,7 @@ export default function LandingPage(_: LandingPageProps) {
   return (
     <div className="landing-container sharp-edge">
       <header className="top-nav" role="banner">
-  <div className="container header-inner">
+        <div className="container header-inner">
           <div className="brand">
             <img src={FoothillLogo} alt="Foothill College" className="brand-logo foothill" />
             <img src={ETILogo} alt="ETI" className="brand-logo eti" />
@@ -85,20 +85,77 @@ export default function LandingPage(_: LandingPageProps) {
       </header>
 
       <main>
-        <section className="hero-section">
+        <section className="hero-section" id="overview">
           <div className="container">
             <div className="hero-inner">
               <div className="hero-copy">
                 <span className="section-label">Institutional Portal</span>
                 <h1 className="hero-title">Emerging Technologies<br/>Institute</h1>
-                <p className="hero-sub">The interdisciplinary innovation hub at Foothill College. Bridging the gap between academic theory and industrial application across AI, Quantum, and Space systems.</p>
-                <div style={{ marginTop: 20, display: 'flex', gap: 12 }}>
+                <p className="hero-sub">
+                  The interdisciplinary innovation hub at Foothill College. We turn
+                  academic curiosity into deployable systems across AI, Quantum, Space,
+                  and energy tech.
+                </p>
+                <div className="hero-actions">
                   <button className="btn-primary sharp-edge" onClick={() => navigate('/create-account')}>Apply for Fellowship</button>
                   <button className="btn-secondary sharp-edge" onClick={() => window.open('/principia','_blank')}>Principia Magazine</button>
                 </div>
+                <div className="hero-stats">
+                  <div>
+                    <div className="hero-stat-value">6</div>
+                    <div className="hero-stat-label">Active Labs</div>
+                  </div>
+                  <div>
+                    <div className="hero-stat-value">120+</div>
+                    <div className="hero-stat-label">Student Researchers</div>
+                  </div>
+                  <div>
+                    <div className="hero-stat-value">18</div>
+                    <div className="hero-stat-label">Industry Partners</div>
+                  </div>
+                </div>
               </div>
 
-              <div className="hero-visual" aria-hidden="true" />
+              <div className="hero-visual" aria-hidden="true">
+                <div className="hero-card hero-card-main">
+                  <div className="hero-card-label">Current Focus</div>
+                  <div className="hero-card-title">Applied AI + Edge Systems</div>
+                  <div className="hero-card-meta">Rapid prototyping · Safety reviews · Field testing</div>
+                </div>
+                <div className="hero-card hero-card-secondary">
+                  <div className="hero-card-label">Live Pipeline</div>
+                  <div className="hero-card-title">Quantum Lab Cohort</div>
+                  <div className="hero-card-meta">8 teams · 12-week sprint</div>
+                </div>
+                <div className="hero-signal">
+                  <span>Signal</span>
+                  <strong>ETI-OPS</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="programs-section">
+          <div className="container">
+            <span className="section-label">Programs</span>
+            <h2 className="section-title">Build, Ship, Collaborate</h2>
+            <div className="program-grid">
+              <div className="program-card">
+                <div className="program-title">Research Fellowships</div>
+                <p>Mentored tracks for undergrads to lead lab experiments and publish outcomes.</p>
+                <button className="ghost-button" onClick={() => navigate('/create-account')}>Apply now</button>
+              </div>
+              <div className="program-card">
+                <div className="program-title">Industry Collaborations</div>
+                <p>Applied projects with real-world constraints and shared IP governance.</p>
+                <button className="ghost-button" onClick={() => navigate('/resources')}>View opportunities</button>
+              </div>
+              <div className="program-card">
+                <div className="program-title">Student Startups</div>
+                <p>Prototype funding, venture mentorship, and accelerator-ready validation.</p>
+                <button className="ghost-button" onClick={() => navigate('/labs')}>Join a lab</button>
+              </div>
             </div>
           </div>
         </section>
@@ -114,7 +171,7 @@ export default function LandingPage(_: LandingPageProps) {
                   <div className="lab-header">
                     <div className="lab-icon lab-accent" style={{ background: lab.color }}>{getIcon(lab.id)}</div>
                     <div>
-                      <div style={{ fontSize: 12, fontWeight: 900, color: '#374151' }}>{lab.tag}</div>
+                      <div className="lab-tagline">{lab.tag}</div>
                       <h3 className="lab-title">{lab.title}</h3>
                     </div>
                   </div>

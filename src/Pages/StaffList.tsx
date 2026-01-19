@@ -45,6 +45,7 @@ export default function StaffList() {
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const loadStaff = async () => {
@@ -66,6 +67,18 @@ export default function StaffList() {
     };
 
     loadStaff();
+    (async () => {
+      try {
+        const { data: auth } = await supabase.auth.getUser();
+        if (!auth?.user) return;
+        const { data: profile } = await supabase
+          .from("staff")
+          .select("role")
+          .eq("user_id", auth.user.id)
+          .maybeSingle();
+        setIsAdmin(profile?.role === "admin");
+      } catch {}
+    })();
   }, []);
 
   const reloadStaff = async () => {
@@ -224,153 +237,159 @@ export default function StaffList() {
 
   return (
     <div className="staff-page">
-      <form className="staff-form" onSubmit={handleSubmit}>
-        <div className="staff-form-header">
-          <div>
-            <strong>{editingId ? "Edit staff profile" : "Add staff profile"}</strong>
-            <div className="staff-form-subtitle">
-              {editingId
-                ? "Update staff details and save changes."
-                : "Create a new staff profile in the directory."}
+      {isAdmin ? (
+        <form className="staff-form" onSubmit={handleSubmit}>
+          <div className="staff-form-header">
+            <div>
+              <strong>{editingId ? "Edit staff profile" : "Add staff profile"}</strong>
+              <div className="staff-form-subtitle">
+                {editingId
+                  ? "Update staff details and save changes."
+                  : "Create a new staff profile in the directory."}
+              </div>
             </div>
+            {editingId && (
+              <button
+                className="staff-form-secondary"
+                type="button"
+                onClick={resetForm}
+              >
+                Cancel edit
+              </button>
+            )}
           </div>
-          {editingId && (
-            <button
-              className="staff-form-secondary"
-              type="button"
-              onClick={resetForm}
-            >
-              Cancel edit
+
+          <div className="staff-form-grid">
+            <label>
+              First name*
+              <input
+                name="first_name"
+                value={formState.first_name}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Last name*
+              <input
+                name="last_name"
+                value={formState.last_name}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Job title*
+              <input
+                name="job_title"
+                value={formState.job_title}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Role*
+              <input
+                name="role"
+                value={formState.role}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Lab assigned*
+              <input
+                name="lab_assigned"
+                value={formState.lab_assigned}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Email*
+              <input
+                name="email"
+                type="email"
+                value={formState.email}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Telephone
+              <input
+                name="telephone"
+                value={formState.telephone}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              CWID*
+              <input
+                name="cwid"
+                inputMode="numeric"
+                value={formState.cwid}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+
+          <div className="staff-form-communities">
+            <span>Communities</span>
+            <label>
+              <input
+                type="checkbox"
+                name="community_fws"
+                checked={formState.community_fws}
+                onChange={handleInputChange}
+              />
+              FWS
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="community_mesa"
+                checked={formState.community_mesa}
+                onChange={handleInputChange}
+              />
+              MESA
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="community_umoja"
+                checked={formState.community_umoja}
+                onChange={handleInputChange}
+              />
+              Umoja
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="community_puente"
+                checked={formState.community_puente}
+                onChange={handleInputChange}
+              />
+              Puente
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="community_veteran"
+                checked={formState.community_veteran}
+                onChange={handleInputChange}
+              />
+              Veteran
+            </label>
+          </div>
+
+          {formError && <div className="staff-form-error">{formError}</div>}
+
+          <div className="staff-form-actions">
+            <button type="submit" disabled={saving}>
+              {saving ? "Saving..." : editingId ? "Save changes" : "Add staff"}
             </button>
-          )}
+          </div>
+        </form>
+      ) : (
+        <div className="staff-form" style={{ padding: 16 }}>
+          Admin access required to add or edit staff profiles.
         </div>
-
-        <div className="staff-form-grid">
-          <label>
-            First name*
-            <input
-              name="first_name"
-              value={formState.first_name}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Last name*
-            <input
-              name="last_name"
-              value={formState.last_name}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Job title*
-            <input
-              name="job_title"
-              value={formState.job_title}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Role*
-            <input
-              name="role"
-              value={formState.role}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Lab assigned*
-            <input
-              name="lab_assigned"
-              value={formState.lab_assigned}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Email*
-            <input
-              name="email"
-              type="email"
-              value={formState.email}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Telephone
-            <input
-              name="telephone"
-              value={formState.telephone}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            CWID*
-            <input
-              name="cwid"
-              inputMode="numeric"
-              value={formState.cwid}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-
-        <div className="staff-form-communities">
-          <span>Communities</span>
-          <label>
-            <input
-              type="checkbox"
-              name="community_fws"
-              checked={formState.community_fws}
-              onChange={handleInputChange}
-            />
-            FWS
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              name="community_mesa"
-              checked={formState.community_mesa}
-              onChange={handleInputChange}
-            />
-            MESA
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              name="community_umoja"
-              checked={formState.community_umoja}
-              onChange={handleInputChange}
-            />
-            Umoja
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              name="community_puente"
-              checked={formState.community_puente}
-              onChange={handleInputChange}
-            />
-            Puente
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              name="community_veteran"
-              checked={formState.community_veteran}
-              onChange={handleInputChange}
-            />
-            Veteran
-          </label>
-        </div>
-
-        {formError && <div className="staff-form-error">{formError}</div>}
-
-        <div className="staff-form-actions">
-          <button type="submit" disabled={saving}>
-            {saving ? "Saving..." : editingId ? "Save changes" : "Add staff"}
-          </button>
-        </div>
-      </form>
+      )}
 
       <div className="staff-search">
         <span aria-hidden="true">🔍</span>
@@ -424,22 +443,24 @@ export default function StaffList() {
                 <div>{s.email}</div>
                 <div>{s.telephone || "—"}</div>
               </div>
-              <div className="staff-actions">
-                <button
-                  className="staff-action"
-                  type="button"
-                  onClick={() => handleEdit(s)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="staff-action staff-action-danger"
-                  type="button"
-                  onClick={() => handleDelete(s)}
-                >
-                  Delete
-                </button>
-              </div>
+              {isAdmin && (
+                <div className="staff-actions">
+                  <button
+                    className="staff-action"
+                    type="button"
+                    onClick={() => handleEdit(s)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="staff-action staff-action-danger"
+                    type="button"
+                    onClick={() => handleDelete(s)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           );
         })}

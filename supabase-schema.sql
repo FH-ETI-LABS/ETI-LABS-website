@@ -150,6 +150,9 @@ DROP POLICY IF EXISTS "Allow read access to staff" ON staff;
 DROP POLICY IF EXISTS "Allow insert access to staff" ON staff;
 DROP POLICY IF EXISTS "Allow update access to staff" ON staff;
 DROP POLICY IF EXISTS "Allow delete access to staff" ON staff;
+DROP POLICY IF EXISTS "Allow self insert access to staff" ON staff;
+DROP POLICY IF EXISTS "Allow bootstrap admin insert access to staff" ON staff;
+DROP POLICY IF EXISTS "Allow bootstrap admin update access to staff" ON staff;
 
 CREATE POLICY "Allow read access to staff" ON staff
     FOR SELECT USING (auth.role() = 'authenticated');
@@ -165,6 +168,25 @@ CREATE POLICY "Allow admin insert access to staff" ON staff
         )
     );
 
+CREATE POLICY "Allow self insert access to staff" ON staff
+    FOR INSERT WITH CHECK (
+        auth.role() = 'authenticated'
+        AND user_id = auth.uid()
+        AND role <> 'admin'
+    );
+
+CREATE POLICY "Allow bootstrap admin insert access to staff" ON staff
+    FOR INSERT WITH CHECK (
+        auth.role() = 'authenticated'
+        AND user_id = auth.uid()
+        AND role = 'admin'
+        AND NOT EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.role = 'admin'
+        )
+    );
+
 CREATE POLICY "Allow admin update access to staff" ON staff
     FOR UPDATE USING (
         auth.role() = 'authenticated'
@@ -174,6 +196,23 @@ CREATE POLICY "Allow admin update access to staff" ON staff
             WHERE s.user_id = auth.uid()
               AND s.role = 'admin'
         )
+    );
+
+CREATE POLICY "Allow bootstrap admin update access to staff" ON staff
+    FOR UPDATE
+    USING (
+        auth.role() = 'authenticated'
+        AND user_id = auth.uid()
+        AND NOT EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.role = 'admin'
+        )
+    )
+    WITH CHECK (
+        auth.role() = 'authenticated'
+        AND user_id = auth.uid()
+        AND role = 'admin'
     );
 
 CREATE POLICY "Allow admin delete access to staff" ON staff
@@ -191,16 +230,34 @@ CREATE POLICY "Allow admin delete access to staff" ON staff
 CREATE POLICY "Allow read access to stem_clubs" ON stem_clubs
     FOR SELECT USING (true);
 
-CREATE POLICY "Allow insert access to stem_clubs" ON stem_clubs
-    FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-
-CREATE POLICY "Allow update access to stem_clubs" ON stem_clubs
-    FOR UPDATE USING (auth.role() = 'authenticated');
-
+DROP POLICY IF EXISTS "Allow insert access to stem_clubs" ON stem_clubs;
+DROP POLICY IF EXISTS "Allow update access to stem_clubs" ON stem_clubs;
 DROP POLICY IF EXISTS "Allow delete access to stem_clubs" ON stem_clubs;
 DROP POLICY IF EXISTS "Allow admin delete access to stem_clubs" ON stem_clubs;
 
-CREATE POLICY "Allow admin delete access to stem_clubs" ON stem_clubs
+CREATE POLICY "Allow insert access to stem_clubs" ON stem_clubs
+    FOR INSERT WITH CHECK (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
+
+CREATE POLICY "Allow update access to stem_clubs" ON stem_clubs
+    FOR UPDATE USING (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
+
+CREATE POLICY "Allow delete access to stem_clubs" ON stem_clubs
     FOR DELETE USING (
         auth.role() = 'authenticated'
         AND EXISTS (
@@ -215,28 +272,124 @@ CREATE POLICY "Allow admin delete access to stem_clubs" ON stem_clubs
 CREATE POLICY "Allow read access to lab_projects" ON lab_projects
     FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Allow insert access to lab_projects" ON lab_projects;
+DROP POLICY IF EXISTS "Allow update access to lab_projects" ON lab_projects;
+DROP POLICY IF EXISTS "Allow delete access to lab_projects" ON lab_projects;
+
 CREATE POLICY "Allow insert access to lab_projects" ON lab_projects
-    FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+    FOR INSERT WITH CHECK (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
 
 CREATE POLICY "Allow update access to lab_projects" ON lab_projects
-    FOR UPDATE USING (auth.role() = 'authenticated');
+    FOR UPDATE USING (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
+
+CREATE POLICY "Allow delete access to lab_projects" ON lab_projects
+    FOR DELETE USING (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
 
 -- Lab Equipment table policies
 CREATE POLICY "Allow read access to lab_equipment" ON lab_equipment
     FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Allow insert access to lab_equipment" ON lab_equipment;
+DROP POLICY IF EXISTS "Allow update access to lab_equipment" ON lab_equipment;
+DROP POLICY IF EXISTS "Allow delete access to lab_equipment" ON lab_equipment;
+
 CREATE POLICY "Allow insert access to lab_equipment" ON lab_equipment
-    FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+    FOR INSERT WITH CHECK (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
 
 CREATE POLICY "Allow update access to lab_equipment" ON lab_equipment
-    FOR UPDATE USING (auth.role() = 'authenticated');
+    FOR UPDATE USING (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
+
+CREATE POLICY "Allow delete access to lab_equipment" ON lab_equipment
+    FOR DELETE USING (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
 
 -- Lab Signups table policies
 CREATE POLICY "Allow read access to lab_signups" ON lab_signups
     FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Allow insert access to lab_signups" ON lab_signups;
+DROP POLICY IF EXISTS "Allow update access to lab_signups" ON lab_signups;
+DROP POLICY IF EXISTS "Allow delete access to lab_signups" ON lab_signups;
+
 CREATE POLICY "Allow insert access to lab_signups" ON lab_signups
-    FOR INSERT WITH CHECK (true);
+    FOR INSERT WITH CHECK (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
+
+CREATE POLICY "Allow update access to lab_signups" ON lab_signups
+    FOR UPDATE USING (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
+
+CREATE POLICY "Allow delete access to lab_signups" ON lab_signups
+    FOR DELETE USING (
+        auth.role() = 'authenticated'
+        AND EXISTS (
+            SELECT 1
+            FROM staff s
+            WHERE s.user_id = auth.uid()
+              AND s.role = 'admin'
+        )
+    );
 
 -- Announcements table policies
 CREATE POLICY "Allow read access to announcements" ON announcements

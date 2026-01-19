@@ -31,6 +31,7 @@ const ClubsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [authUser, setAuthUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [formState, setFormState] = useState<ClubFormState>(emptyClubForm);
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -59,7 +60,16 @@ const ClubsPage = () => {
     (async () => {
       try {
         const { data } = await supabase.auth.getUser();
-        setAuthUser(data?.user ?? null);
+        const user = data?.user ?? null;
+        setAuthUser(user);
+        if (user) {
+          const { data: profile } = await supabase
+            .from("staff")
+            .select("role")
+            .eq("user_id", user.id)
+            .maybeSingle();
+          setIsAdmin(profile?.role === "admin");
+        }
       } catch {}
     })();
   }, []);
@@ -197,7 +207,7 @@ const ClubsPage = () => {
 
   return (
     <div className="clubs-panel">
-      {authUser ? (
+      {isAdmin ? (
         <form className="clubs-form" onSubmit={handleSubmit}>
           <div className="clubs-form-header">
             <div>
@@ -297,7 +307,9 @@ const ClubsPage = () => {
         </form>
       ) : (
         <div className="clubs-auth-hint">
-          Sign in to add or edit STEM clubs.
+          {authUser
+            ? "Admin access required to add or edit STEM clubs."
+            : "Sign in as an admin to add or edit STEM clubs."}
         </div>
       )}
 
@@ -318,7 +330,7 @@ const ClubsPage = () => {
             <div key={club.id} className="club-card">
               <div className="club-card-header">
                 <strong>{club.name}</strong>
-                {authUser && (
+                {isAdmin && (
                   <div className="club-card-actions">
                     <button type="button" onClick={() => handleEdit(club)}>
                       Edit
