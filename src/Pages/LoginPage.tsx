@@ -8,6 +8,7 @@ type LoginPageProps = {
 
 const LoginPage = ({ onNavigate }: LoginPageProps) => {
   const [darkMode, setDarkMode] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   return (
     <div className={`login-page ${darkMode ? "dark-mode" : ""}`}>
@@ -19,11 +20,44 @@ const LoginPage = ({ onNavigate }: LoginPageProps) => {
         >
           {darkMode ? "☀️" : "🌙"}
         </button>
-        <button className="icon-btn">?</button>
+        <button className="icon-btn" onClick={() => setShowHelp(true)}>
+          ?
+        </button>
       </div>
 
       {/* Main content */}
       <div className="login-container-main">
+        {showHelp && (
+          <div className="login-help-backdrop" onClick={() => setShowHelp(false)}>
+            <div
+              className="login-help-modal"
+              role="dialog"
+              aria-modal="true"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="login-help-header">
+                <h3>Need help?</h3>
+                <button
+                  type="button"
+                  className="login-help-close"
+                  onClick={() => setShowHelp(false)}
+                  aria-label="Close help"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="login-help-body">
+                <p>For access or sign-in issues, contact the ETI team.</p>
+                <div className="login-help-actions">
+                  <a href="mailto:eti@fhda.edu">Email ETI Support</a>
+                  <a href="https://foothill.edu/eti/" target="_blank" rel="noreferrer">
+                    Visit ETI Website
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         <h1 className="login-title">Emerging Technologies Institute</h1>
 
         <div className="login-content">

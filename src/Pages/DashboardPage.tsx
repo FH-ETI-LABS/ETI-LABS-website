@@ -86,6 +86,7 @@ const DashboardPage = () => {
   const [announcementText, setAnnouncementText] = useState("");
   const [announcements, setAnnouncements] = useState<AnnouncementRow[]>([]);
   const [authUser, setAuthUser] = useState<any>(null);
+  const [showHelp, setShowHelp] = useState(false);
 
   /* ================= LOAD PROFILE ================= */
 
@@ -203,13 +204,44 @@ const DashboardPage = () => {
           <button className="icon-button" onClick={toggleDarkMode}>
             <MoonIcon />
           </button>
-          <button className="icon-button">
+          <button className="icon-button" onClick={() => setShowHelp(true)}>
             <HelpIcon />
           </button>
         </div>
       </div>
 
       <div className="dashboard-layout">
+        {showHelp && (
+          <div className="help-modal-backdrop" onClick={() => setShowHelp(false)}>
+            <div
+              className="help-modal"
+              role="dialog"
+              aria-modal="true"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="help-modal-header">
+                <h3>Need help?</h3>
+                <button
+                  type="button"
+                  className="help-modal-close"
+                  onClick={() => setShowHelp(false)}
+                  aria-label="Close help"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="help-modal-body">
+                <p>For access or issues, contact the ETI team.</p>
+                <div className="help-modal-actions">
+                  <a href="mailto:eti@fhda.edu">Email ETI Support</a>
+                  <a href="https://foothill.edu/eti/" target="_blank" rel="noreferrer">
+                    Visit ETI Website
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {/* SIDEBAR */}
         <aside className="sidebar">
           <div className="sidebar-card">
