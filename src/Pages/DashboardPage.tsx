@@ -5,7 +5,6 @@
  */
 
 import { useEffect, useState } from "react";
-import type { ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import "./DashboardPage.css";
 import { useDarkMode } from "../contexts/DarkModeContext";
@@ -87,20 +86,6 @@ const DashboardPage = () => {
   const [announcementText, setAnnouncementText] = useState("");
   const [announcements, setAnnouncements] = useState<AnnouncementRow[]>([]);
   const [authUser, setAuthUser] = useState<any>(null);
-  const [adminExists, setAdminExists] = useState<boolean | null>(null);
-  const [claimingAdmin, setClaimingAdmin] = useState(false);
-  const [claimAdminError, setClaimAdminError] = useState<string | null>(null);
-  const [profileDraft, setProfileDraft] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    cwid: "",
-    job_title: "Student",
-    role: "ETI Member",
-    lab_assigned: "ETI",
-  });
-  const [savingProfile, setSavingProfile] = useState(false);
-  const [profileSaveError, setProfileSaveError] = useState<string | null>(null);
 
   /* ================= LOAD PROFILE ================= */
 
@@ -145,47 +130,12 @@ const DashboardPage = () => {
       if (data) setAnnouncements(data);
     };
 
-    const loadAdminStatus = async () => {
-      const { data, error } = await supabase
-        .from("staff")
-        .select("id")
-        .eq("role", "admin")
-        .limit(1);
-
-      if (error) {
-        console.debug("DashboardPage: admin check failed", error);
-        setAdminExists(null);
-        return;
-      }
-      setAdminExists((data ?? []).length > 0);
-    };
-
     loadProfile();
     loadAnnouncements();
-    loadAdminStatus();
     (async () => {
         try {
           const { data } = await supabase.auth.getUser();
-          const user = data?.user ?? null;
-          setAuthUser(user);
-          if (user) {
-            const pending = localStorage.getItem("pendingStaffProfile");
-            if (pending) {
-              try {
-                const parsed = JSON.parse(pending);
-                setProfileDraft((prev) => ({
-                  ...prev,
-                  ...parsed,
-                  email: parsed.email || user.email || prev.email,
-                }));
-              } catch {}
-            } else {
-              setProfileDraft((prev) => ({
-                ...prev,
-                email: user.email || prev.email,
-              }));
-            }
-          }
+          setAuthUser(data?.user ?? null);
         } catch {}
     })();
   }, []);
@@ -215,106 +165,6 @@ const DashboardPage = () => {
     if (data) setAnnouncements(data);
   };
 
-  const handleProfileDraftChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setProfileDraft((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSaveProfile = async () => {
-    setProfileSaveError(null);
-    if (!authUser?.id) {
-      setProfileSaveError("Not authenticated.");
-      return;
-    }
-
-    const requiredFields = [
-      profileDraft.first_name.trim(),
-      profileDraft.last_name.trim(),
-      profileDraft.email.trim(),
-      profileDraft.cwid.trim(),
-      profileDraft.job_title.trim(),
-      profileDraft.role.trim(),
-      profileDraft.lab_assigned.trim(),
-    ];
-
-    if (requiredFields.some((field) => !field)) {
-      setProfileSaveError("Please fill in all required fields.");
-      return;
-    }
-
-    const cwidTrimmed = profileDraft.cwid.trim();
-    if (!/^\d{8}$/.test(cwidTrimmed)) {
-      setProfileSaveError("CWID must be exactly 8 digits.");
-      return;
-    }
-    const cwidValue = Number(cwidTrimmed);
-
-    setSavingProfile(true);
-    const payload = {
-      user_id: authUser.id,
-      first_name: profileDraft.first_name.trim(),
-      last_name: profileDraft.last_name.trim(),
-      email: profileDraft.email.trim(),
-      cwid: cwidValue,
-      job_title: profileDraft.job_title.trim(),
-      role: profileDraft.role.trim(),
-      lab_assigned: profileDraft.lab_assigned.trim(),
-    };
-
-    const { data, error } = await supabase
-      .from("staff")
-      .insert(payload)
-      .select("*")
-      .single();
-
-    if (error) {
-      console.debug("DashboardPage: profile insert failed", error);
-      setProfileSaveError(error.message || "Failed to save profile.");
-      setSavingProfile(false);
-      return;
-    }
-
-    setStaffProfile(data);
-    setProfileSaveError(null);
-    setSavingProfile(false);
-    localStorage.removeItem("pendingStaffProfile");
-  };
-
-  const handleClaimAdmin = async () => {
-    setClaimingAdmin(true);
-    setClaimAdminError(null);
-
-    try {
-      const { data: auth } = await supabase.auth.getUser();
-      if (!auth?.user) {
-        setClaimAdminError("Not authenticated.");
-        setClaimingAdmin(false);
-        return;
-      }
-
-      const { error } = await supabase
-        .from("staff")
-        .update({ role: "admin" })
-        .eq("user_id", auth.user.id);
-
-      if (error) {
-        console.debug("DashboardPage: claim admin failed", error);
-        setClaimAdminError(error.message || "Failed to claim admin access.");
-        setClaimingAdmin(false);
-        return;
-      }
-
-      setStaffProfile((prev: any) =>
-        prev ? { ...prev, role: "admin" } : prev
-      );
-      setAdminExists(true);
-      setClaimingAdmin(false);
-    } catch (err) {
-      setClaimAdminError("Failed to claim admin access.");
-      setClaimingAdmin(false);
-    }
-  };
-
   /* ================= STATES ================= */
 
   if (loadingProfile) return <div style={{ padding: 40 }}>Loading…</div>;
@@ -337,8 +187,6 @@ const DashboardPage = () => {
 
   const isAdmin = staffProfile?.role === "admin";
   const initial = staffProfile?.first_name?.[0]?.toUpperCase() ?? "?";
-  const canClaimAdmin =
-    adminExists === false && !!staffProfile && authUser?.id === staffProfile.user_id;
 
   /* ================= RENDER ================= */
 
@@ -371,33 +219,6 @@ const DashboardPage = () => {
                 Hello, {staffProfile?.first_name ?? "there"}!
               </div>
               {isAdmin && <div className="admin-badge">🔥 Admin</div>}
-              {canClaimAdmin && (
-                <div
-                  style={{
-                    marginTop: 12,
-                    padding: 10,
-                    border: "1px solid #f3d49d",
-                    borderRadius: 10,
-                    background: "#fff7e6",
-                    fontSize: 12,
-                  }}
-                >
-                  <div style={{ marginBottom: 6, fontWeight: 600 }}>
-                    No admin exists yet
-                  </div>
-                  <button
-                    className="logout-button"
-                    style={{ width: "100%", marginBottom: 6 }}
-                    onClick={handleClaimAdmin}
-                    disabled={claimingAdmin}
-                  >
-                    {claimingAdmin ? "Claiming..." : "Claim Admin Access"}
-                  </button>
-                  {claimAdminError && (
-                    <div style={{ color: "#c53030" }}>{claimAdminError}</div>
-                  )}
-                </div>
-              )}
               <button
                 className="logout-button"
                 onClick={() => handleLogout()}
@@ -462,70 +283,6 @@ const DashboardPage = () => {
         {/* MAIN */}
         <main className="main-content">
           {profileErrorBanner}
-          {!staffProfile && authUser && (
-            <div className="content-card" style={{ marginBottom: 12 }}>
-              <strong>Complete your profile</strong>
-              <div style={{ opacity: 0.8, marginTop: 6 }}>
-                Your account is created, but your staff profile is missing.
-              </div>
-              <div style={{ display: "grid", gap: 10, marginTop: 12 }}>
-                <input
-                  name="first_name"
-                  placeholder="First name"
-                  value={profileDraft.first_name}
-                  onChange={handleProfileDraftChange}
-                />
-                <input
-                  name="last_name"
-                  placeholder="Last name"
-                  value={profileDraft.last_name}
-                  onChange={handleProfileDraftChange}
-                />
-                <input
-                  name="email"
-                  placeholder="Email"
-                  value={profileDraft.email}
-                  onChange={handleProfileDraftChange}
-                />
-                <input
-                  name="cwid"
-                  placeholder="CWID"
-                  value={profileDraft.cwid}
-                  onChange={handleProfileDraftChange}
-                />
-                <input
-                  name="job_title"
-                  placeholder="Job title"
-                  value={profileDraft.job_title}
-                  onChange={handleProfileDraftChange}
-                />
-                <input
-                  name="role"
-                  placeholder="Role"
-                  value={profileDraft.role}
-                  onChange={handleProfileDraftChange}
-                />
-                <input
-                  name="lab_assigned"
-                  placeholder="Lab assigned"
-                  value={profileDraft.lab_assigned}
-                  onChange={handleProfileDraftChange}
-                />
-              </div>
-              {profileSaveError && (
-                <div style={{ color: "#c53030", marginTop: 8 }}>
-                  {profileSaveError}
-                </div>
-              )}
-              <button
-                style={{ marginTop: 12 }}
-                onClick={handleSaveProfile}
-                disabled={savingProfile}
-              >
-                {savingProfile ? "Saving..." : "Save profile"}
-              </button>
-            </div>
-          )}
           {activeView === "dashboard" && (
             <>
               <h1 className="page-title dashboard-title">Your Dashboard</h1>
