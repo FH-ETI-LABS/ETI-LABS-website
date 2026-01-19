@@ -45,3 +45,13 @@ a:focus-visible {
   outline: 2px solid #c82c2c;
   outline-offset: 2px;
 }
+
+/* ===== SHARED EMPTY STATE ===== */
+.empty-state {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px dashed #d0d7de;
+  background: #ffffff;
+  color: #6c757d;
+  font-size: 13px;
+}

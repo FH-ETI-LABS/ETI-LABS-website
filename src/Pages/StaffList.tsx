@@ -3,6 +3,7 @@ import type { ChangeEvent, FormEvent } from "react";
 import { supabase } from "../lib/supabase";
 import type { StaffRow } from "../lib/supabase";
 import "./StaffList.css";
+import Toast from "../Components/Toast/Toast";
 
 type StaffFormState = {
   first_name: string;
@@ -46,6 +47,7 @@ export default function StaffList() {
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [toast, setToast] = useState<{ message: string; tone?: "success" | "error" | "info" } | null>(null);
 
   useEffect(() => {
     const loadStaff = async () => {
@@ -80,6 +82,12 @@ export default function StaffList() {
       } catch {}
     })();
   }, []);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(null), 3000);
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   const reloadStaff = async () => {
     const { data, error: loadError } = await supabase
@@ -210,6 +218,10 @@ export default function StaffList() {
     await reloadStaff();
     setSaving(false);
     resetForm();
+    setToast({
+      message: editingId ? "Staff profile updated." : "Staff profile added.",
+      tone: "success",
+    });
   };
 
   const handleDelete = async (member: StaffRow) => {
@@ -230,6 +242,7 @@ export default function StaffList() {
     }
 
     await reloadStaff();
+    setToast({ message: "Staff profile deleted.", tone: "success" });
   };
 
   if (loading) return <p>Loading staff…</p>;
@@ -237,6 +250,13 @@ export default function StaffList() {
 
   return (
     <div className="staff-page">
+      {toast && (
+        <Toast
+          message={toast.message}
+          tone={toast.tone}
+          onDismiss={() => setToast(null)}
+        />
+      )}
       {isAdmin ? (
         <form className="staff-form" onSubmit={handleSubmit}>
           <div className="staff-form-header">
@@ -401,7 +421,7 @@ export default function StaffList() {
       </div>
 
       {staff.length === 0 ? (
-        <p>No staff found.</p>
+        <div className="empty-state">No staff found.</div>
       ) : (
         <div className="staff-list">
         {filteredStaff.map((s) => {

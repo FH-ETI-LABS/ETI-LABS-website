@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { supabase } from "../lib/supabase";
 import type { LabEquipmentRow } from "../lib/supabase";
+import Toast from "../Components/Toast/Toast";
+import "./CrudForms.css";
 
 const EquipmentPage = () => {
   const [equipment, setEquipment] = useState<LabEquipmentRow[]>([]);
@@ -13,6 +15,7 @@ const EquipmentPage = () => {
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [toast, setToast] = useState<{ message: string; tone?: "success" | "error" | "info" } | null>(null);
 
   type EquipmentFormState = {
     resource_name: string;
@@ -62,6 +65,12 @@ const EquipmentPage = () => {
       } catch {}
     })();
   }, []);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(null), 3000);
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   const reloadEquipment = async () => {
     const { data, error: loadError } = await supabase
@@ -153,6 +162,10 @@ const EquipmentPage = () => {
     await reloadEquipment();
     setSaving(false);
     resetForm();
+    setToast({
+      message: editingId ? "Equipment updated." : "Equipment added.",
+      tone: "success",
+    });
   };
 
   const handleDelete = async (item: LabEquipmentRow) => {
@@ -173,6 +186,7 @@ const EquipmentPage = () => {
     }
 
     await reloadEquipment();
+    setToast({ message: "Equipment deleted.", tone: "success" });
   };
 
   if (loading) return <p>Loading equipment…</p>;
@@ -180,6 +194,13 @@ const EquipmentPage = () => {
 
   return (
     <div className="equipment-panel">
+      {toast && (
+        <Toast
+          message={toast.message}
+          tone={toast.tone}
+          onDismiss={() => setToast(null)}
+        />
+      )}
       {isAdmin ? (
         <form className="equipment-form" onSubmit={handleSubmit}>
           <div className="equipment-form-header">
@@ -258,7 +279,7 @@ const EquipmentPage = () => {
       </div>
 
       {filteredEquipment.length === 0 ? (
-        <p>No equipment found.</p>
+        <div className="empty-state">No equipment found.</div>
       ) : (
         <div className="equipment-grid">
           {filteredEquipment.map((item) => (

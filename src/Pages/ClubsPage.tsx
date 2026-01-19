@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { supabase } from "../lib/supabase";
 import type { StemClubRow } from "../lib/supabase";
+import Toast from "../Components/Toast/Toast";
+import "./CrudForms.css";
 
 type ClubFormState = {
   name: string;
@@ -36,6 +38,7 @@ const ClubsPage = () => {
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [toast, setToast] = useState<{ message: string; tone?: "success" | "error" | "info" } | null>(null);
 
   useEffect(() => {
     const loadClubs = async () => {
@@ -73,6 +76,12 @@ const ClubsPage = () => {
       } catch {}
     })();
   }, []);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(null), 3000);
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   const reloadClubs = async () => {
     const { data, error: loadError } = await supabase
@@ -180,6 +189,10 @@ const ClubsPage = () => {
     await reloadClubs();
     setSaving(false);
     resetForm();
+    setToast({
+      message: editingId ? "Club updated." : "Club added.",
+      tone: "success",
+    });
   };
 
   const handleDelete = async (club: StemClubRow) => {
@@ -200,6 +213,7 @@ const ClubsPage = () => {
     }
 
     setClubs((prev) => prev.filter((item) => item.id !== club.id));
+    setToast({ message: "Club deleted.", tone: "success" });
   };
 
   if (loading) return <p>Loading clubs…</p>;
@@ -207,6 +221,13 @@ const ClubsPage = () => {
 
   return (
     <div className="clubs-panel">
+      {toast && (
+        <Toast
+          message={toast.message}
+          tone={toast.tone}
+          onDismiss={() => setToast(null)}
+        />
+      )}
       {isAdmin ? (
         <form className="clubs-form" onSubmit={handleSubmit}>
           <div className="clubs-form-header">
@@ -323,7 +344,7 @@ const ClubsPage = () => {
       </div>
 
       {filteredClubs.length === 0 ? (
-        <p>No clubs found.</p>
+        <div className="empty-state">No clubs found.</div>
       ) : (
         <div className="clubs-grid">
           {filteredClubs.map((club) => (

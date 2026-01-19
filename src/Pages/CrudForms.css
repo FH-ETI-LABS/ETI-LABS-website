@@ -1,0 +1,315 @@
+.clubs-form,
+.projects-form,
+.equipment-form,
+.activity-form {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.clubs-form-header,
+.projects-form-header,
+.equipment-form-header,
+.activity-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.clubs-form-subtitle,
+.projects-form-subtitle,
+.equipment-form-subtitle,
+.activity-form-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.clubs-form-grid,
+.projects-form-grid,
+.equipment-form-grid,
+.activity-form-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.clubs-form-grid label,
+.projects-form-grid label,
+.equipment-form-grid label,
+.activity-form-grid label {
+  display: grid;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.clubs-form-grid input,
+.projects-form-grid input,
+.equipment-form-grid input,
+.activity-form-grid input,
+.clubs-form-grid textarea,
+.projects-form-grid textarea,
+.equipment-form-grid textarea,
+.activity-form-grid textarea,
+.activity-filter-panel select {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 12px;
+  background: var(--bg-sidebar);
+  color: var(--text-primary);
+}
+
+.clubs-form-description,
+.projects-form-description,
+.equipment-form-description {
+  grid-column: 1 / -1;
+}
+
+.projects-form-checkboxes {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.projects-form-checkboxes label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.clubs-form-actions,
+.projects-form-actions,
+.equipment-form-actions,
+.activity-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.clubs-form-actions button,
+.projects-form-actions button,
+.equipment-form-actions button,
+.activity-form-actions button,
+.clubs-form-secondary,
+.projects-form-secondary,
+.equipment-form-secondary,
+.activity-form-secondary {
+  border-radius: 999px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-color);
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.clubs-form-actions button:disabled,
+.projects-form-actions button:disabled,
+.equipment-form-actions button:disabled,
+.activity-form-actions button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.clubs-form-secondary,
+.projects-form-secondary,
+.equipment-form-secondary,
+.activity-form-secondary {
+  background: transparent;
+}
+
+.clubs-form-error,
+.projects-form-error,
+.equipment-form-error,
+.activity-form-error {
+  color: #b91c1c;
+  font-size: 12px;
+}
+
+.clubs-auth-hint,
+.projects-auth-hint,
+.equipment-auth-hint,
+.activity-auth-hint {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px dashed var(--border-color);
+  color: var(--text-secondary);
+  background: var(--bg-card);
+}
+
+.clubs-search,
+.projects-search,
+.equipment-search,
+.activity-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--hover-bg);
+  border-radius: 999px;
+  padding: 8px 14px;
+  color: var(--text-secondary);
+  max-width: 260px;
+  margin-top: 12px;
+}
+
+.clubs-search input,
+.projects-search input,
+.equipment-search input,
+.activity-search input {
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+  font-size: 13px;
+}
+
+.activity-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.activity-filters button {
+  border-radius: 999px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.activity-filter-panel {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  margin-top: 10px;
+}
+
+.activity-filter-panel label {
+  display: grid;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.activity-table {
+  margin-top: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.activity-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.7fr 0.8fr 0.8fr 0.8fr 1fr;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+.activity-header {
+  background: var(--hover-bg);
+  font-weight: 600;
+}
+
+.activity-row-actions button,
+.project-card-actions button,
+.equipment-card-actions button,
+.club-card-actions button {
+  border-radius: 999px;
+  padding: 4px 10px;
+  border: 1px solid var(--border-color);
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 11px;
+  margin-left: 6px;
+}
+
+.activity-row-danger,
+.project-card-danger,
+.equipment-card-danger,
+.club-card-danger {
+  color: #b91c1c;
+  border-color: rgba(185, 28, 28, 0.5);
+  background: rgba(185, 28, 28, 0.08);
+}
+
+.equipment-grid,
+.clubs-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.equipment-card,
+.project-card,
+.club-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 12px 16px;
+}
+
+.equipment-card-header,
+.project-card-header,
+.club-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.projects-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 18px;
+}
+
+@media (max-width: 1100px) {
+  .projects-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .clubs-form-grid,
+  .projects-form-grid,
+  .equipment-form-grid,
+  .activity-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .clubs-form-grid,
+  .projects-form-grid,
+  .equipment-form-grid,
+  .activity-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .activity-row {
+    grid-template-columns: 1fr;
+  }
+}

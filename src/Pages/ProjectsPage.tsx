@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { supabase } from "../lib/supabase";
 import type { LabProjectRow } from "../lib/supabase";
+import Toast from "../Components/Toast/Toast";
+import "./CrudForms.css";
 
 const ProjectsPage = () => {
   const [projects, setProjects] = useState<LabProjectRow[]>([]);
@@ -13,6 +15,7 @@ const ProjectsPage = () => {
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [toast, setToast] = useState<{ message: string; tone?: "success" | "error" | "info" } | null>(null);
 
   type ProjectFormState = {
     name: string;
@@ -80,6 +83,12 @@ const ProjectsPage = () => {
       } catch {}
     })();
   }, []);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(null), 3000);
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   const reloadProjects = async () => {
     const { data, error: loadError } = await supabase
@@ -219,6 +228,10 @@ const ProjectsPage = () => {
     await reloadProjects();
     setSaving(false);
     resetForm();
+    setToast({
+      message: editingId ? "Project updated." : "Project added.",
+      tone: "success",
+    });
   };
 
   const handleDelete = async (project: LabProjectRow) => {
@@ -239,6 +252,7 @@ const ProjectsPage = () => {
     }
 
     await reloadProjects();
+    setToast({ message: "Project deleted.", tone: "success" });
   };
 
   if (loading) return <p>Loading projects…</p>;
@@ -247,6 +261,13 @@ const ProjectsPage = () => {
   return (
     <div className="projects-layout">
       <section className="projects-main">
+        {toast && (
+          <Toast
+            message={toast.message}
+            tone={toast.tone}
+            onDismiss={() => setToast(null)}
+          />
+        )}
         {isAdmin ? (
           <form className="projects-form" onSubmit={handleSubmit}>
             <div className="projects-form-header">
@@ -398,7 +419,7 @@ const ProjectsPage = () => {
         </div>
 
         {filteredProjects.length === 0 ? (
-          <p>No projects found.</p>
+          <div className="empty-state">No projects found.</div>
         ) : (
           filteredProjects.map((project) => {
             const eventLabels = [

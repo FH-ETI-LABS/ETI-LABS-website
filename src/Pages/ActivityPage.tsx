@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { supabase } from "../lib/supabase";
 import type { LabSignupRow } from "../lib/supabase";
+import Toast from "../Components/Toast/Toast";
+import "./CrudForms.css";
 
 const ActivityPage = () => {
   const [entries, setEntries] = useState<LabSignupRow[]>([]);
@@ -16,6 +18,7 @@ const ActivityPage = () => {
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [toast, setToast] = useState<{ message: string; tone?: "success" | "error" | "info" } | null>(null);
 
   type SignupFormState = {
     first_name: string;
@@ -75,6 +78,12 @@ const ActivityPage = () => {
       } catch {}
     })();
   }, []);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(null), 3000);
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   const reloadEntries = async () => {
     const { data, error: loadError } = await supabase
@@ -194,6 +203,10 @@ const ActivityPage = () => {
     await reloadEntries();
     setSaving(false);
     resetForm();
+    setToast({
+      message: editingId ? "Signup updated." : "Signup added.",
+      tone: "success",
+    });
   };
 
   const handleDelete = async (entry: LabSignupRow) => {
@@ -214,6 +227,7 @@ const ActivityPage = () => {
     }
 
     await reloadEntries();
+    setToast({ message: "Signup deleted.", tone: "success" });
   };
 
   if (loading) return <p>Loading activity…</p>;
@@ -221,6 +235,13 @@ const ActivityPage = () => {
 
   return (
     <div className="activity-panel">
+      {toast && (
+        <Toast
+          message={toast.message}
+          tone={toast.tone}
+          onDismiss={() => setToast(null)}
+        />
+      )}
       {isAdmin ? (
         <form className="activity-form" onSubmit={handleSubmit}>
           <div className="activity-form-header">
@@ -386,9 +407,7 @@ const ActivityPage = () => {
           <div>Lab</div>
         </div>
         {filteredEntries.length === 0 ? (
-          <div className="activity-row">
-            <div>No activity found.</div>
-          </div>
+          <div className="empty-state">No activity found.</div>
         ) : (
           filteredEntries.map((entry) => (
             <div key={entry.id} className="activity-row">
