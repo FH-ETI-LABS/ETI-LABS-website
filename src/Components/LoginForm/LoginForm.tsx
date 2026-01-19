@@ -11,6 +11,12 @@ const LoginForm = ({ onNavigate }: LoginFormProps) => {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const contactEmail =
+    import.meta.env.VITE_CONTACT_EMAIL || "eti@fhda.edu";
+  const contactPhone =
+    import.meta.env.VITE_CONTACT_PHONE || "650.949.7236";
+  const contactOffice =
+    import.meta.env.VITE_CONTACT_OFFICE || "STEM Division Office 4118";
 
   // Prevent duplicate navigation
   const navigatedRef = { current: false } as { current: boolean };
@@ -143,9 +149,9 @@ const LoginForm = ({ onNavigate }: LoginFormProps) => {
 
         <div className="login-links">
           <div className="section-title">Contact Us</div>
-          <div>Email us at eti@fhda.edu</div>
-          <div>Call 650.949.7236</div>
-          <div>Visit the STEM Division Office 4118</div>
+          <div>Email us at {contactEmail}</div>
+          <div>Call {contactPhone}</div>
+          <div>Visit the {contactOffice}</div>
         </div>
 
         {errorMsg && (

@@ -188,7 +188,7 @@ export default function LandingPage(_: LandingPageProps) {
             <span className="section-label">Partner with ETI</span>
             <h2 className="contact-title">Request Access or Partnership</h2>
             <p style={{ color: '#6b7280', marginBottom: 18 }}>Interested in collaborating, joining as a fellow, or requesting lab access? Drop us a short message and we'll get back to you.</p>
-            <form action="https://formspree.io/f/kalaitzidiskonstantin@fhda.edu" method="POST" className="contact-form">
+            <form action={import.meta.env.VITE_CONTACT_FORM_ENDPOINT || "https://formspree.io/f/kalaitzidiskonstantin@fhda.edu"} method="POST" className="contact-form">
               <div className="field"><label>First Name</label><input name="firstName" required/></div>
               <div className="field"><label>Last Name</label><input name="lastName" required/></div>
               <div className="field full"><label>Institutional Email</label><input name="email" type="email" required/></div>
